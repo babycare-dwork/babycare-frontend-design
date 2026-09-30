@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Baby,
+  ChevronRight,
   Heart,
   LogOut,
   MapPin,
@@ -17,16 +18,12 @@ import {
   Smartphone,
   User,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 import {
   BABY_CARE_ADDRESS,
   BABY_CARE_PHONE1,
@@ -37,6 +34,13 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { authService } from "@/Service/auth.service";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const navigationLinks = [
   { href: "/products", label: "Shop" },
@@ -44,6 +48,33 @@ const navigationLinks = [
   { href: "/vaccination-schedule", label: "Vaccination Schedule" },
   { href: "/healthy-tips", label: "Tips" },
 ] as const;
+
+type AccountLink = {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  count?: number;
+};
+
+function CountBadge({
+  count,
+  tone,
+}: {
+  count: number;
+  tone: "orange" | "red";
+}) {
+  if (count <= 0) return null;
+  return (
+    <span
+      className={cn(
+        "pointer-events-none absolute -right-0.5 -top-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full px-1 text-[10px] font-semibold leading-none text-white ring-2 ring-background",
+        tone === "orange" ? "bg-orange-500" : "bg-red-500",
+      )}
+    >
+      {count > 99 ? "99+" : count}
+    </span>
+  );
+}
 
 export default function NavigationBar({ className }: { className?: string }) {
   const { user, isLoading } = useAuth();
@@ -101,12 +132,35 @@ export default function NavigationBar({ className }: { className?: string }) {
     }
   }, [router, queryClient]);
 
-  const handleProfile = useCallback(() => router.push("/profile"), [router]);
+  const isActiveLink = useCallback(
+    (href: string) => pathname === href || pathname?.startsWith(`${href}/`),
+    [pathname],
+  );
+
+  const accountLinks = useMemo<AccountLink[]>(
+    () => [
+      { href: "/profile", label: "View profile", icon: User },
+      { href: "/baby", label: "Baby", icon: Baby },
+      { href: "/order", label: "Orders", icon: Package },
+      { href: "/cart", label: "My cart", icon: ShoppingCart, count: cartCount },
+      {
+        href: "/favorites",
+        label: "Favorites",
+        icon: Heart,
+        count: favoritesCount,
+      },
+    ],
+    [cartCount, favoritesCount],
+  );
+
+  // Close panels after navigating
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setIsSearchOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
-    if (isSearchOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
+    if (isSearchOpen) searchInputRef.current?.focus();
   }, [isSearchOpen]);
 
   useEffect(() => {
@@ -127,184 +181,254 @@ export default function NavigationBar({ className }: { className?: string }) {
     };
   }, [isMobileMenuOpen]);
 
-  const renderBadge = useCallback((count: number, color: "orange" | "red") => {
-    if (count === 0) return null;
-    return (
-      <span
-        className={cn(
-          "absolute -top-1 -right-1 text-white text-[10px] font-semibold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1",
-          color === "orange" ? "bg-orange-500" : "bg-red-500",
-        )}
-      >
-        {count > 99 ? "99+" : count}
-      </span>
-    );
-  }, []);
-
-  const renderUserAvatar = useCallback(() => {
+  const renderUserAvatar = () => {
     if (!user) return null;
     return (
-      <HoverCard openDelay={200}>
-        <HoverCardTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
-            <Avatar className="h-9 w-9">
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild className="cursor-pointer">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-full p-0 ring-2 ring-transparent transition-shadow hover:ring-primary/30 data-[state=open]:ring-primary/30"
+            aria-label="Account menu"
+          >
+            <Avatar className="h-8 w-8">
               <AvatarImage
                 src={user.media || "/placeholder.svg"}
                 alt={user.name}
+                className="object-contain"
               />
-              <AvatarFallback>
+              <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
                 {user.name.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </Button>
-        </HoverCardTrigger>
-        <HoverCardContent className="w-56" align="end">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-12 w-12">
-                <AvatarImage
-                  src={user.media || "/placeholder.svg"}
-                  alt={user.name}
-                />
-                <AvatarFallback>
-                  {user.name.slice(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm truncate">{user.name}</p>
-                <p className="text-xs text-muted-foreground truncate">
-                  {user.email}
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 pt-2 border-t">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleProfile}
-                className="justify-start gap-2 bg-transparent"
-              >
-                <User className="h-4 w-4" /> View Profile
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push("/baby")}
-                className="justify-start gap-2"
-              >
-                <Baby className="h-4 w-4" /> Baby
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push("/order")}
-                className="justify-start gap-2"
-              >
-                <Package className="h-4 w-4" /> Orders
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push("/cart")}
-                className="justify-start gap-2"
-              >
-                <ShoppingCart className="h-4 w-4" /> My Cart ({cartCount})
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push("/favorites")}
-                className="justify-start gap-2"
-              >
-                <Heart className="h-4 w-4" /> Favorites ({favoritesCount})
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleLogout}
-                className="justify-start gap-2"
-              >
-                <LogOut className="h-4 w-4" /> Logout
-              </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent
+          className="w-64 overflow-hidden rounded-2xl p-0 shadow-xl"
+          align="end"
+          sideOffset={10}
+        >
+          <div className="flex items-center gap-3 bg-primary/5 p-4">
+            <Avatar className="h-11 w-11 ring-2 ring-background">
+              <AvatarImage
+                src={user.media || "/placeholder.svg"}
+                alt={user.name}
+                className="object-contain"
+              />
+              <AvatarFallback className="bg-primary/10 font-semibold text-primary">
+                {user.name.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold">{user.name}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {user.email}
+              </p>
             </div>
           </div>
-        </HoverCardContent>
-      </HoverCard>
-    );
-  }, [user, cartCount, favoritesCount, handleProfile, handleLogout, router]);
 
-  const isActiveLink = useCallback(
-    (href: string) => {
-      return pathname === href || pathname?.startsWith(`${href}/`);
-    },
-    [pathname],
-  );
+          <div className="p-2">
+            {accountLinks.map(({ href, label, icon: Icon, count }) => (
+              <DropdownMenuItem key={href} asChild>
+                <Link
+                  href={href}
+                  className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  <Icon className="h-4 w-4 text-muted-foreground" />
+                  <span className="flex-1">{label}</span>
+                  {typeof count === "number" && count > 0 && (
+                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+                      {count}
+                    </span>
+                  )}
+                </Link>
+              </DropdownMenuItem>
+            ))}
+          </div>
+
+          <DropdownMenuSeparator className="m-0" />
+
+          <div className="p-2">
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-red-600 focus:bg-red-50 focus:text-red-600"
+            >
+              <LogOut className="h-4 w-4" /> Logout
+            </DropdownMenuItem>
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
 
   return (
-    <header
-      className={cn("sticky top-0 z-50 bg-background shadow-sm", className)}
-    >
-      <div className="bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 py-2 hidden md:flex justify-between text-xs">
-          <div className="flex gap-4 lg:gap-6">
-            <a
-              href={`tel:${BABY_CARE_PHONE1}`}
-              className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
-            >
-              <Phone className="h-3.5 w-3.5" />
-              <span className="hidden lg:inline">{BABY_CARE_PHONE1}</span>
-            </a>
-            <a
-              href={`tel:${BABY_CARE_PHONE2}`}
-              className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
-            >
-              <Phone className="h-3.5 w-3.5" />
-              <span className="hidden lg:inline">{BABY_CARE_PHONE2}</span>
-            </a>
-
-            <span className="flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5" />
-              <span className="hidden xl:inline">{BABY_CARE_ADDRESS}</span>
-            </span>
-          </div>
-          <div className="flex gap-4">
+    <>
+      <header
+        className={cn(
+          "sticky top-0 z-50 border-b bg-background/85 backdrop-blur-md",
+          className,
+        )}
+      >
+        {/* Utility bar (desktop only) */}
+        <div className="hidden border-b bg-primary/6 md:block">
+          <div className="container mx-auto flex items-center justify-between px-4 sm:px-8 py-1.5 text-xs text-foreground/80">
+            <div className="flex items-center gap-4">
+              <a
+                href={`tel:${BABY_CARE_PHONE1}`}
+                className="flex items-center gap-1.5 transition-colors hover:text-primary"
+              >
+                <Phone className="h-3.5 w-3.5 text-primary" />
+                <span className="hidden lg:inline">{BABY_CARE_PHONE1}</span>
+              </a>
+              <a
+                href={`tel:${BABY_CARE_PHONE2}`}
+                className="flex items-center gap-1.5 transition-colors hover:text-primary"
+              >
+                <Phone className="h-3.5 w-3.5 text-primary" />
+                <span className="hidden lg:inline">{BABY_CARE_PHONE2}</span>
+              </a>
+              <span className="hidden h-3 w-px bg-border xl:block" />
+              <span className="flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5 text-primary" />
+                <span className="hidden xl:inline">{BABY_CARE_ADDRESS}</span>
+              </span>
+            </div>
             <a
               href={BABY_CARE_PLAY_STORE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
-              <Smartphone className="h-3.5 w-3.5" /> Play Store
+              <Smartphone className="h-3.5 w-3.5" /> Get the app
             </a>
           </div>
         </div>
-      </div>
 
-      <nav className="border-b px-6 sm:px-8">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 hover:opacity-90 transition-opacity flex-shrink-0"
-          >
-            <Image
-              src="/logo.png"
-              alt="BabyCare Logo"
-              className="w-auto h-12 md:h-14 lg:h-16"
-              width={100}
-              height={100}
-              priority
-            />
-          </Link>
+        {/* Main nav */}
+        <nav aria-label="Main navigation">
+          <div className="container mx-auto flex items-center justify-between gap-4 px-4 sm:px-8 py-2">
+            <Link
+              href="/"
+              className="flex shrink-0 items-center transition-opacity hover:opacity-90"
+            >
+              <Image
+                src="/logo.png"
+                alt="BabyCare Logo"
+                className="h-11 w-auto md:h-12 lg:h-14"
+                width={100}
+                height={100}
+                priority
+              />
+            </Link>
 
-          <div className="hidden lg:flex flex-1 max-w-3xl mx-4">
-            {isSearchOpen ? (
+            <div className="hidden flex-1 items-center justify-center gap-1 lg:flex xl:gap-2">
+              {navigationLinks.map((link) => {
+                const active = isActiveLink(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "relative whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                      active
+                        ? "text-primary after:absolute after:inset-x-4 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-primary"
+                        : "text-muted-foreground hover:bg-muted/70 hover:text-foreground",
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="flex shrink-0 items-center gap-1 sm:gap-1.5">
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "h-10 w-10 rounded-full",
+                  isSearchOpen && "bg-muted",
+                )}
+                onClick={toggleSearch}
+                aria-label={isSearchOpen ? "Close search" : "Open search"}
+                aria-expanded={isSearchOpen}
+              >
+                {isSearchOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Search className="h-5 w-5" />
+                )}
+              </Button>
+
+              {user ? (
+                <>
+                  <div className="relative hidden sm:block">
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="icon"
+                      className="h-10 w-10 rounded-full"
+                    >
+                      <Link href="/cart" aria-label="Shopping cart">
+                        <ShoppingCart className="h-5 w-5" />
+                      </Link>
+                    </Button>
+                    <CountBadge count={cartCount} tone="orange" />
+                  </div>
+                  <div className="relative hidden sm:block">
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="icon"
+                      className="h-10 w-10 rounded-full"
+                    >
+                      <Link href="/favorites" aria-label="Favorites">
+                        <Heart className="h-5 w-5" />
+                      </Link>
+                    </Button>
+                    <CountBadge count={favoritesCount} tone="red" />
+                  </div>
+                  <div className="ml-1 hidden sm:block">
+                    {renderUserAvatar()}
+                  </div>
+                </>
+              ) : isLoading ? (
+                <div className="hidden h-10 w-10 animate-pulse rounded-full bg-muted sm:block" />
+              ) : (
+                <Button
+                  asChild
+                  className="ml-1 hidden rounded-full px-6 shadow-sm sm:flex"
+                >
+                  <Link href="/login">Login</Link>
+                </Button>
+              )}
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 rounded-full lg:hidden"
+                onClick={toggleMobileMenu}
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMobileMenuOpen}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Search panel (desktop + mobile) */}
+          {isSearchOpen && (
+            <div className="border-t bg-background animate-in fade-in slide-in-from-top-2 duration-200">
               <form
                 onSubmit={handleSearch}
-                className="relative w-full flex gap-2"
+                className="container mx-auto flex items-center gap-2 px-4 py-3"
               >
                 <div className="relative flex-1">
                   <Search
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
                     aria-hidden="true"
                   />
                   <Input
@@ -313,221 +437,210 @@ export default function NavigationBar({ className }: { className?: string }) {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search for baby products..."
-                    className="pl-10 pr-4 h-10 w-full"
+                    className="h-11 w-full rounded-full bg-muted/50 pl-11 pr-4 focus-visible:bg-background"
                     aria-label="Search products"
                     autoComplete="off"
                   />
                 </div>
                 <Button
                   type="submit"
-                  size="sm"
-                  className="h-10 px-6 flex-shrink-0"
+                  className="h-11 rounded-full px-6"
                   disabled={!searchQuery.trim()}
                 >
                   Search
                 </Button>
               </form>
-            ) : (
-              <div className="flex gap-4 xl:gap-6 items-center justify-center w-full">
-                {navigationLinks.map((link) => (
+            </div>
+          )}
+        </nav>
+      </header>
+
+      {/* Mobile drawer (outside header so backdrop-blur does not trap it) */}
+      <div
+        className={cn(
+          "fixed inset-0 z-60 lg:hidden",
+          isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none",
+        )}
+        aria-hidden={!isMobileMenuOpen}
+      >
+        <div
+          onClick={closeMobileMenu}
+          className={cn(
+            "absolute inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 motion-reduce:transition-none",
+            isMobileMenuOpen ? "opacity-100" : "opacity-0",
+          )}
+        />
+        <aside
+          className={cn(
+            "absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col bg-background shadow-2xl transition-transform duration-300 ease-out motion-reduce:transition-none",
+            isMobileMenuOpen ? "translate-x-0" : "translate-x-full",
+          )}
+        >
+          <div className="flex items-center justify-between border-b px-4 py-3">
+            <Image
+              src="/logo.png"
+              alt="BabyCare Logo"
+              className="h-10 w-auto"
+              width={100}
+              height={100}
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 rounded-full"
+              onClick={closeMobileMenu}
+              aria-label="Close menu"
+              tabIndex={isMobileMenuOpen ? 0 : -1}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-3 py-4">
+            {user && (
+              <div className="mb-4 flex items-center gap-3 rounded-2xl bg-primary/5 p-3">
+                <Avatar className="h-11 w-11">
+                  <AvatarImage
+                    src={user.media || "/placeholder.svg"}
+                    alt={user.name}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="bg-primary/10 font-semibold text-primary">
+                    {user.name.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold">{user.name}</p>
+                  <p className="truncate text-xs text-muted-foreground">
+                    {user.email}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-1">
+              {navigationLinks.map((link) => {
+                const active = isActiveLink(link.href);
+                return (
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={closeMobileMenu}
+                    tabIndex={isMobileMenuOpen ? 0 : -1}
+                    aria-current={active ? "page" : undefined}
                     className={cn(
-                      "text-sm font-medium transition-all whitespace-nowrap px-3 py-1.5 rounded-md",
-                      isActiveLink(link.href)
+                      "flex items-center justify-between rounded-xl px-4 py-3 text-[15px] font-medium transition-colors",
+                      active
                         ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:text-primary hover:bg-muted",
+                        : "text-foreground/80 hover:bg-muted",
                     )}
                   >
                     {link.label}
+                    <ChevronRight
+                      className={cn(
+                        "h-4 w-4",
+                        active
+                          ? "text-primary-foreground/80"
+                          : "text-muted-foreground",
+                      )}
+                    />
                   </Link>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleSearch}
-              aria-label={isSearchOpen ? "Close search" : "Open search"}
-            >
-              {isSearchOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Search className="h-5 w-5" />
-              )}
-            </Button>
+                );
+              })}
+            </div>
 
             {user ? (
-              <>
-                <Link href="/cart" className="relative hidden sm:block">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label="Shopping cart"
-                  >
-                    <ShoppingCart className="h-5 w-5" />
-                  </Button>
-                  {renderBadge(cartCount, "orange")}
-                </Link>
-                <Link href="/favorites" className="relative hidden sm:block">
-                  <Button variant="ghost" size="icon" aria-label="Favorites">
-                    <Heart className="h-5 w-5" />
-                  </Button>
-                  {renderBadge(favoritesCount, "red")}
-                </Link>
-                <div className="hidden sm:block">{renderUserAvatar()}</div>
-              </>
-            ) : isLoading ? (
-              <div className="h-9 w-9 rounded-full bg-muted animate-pulse hidden sm:block" />
-            ) : (
-              <Button asChild className="hidden sm:flex">
-                <Link href="/login">Login</Link>
-              </Button>
-            )}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={toggleMobileMenu}
-              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </Button>
-          </div>
-        </div>
-
-        {isMobileMenuOpen && (
-          <div className="lg:hidden border-t bg-background">
-            <div className="flex flex-col p-4 gap-2">
-              {isSearchOpen && (
-                <form onSubmit={handleSearch} className="mb-4">
-                  <div className="relative">
-                    <Search
-                      className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
-                      aria-hidden="true"
-                    />
-                    <Input
-                      ref={searchInputRef}
-                      type="search"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Search for baby products..."
-                      className="pl-10 pr-4 h-10 w-full"
-                      aria-label="Search products"
-                      autoComplete="off"
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    className="w-full mt-2"
-                    size="sm"
-                    disabled={!searchQuery.trim()}
-                  >
-                    Search
-                  </Button>
-                </form>
-              )}
-              {navigationLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={closeMobileMenu}
-                  className={cn(
-                    "py-2.5 px-3 text-sm rounded-md transition-all font-medium",
-                    isActiveLink(link.href)
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:text-primary hover:bg-muted",
-                  )}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              {user ? (
-                <div className="sm:hidden border-t pt-2 mt-2 space-y-1">
-                  <Link
-                    href="/profile"
-                    onClick={closeMobileMenu}
-                    className="py-2.5 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-muted rounded-md transition-colors flex items-center gap-2 font-medium"
-                  >
-                    <User className="h-4 w-4" /> Profile
-                  </Link>
-                  <Link
-                    href="/baby"
-                    onClick={closeMobileMenu}
-                    className="py-2.5 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-muted rounded-md transition-colors flex items-center gap-2 font-medium"
-                  >
-                    <Baby className="h-4 w-4" /> Baby
-                  </Link>
-                  <Link
-                    href="/order"
-                    onClick={closeMobileMenu}
-                    className="py-2.5 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-muted rounded-md transition-colors flex items-center gap-2 font-medium"
-                  >
-                    <Package className="h-4 w-4" /> Orders
-                  </Link>
-                  <Link
-                    href="/cart"
-                    onClick={closeMobileMenu}
-                    className="py-2.5 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-muted rounded-md transition-colors flex items-center justify-between"
-                  >
-                    <span className="flex items-center gap-2 font-medium">
-                      <ShoppingCart className="h-4 w-4" /> My Cart
-                    </span>
-                    {cartCount > 0 && (
-                      <span className="bg-orange-500 text-white text-xs font-semibold rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5">
-                        {cartCount > 99 ? "99+" : cartCount}
-                      </span>
-                    )}
-                  </Link>
-                  <Link
-                    href="/favorites"
-                    onClick={closeMobileMenu}
-                    className="py-2.5 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-muted rounded-md transition-colors flex items-center justify-between"
-                  >
-                    <span className="flex items-center gap-2 font-medium">
-                      <Heart className="h-4 w-4" /> Favorites
-                    </span>
-                    {favoritesCount > 0 && (
-                      <span className="bg-red-500 text-white text-xs font-semibold rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5">
-                        {favoritesCount > 99 ? "99+" : favoritesCount}
-                      </span>
-                    )}
-                  </Link>
-                  <Link
-                    href="/profile"
-                    onClick={closeMobileMenu}
-                    className="py-2.5 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-muted rounded-md transition-colors flex items-center gap-2 font-medium"
-                  >
-                    <User className="h-4 w-4" /> Profile
-                  </Link>
+              <div className="mt-4 border-t pt-4">
+                <p className="px-4 pb-2 text-xs font-medium text-muted-foreground">
+                  My account
+                </p>
+                <div className="flex flex-col gap-1">
+                  {accountLinks.map(({ href, label, icon: Icon, count }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      onClick={closeMobileMenu}
+                      tabIndex={isMobileMenuOpen ? 0 : -1}
+                      className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted"
+                    >
+                      <Icon className="h-4 w-4 text-muted-foreground" />
+                      <span className="flex-1">{label}</span>
+                      {typeof count === "number" && count > 0 && (
+                        <span
+                          className={cn(
+                            "flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold text-white",
+                            href === "/cart" ? "bg-orange-500" : "bg-red-500",
+                          )}
+                        >
+                          {count > 99 ? "99+" : count}
+                        </span>
+                      )}
+                    </Link>
+                  ))}
                   <button
                     onClick={() => {
                       handleLogout();
                       closeMobileMenu();
                     }}
-                    className="w-full py-2.5 px-3 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors flex items-center gap-2 text-left font-medium"
+                    tabIndex={isMobileMenuOpen ? 0 : -1}
+                    className="mt-1 flex items-center gap-3 rounded-xl px-4 py-2.5 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
                   >
                     <LogOut className="h-4 w-4" /> Logout
                   </button>
                 </div>
-              ) : (
-                <Button asChild className="sm:hidden mt-2">
-                  <Link href="/login">Login</Link>
+              </div>
+            ) : (
+              !isLoading && (
+                <Button
+                  asChild
+                  className="mt-4 h-11 w-full rounded-full"
+                  tabIndex={isMobileMenuOpen ? 0 : -1}
+                >
+                  <Link href="/login" onClick={closeMobileMenu}>
+                    Login
+                  </Link>
                 </Button>
-              )}
-            </div>
+              )
+            )}
           </div>
-        )}
-      </nav>
-    </header>
+
+          {/* Contact info (hidden on mobile in the old design) */}
+          <div className="space-y-2 border-t bg-muted/30 px-5 py-4 text-sm">
+            <a
+              href={`tel:${BABY_CARE_PHONE1}`}
+              className="flex items-center gap-2 text-foreground/80"
+              tabIndex={isMobileMenuOpen ? 0 : -1}
+            >
+              <Phone className="h-4 w-4 text-primary" /> {BABY_CARE_PHONE1}
+            </a>
+            <a
+              href={`tel:${BABY_CARE_PHONE2}`}
+              className="flex items-center gap-2 text-foreground/80"
+              tabIndex={isMobileMenuOpen ? 0 : -1}
+            >
+              <Phone className="h-4 w-4 text-primary" /> {BABY_CARE_PHONE2}
+            </a>
+            <span className="flex items-start gap-2 text-foreground/80">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              {BABY_CARE_ADDRESS}
+            </span>
+            <Button
+              asChild
+              variant="outline"
+              className="mt-2 h-10 w-full rounded-full"
+              tabIndex={isMobileMenuOpen ? 0 : -1}
+            >
+              <Link
+                href={BABY_CARE_PLAY_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Smartphone className="mr-2 h-4 w-4" /> Get the app
+              </Link>
+            </Button>
+          </div>
+        </aside>
+      </div>
+    </>
   );
 }

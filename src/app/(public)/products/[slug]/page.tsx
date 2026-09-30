@@ -2,15 +2,21 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useMemo, useState, useTransition } from "react";
 import {
-  Clock,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
+import {
+  ChevronDown,
+  ChevronUp,
   Heart,
-  Shield,
   ShoppingCart,
   Star,
   Store,
-  Truck,
 } from "lucide-react";
 import Image from "next/image";
 import productService from "@/Service/product.service";
@@ -37,6 +43,7 @@ export interface Tag {
 export interface ProductData {
   product_uuid: string;
   name: string;
+  for_product?: "planning" | "baby" | "pregnant";
   slug: string;
   price: number;
   previous_price: number;
@@ -73,12 +80,22 @@ interface FavoriteResponse {
   message: string;
 }
 
+const FOR_PRODUCT_LABELS: Record<
+  NonNullable<ProductData["for_product"]>,
+  string
+> = {
+  planning: "For Planning",
+  baby: "For Baby",
+  pregnant: "For Pregnant",
+};
+
 const TOTAL_STARS = 5;
 const MIN_QUANTITY = 1;
+const DESCRIPTION_COLLAPSED_HEIGHT = 96;
 
 const LoadingSkeleton = () => (
   <div className="min-h-screen bg-muted/30">
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 lg:py-10 space-y-6 sm:space-y-8">
+    <div className="max-w-container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 lg:py-10 space-y-6 sm:space-y-8">
       <div className="bg-white rounded-lg md:rounded-xl border shadow-sm">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-10 p-3 sm:p-4 md:p-6 lg:p-8">
           <div className="space-y-3 sm:space-y-4">
@@ -130,6 +147,13 @@ export default function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(MIN_QUANTITY);
 
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isDescriptionOverflowing, setIsDescriptionOverflowing] =
+    useState(false);
+  const [descriptionEl, setDescriptionEl] = useState<HTMLDivElement | null>(
+    null,
+  );
+
   const { data, isLoading, error } = useQuery<ProductDetailsResponse>({
     queryKey: ["product", slug],
     queryFn: () => productService.getProduct(slug as string),
@@ -139,6 +163,30 @@ export default function ProductDetail() {
   });
 
   const product = data?.data;
+
+  useEffect(() => {
+    if (!descriptionEl) return;
+
+    const check = () =>
+      setIsDescriptionOverflowing(
+        descriptionEl.scrollHeight > DESCRIPTION_COLLAPSED_HEIGHT + 1,
+      );
+
+    check();
+
+    const observer = new ResizeObserver(check);
+    observer.observe(descriptionEl);
+    // Children resize even while the container is clamped
+    Array.from(descriptionEl.children).forEach((child) =>
+      observer.observe(child),
+    );
+
+    return () => observer.disconnect();
+  }, [descriptionEl, product?.description]);
+
+  useEffect(() => {
+    setIsDescriptionExpanded(false);
+  }, [slug]);
 
   const { mutate: addToCart, isPending: isCartPending } = useMutation({
     mutationFn: (payload: { slug: string; quantity: number }) =>
@@ -244,7 +292,7 @@ export default function ProductDetail() {
 
   return (
     <div className="min-h-screen bg-muted/30">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 space-y-6 sm:space-y-8">
+      <div className="max-w-container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 space-y-6 sm:space-y-8">
         <article className="bg-white rounded-lg md:rounded-xl border shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-10 p-3 sm:p-4 md:p-6 lg:p-8">
             <section
@@ -338,6 +386,15 @@ export default function ProductDetail() {
                       {idx < product.categories.length - 1 && ", "}
                     </span>
                   ))}
+                  {product.for_product && (
+                    <Badge
+                      variant="outline"
+                      className="border-pink-200 bg-pink-50 text-pink-700 text-xs"
+                    >
+                      {FOR_PRODUCT_LABELS[product.for_product] ??
+                        product.for_product}
+                    </Badge>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2 text-xs sm:text-sm">
@@ -386,7 +443,7 @@ export default function ProductDetail() {
                 {product.previous_price > product.price && (
                   <>
                     <span className="text-lg sm:text-xl line-through text-muted-foreground">
-                      ${product.previous_price.toFixed(2)}
+                      {formatPrice(product.previous_price)}
                     </span>
                     <Badge
                       variant="secondary"
@@ -400,11 +457,13 @@ export default function ProductDetail() {
 
               <div className="border-t border-b py-3 sm:py-4 space-y-3">
                 <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
-                  {(product.age_group_year_from || product.age_group_year_to) && (
+                  {(product.age_group_year_from ||
+                    product.age_group_year_to) && (
                     <div>
                       <span className="text-muted-foreground">Age Range: </span>
                       <span className="font-semibold">
-                        {product.age_group_year_from ?? "—"} - {product.age_group_year_to ?? "—"}
+                        {product.age_group_year_from ?? "—"} -{" "}
+                        {product.age_group_year_to ?? "—"}
                       </span>
                     </div>
                   )}
@@ -434,10 +493,44 @@ export default function ProductDetail() {
                 <h2 className="font-semibold mb-2 text-sm sm:text-base">
                   Description
                 </h2>
-                <div
-                  className="prose prose-sm max-w-none text-muted-foreground text-xs sm:text-sm"
-                  dangerouslySetInnerHTML={{ __html: product.description }}
-                />
+
+                <div className="relative">
+                  <div
+                    ref={setDescriptionEl}
+                    className="prose prose-sm max-w-none text-muted-foreground text-xs sm:text-sm overflow-hidden transition-[max-height] duration-300"
+                    style={{
+                      maxHeight: isDescriptionExpanded
+                        ? descriptionEl?.scrollHeight
+                        : DESCRIPTION_COLLAPSED_HEIGHT,
+                    }}
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  />
+
+                  {/* Fade overlay when collapsed */}
+                  {isDescriptionOverflowing && !isDescriptionExpanded && (
+                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent" />
+                  )}
+                </div>
+
+                {isDescriptionOverflowing && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => setIsDescriptionExpanded((prev) => !prev)}
+                    className="mt-2 inline-flex items-center gap-1 text-xs sm:text-sm font-medium text-primary hover:underline"
+                    aria-expanded={isDescriptionExpanded}
+                  >
+                    {isDescriptionExpanded ? (
+                      <>
+                        See less <ChevronUp className="h-3.5 w-3.5" />
+                      </>
+                    ) : (
+                      <>
+                        See more <ChevronDown className="h-3.5 w-3.5" />
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
 
               {product.tags.length > 0 && (

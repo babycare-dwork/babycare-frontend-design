@@ -11,8 +11,6 @@ import { Heart, Minus, Plus, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import productService from "@/Service/product.service";
 import RatingDisplay from "@/components/Rating";
-import { Separator } from "../ui/separator";
-import { Input } from "@/components/ui/input";
 
 interface Product {
   name: string;
@@ -134,30 +132,31 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
       <div
         onClick={handleProductClick}
         className={cn(
-          "bg-white border border-gray-100 rounded-2xl p-3 sm:p-4 flex flex-col cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 h-full relative",
+          "group relative flex h-full cursor-pointer flex-col rounded-2xl bg-card p-2.5 shadow-sm transition-[box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md sm:p-3",
           className,
         )}
       >
-        <div className="aspect-square relative mb-3 flex items-center justify-center overflow-hidden rounded-xl bg-gray-50">
+        {/* Media */}
+        <div className="relative mb-3 flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-surface-sunken">
           <Image
             src={feature_image}
             alt={name}
-            width={220}
-            height={220}
-            className="object-contain w-full h-full"
+            width={260}
+            height={260}
+            className="h-full w-full object-contain p-3 mix-blend-multiply transition-transform duration-300 ease-out group-hover:scale-105 sm:p-4"
             loading="lazy"
           />
 
           {discount_percent > 0 && (
-            <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full">
-              {discount_percent}% OFF
+            <span className="absolute left-2 top-2 rounded-full bg-coral-strong px-2.5 py-1 text-xs font-bold leading-none text-on-coral">
+              -{discount_percent}%
             </span>
           )}
 
           <Button
             size="icon"
             variant="ghost"
-            className="absolute top-2 right-2 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white/90 shadow-sm hover:bg-white"
+            className="absolute right-2 top-2 size-9 rounded-full bg-surface-raised shadow-sm hover:bg-blush-soft hover:text-coral-strong"
             onClick={handleToggleFavorite}
             disabled={isFavoritePending}
             aria-label={isLiked ? "Remove from favorites" : "Add to favorites"}
@@ -165,96 +164,95 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
           >
             <Heart
               className={cn(
-                "h-4 w-4 transition-all",
-                isLiked ? "fill-red-500 text-red-500" : "text-gray-500",
+                "size-4 transition-colors",
+                isLiked ? "fill-coral-strong text-coral-strong" : "text-ink-muted",
               )}
             />
           </Button>
 
           {isOutOfStock && (
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <span className="text-white text-xs sm:text-sm font-bold px-3 py-1 bg-red-600 rounded-full">
-                Out of Stock
+            <div className="absolute inset-0 flex items-center justify-center bg-surface/70">
+              <span className="rounded-full bg-danger-soft px-3 py-1 text-sm font-bold text-danger">
+                Out of stock
               </span>
             </div>
           )}
         </div>
 
-        <div className="flex flex-col grow min-h-0">
+        {/* Body */}
+        <div className="flex min-h-0 grow flex-col px-1">
           {age_group && (
-            <span className="text-[11px] sm:text-xs font-medium text-primary mb-1 truncate">
+            <span className="mb-1.5 truncate text-xs font-bold text-coral-strong">
               {age_group}
             </span>
           )}
 
-          <h3 className="text-sm sm:text-base font-semibold text-gray-800 line-clamp-2 leading-snug mb-1.5">
+          <h3 className="mb-1.5 line-clamp-2 font-display text-[15px] leading-snug font-bold text-ink sm:text-base">
             {name}
           </h3>
 
           <RatingDisplay rating={rating} maxRating={5} size="sm" />
-          <Separator className="w-full my-4" />
 
-          <div className="mt-auto flex flex-col gap-3">
-            <div className="flex items-center justify-between gap-2">
-              <div>
-                <p className="text-[11px] leading-none mb-1 text-gray-900 font-semibold">
-                  Price
+          <div className="mt-auto pt-3">
+            <div className="mb-3 flex flex-wrap items-baseline gap-x-2">
+              <p className="whitespace-nowrap font-display text-lg font-extrabold text-ink sm:text-xl">
+                Rs. {price.toFixed(0)}
+              </p>
+              {previous_price > price && (
+                <p className="whitespace-nowrap text-xs text-ink-muted line-through sm:text-sm">
+                  Rs. {previous_price.toFixed(0)}
                 </p>
-                <div className="flex items-baseline gap-1.5">
-                  <p className="text-base sm:text-xl font-bold text-gray-900">
-                    Rs. {price.toFixed(0)}
-                  </p>
-                  {previous_price > price && (
-                    <p className="text-xs sm:text-sm text-gray-400 line-through">
-                      Rs. {previous_price.toFixed(0)}
-                    </p>
-                  )}
-                </div>
-              </div>
+              )}
+            </div>
 
+            <div className="flex items-center gap-2">
               <div
-                className="flex items-center border border-gray-300 rounded-full overflow-hidden shrink-0"
+                className="flex h-10 shrink-0 items-center rounded-full bg-surface-sunken"
                 onClick={(e) => e.stopPropagation()}
               >
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-none hover:bg-gray-100"
+                <button
+                  type="button"
+                  className="flex size-8 items-center justify-center rounded-full text-ink transition-colors hover:bg-surface-raised disabled:opacity-45 sm:size-9"
                   onClick={decrementQuantity}
                   disabled={quantity <= 1 || isOutOfStock}
+                  aria-label="Decrease quantity"
                 >
-                  <Minus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                </Button>
-                <Input
+                  <Minus className="size-3.5" />
+                </button>
+                <input
                   type="number"
                   value={quantity}
                   min={1}
                   max={stock}
-                  className="w-8 sm:w-10 h-7 sm:h-8 text-center border-0 text-xs sm:text-sm p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus-visible:ring-0"
+                  aria-label="Quantity"
+                  className="w-6 bg-transparent text-center text-sm font-bold text-ink outline-none [appearance:textfield] sm:w-7 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   onChange={handleQuantityChange}
                   disabled={isOutOfStock}
                 />
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-none hover:bg-gray-100"
+                <button
+                  type="button"
+                  className="flex size-8 items-center justify-center rounded-full text-ink transition-colors hover:bg-surface-raised disabled:opacity-45 sm:size-9"
                   onClick={incrementQuantity}
                   disabled={quantity >= stock || isOutOfStock}
+                  aria-label="Increase quantity"
                 >
-                  <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                </Button>
+                  <Plus className="size-3.5" />
+                </button>
               </div>
-            </div>
 
-            <Button
-              size="sm"
-              className="w-full rounded-full bg-primary text-white text-xs sm:text-sm h-8 sm:h-9"
-              onClick={handleAddToCart}
-              disabled={isOutOfStock || isPending}
-            >
-              <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
-              {isOutOfStock ? "Out of Stock" : "Add to Cart"}
-            </Button>
+              <Button
+                size="sm"
+                className="h-10 flex-1 px-3 has-[>svg]:px-3"
+                onClick={handleAddToCart}
+                disabled={isOutOfStock || isPending}
+                aria-label={isOutOfStock ? "Out of stock" : `Add ${name} to cart`}
+              >
+                <ShoppingCart />
+                <span className="hidden sm:inline">
+                  {isOutOfStock ? "Sold out" : "Add"}
+                </span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

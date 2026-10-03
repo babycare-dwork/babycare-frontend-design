@@ -1,93 +1,93 @@
 "use client";
 
-import { Shield, TruckIcon, BellRing } from "lucide-react";
-import { motion, Variants } from "framer-motion";
+import { BellRing, ShieldCheck, Stethoscope, Truck } from "lucide-react";
+import { motion, type Variants } from "framer-motion";
+import { toneClasses, type Tone } from "@/components/Tag";
 
-const features = [
+const features: {
+  icon: typeof ShieldCheck;
+  title: string;
+  description: string;
+  tone: Tone;
+}[] = [
   {
-    icon: Shield,
-    title: "Genuine Products",
-    description: "Carefully sourced genuine products you can trust.",
+    icon: ShieldCheck,
+    title: "Genuine products",
+    description: "Sourced from verified brands and stores.",
+    tone: "blush",
   },
   {
-    icon: TruckIcon,
-    title: "Home Delivery",
-    description: "Safe, timely delivery of baby essentials to your home.",
+    icon: Truck,
+    title: "Home delivery",
+    description: "Safe, timely delivery to your door.",
+    tone: "sky",
   },
   {
     icon: BellRing,
-    title: "Vaccine Schedules",
-    description: "Timely reminders for vaccination schedules.",
+    title: "Vaccine reminders",
+    description: "Every dose on time, automatically.",
+    tone: "honey",
+  },
+  {
+    icon: Stethoscope,
+    title: "Health guidance",
+    description: "Growth tools and nearby clinics.",
+    tone: "sprout",
   },
 ];
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
-    },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  },
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
+/** Trust strip — four promises in a row on the sunken band, no boxes. */
 export function FeaturesSection() {
   return (
-    <section className="w-full bg-gradient-to-br from-primary via-primary/80 to-primary py-16 md:py-20 lg:py-24 relative overflow-hidden">
-      {/* soft glow accents */}
-      <div className="absolute -top-24 -left-24 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
-      <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <motion.div
-                key={index}
-                className="flex flex-col items-center text-center group"
-                variants={itemVariants}
+    <section
+      aria-label="Why parents trust BabyCare"
+      className="border-y border-line bg-surface-sunken"
+    >
+      <motion.ul
+        className="container mx-auto grid grid-cols-1 gap-x-6 gap-y-6 px-4 py-8 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:py-10"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.4 }}
+      >
+        {features.map((feature, i) => {
+          const Icon = feature.icon;
+          const tone = toneClasses[feature.tone];
+          return (
+            <motion.li
+              key={feature.title}
+              variants={itemVariants}
+              className={`flex items-center gap-4 ${
+                i > 0 ? "lg:border-l lg:border-line lg:pl-6" : ""
+              }`}
+            >
+              <span
+                className={`flex size-14 shrink-0 items-center justify-center rounded-full bg-surface-raised shadow-sm ${tone.ink}`}
               >
-                <motion.div
-                  className="mb-5 md:mb-6 rounded-2xl bg-white/10 backdrop-blur-sm p-5 md:p-6 border border-white/20 shadow-xl"
-                  whileHover={{
-                    scale: 1.08,
-                    backgroundColor: "rgba(255,255,255,0.18)",
-                  }}
-                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                >
-                  <Icon className="h-12 w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 text-white stroke-[1.5]" />
-                </motion.div>
-                <h3 className="mb-3 text-xl md:text-2xl font-bold text-white tracking-tight">
+                <Icon className="size-6" aria-hidden="true" />
+              </span>
+              <span>
+                <span className="block font-display text-lg leading-[26px] font-bold text-ink">
                   {feature.title}
-                </h3>
-                <p className="text-sm md:text-base text-white/75 leading-relaxed max-w-xs">
+                </span>
+                <span className="block text-sm leading-[22px] text-ink-muted">
                   {feature.description}
-                </p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      </div>
+                </span>
+              </span>
+            </motion.li>
+          );
+        })}
+      </motion.ul>
     </section>
   );
 }

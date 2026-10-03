@@ -105,14 +105,14 @@ export default function VaccinePage() {
           <Separator className="mt-4" />
         </div>
 
-        <div className="mt-8 sm:mt-10 p-4 sm:p-6 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800 my-6">
+        <div className="mt-8 sm:mt-10 p-4 sm:p-6 bg-sky-soft rounded-lg border border-sky my-6">
           <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-shield flex-shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <p className="text-sm sm:text-base font-semibold text-blue-900 dark:text-blue-100">
+              <p className="text-sm sm:text-base font-semibold text-ink">
                 Important Information
               </p>
-              <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-300">
+              <p className="text-xs sm:text-sm text-shield">
                 Always consult with your healthcare provider before
                 administering any vaccine. Keep a record of all vaccinations and
                 maintain the recommended schedule for optimal protection.
@@ -183,7 +183,7 @@ export default function VaccinePage() {
                       <Badge
                         key={idx}
                         variant="secondary"
-                        className="text-xs bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800"
+                        className="text-xs bg-sprout-soft text-leaf border-sprout"
                       >
                         {disease}
                       </Badge>

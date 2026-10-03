@@ -50,15 +50,15 @@ const INDICATORS: { value: Indicator; label: string; unit: string }[] = [
 const CustomTooltip = ({ active, payload, label, unit }: any) => {
     if (!active || !payload?.length) return null
     return (
-        <div className="bg-white border border-gray-200 rounded-lg shadow-md p-3 text-xs space-y-1.5 min-w-[180px]">
-            <p className="font-semibold text-gray-900 mb-2">Age: {label} months</p>
+        <div className="bg-card border border-border rounded-lg shadow-md p-3 text-xs space-y-1.5 min-w-[180px]">
+            <p className="font-semibold text-ink mb-2">Age: {label} months</p>
             {payload.map((entry: any) => (
                 <div key={entry.name} className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: entry.color }} />
-                        <span className="text-gray-600">{entry.name}</span>
+                        <span className="text-ink-muted">{entry.name}</span>
                     </div>
-                    <span className="font-semibold text-gray-900">{entry.value.toFixed(2)} {unit}</span>
+                    <span className="font-semibold text-ink">{entry.value.toFixed(2)} {unit}</span>
                 </div>
             ))}
         </div>
@@ -104,15 +104,15 @@ export default function InfantGrowthChart({ infantId }: Props) {
     }
 
     return (
-        <Card className="shadow-md border border-gray-200 rounded-2xl bg-white">
-            <CardHeader className="pb-3 border-b border-gray-100">
+        <Card className="shadow-md border border-border rounded-2xl bg-card">
+            <CardHeader className="pb-3 border-b border-border">
                 <div className="flex items-start justify-between flex-wrap gap-3">
                     <div className="flex-1">
-                        <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1">
-                            <TrendingUp className="h-5 w-5 text-violet-600" />
+                        <CardTitle className="text-xl font-bold text-ink flex items-center gap-2 mb-1">
+                            <TrendingUp className="h-5 w-5 text-coral-strong" />
                             Growth Chart
                         </CardTitle>
-                        <CardDescription className="text-xs text-gray-500 mt-0.5">
+                        <CardDescription className="text-xs text-ink-muted mt-0.5">
                             Compared against WHO standard growth percentile lines
                         </CardDescription>
                     </div>
@@ -120,13 +120,13 @@ export default function InfantGrowthChart({ infantId }: Props) {
                         <div className="flex flex-col items-end gap-1.5">
                             <Badge 
                                 variant="outline" 
-                                className="text-violet-700 border-violet-300 bg-violet-50 text-xs font-semibold whitespace-nowrap"
+                                className="text-coral-strong border-coral bg-blush-soft text-xs font-semibold whitespace-nowrap"
                             >
                                 Latest: {latestBaby.raw.toFixed(2)} {currentMeta.unit}
                             </Badge>
                             <Badge 
                                 variant="outline" 
-                                className="text-amber-700 border-amber-300 bg-amber-50 text-xs font-semibold whitespace-nowrap"
+                                className="text-honey-ink border-honey bg-honey-soft text-xs font-semibold whitespace-nowrap"
                             >
                                 {latestBaby.percentile}th percentile
                             </Badge>
@@ -137,13 +137,13 @@ export default function InfantGrowthChart({ infantId }: Props) {
                 {/* Indicator filter tabs */}
                 <div className="mt-4">
                     <Tabs value={activeIndicator} onValueChange={v => setActiveIndicator(v as Indicator)}>
-                        <TabsList className="h-8 bg-gray-100 p-0.5 rounded-lg inline-flex">
+                        <TabsList className="h-8 bg-muted p-0.5 rounded-lg inline-flex">
                             {INDICATORS.map(ind => (
                                 <TabsTrigger
                                     key={ind.value}
                                     value={ind.value}
                                     disabled={isFetching}
-                                    className="h-7 px-3 text-xs font-medium rounded-md data-[state=active]:bg-white data-[state=active]:text-violet-700 data-[state=active]:shadow-sm disabled:opacity-50 transition-all"
+                                    className="h-7 px-3 text-xs font-medium rounded-md data-[state=active]:bg-card data-[state=active]:text-coral-strong data-[state=active]:shadow-sm disabled:opacity-50 transition-all"
                                 >
                                     {ind.label}
                                 </TabsTrigger>
@@ -156,17 +156,17 @@ export default function InfantGrowthChart({ infantId }: Props) {
             <CardContent className="pt-4">
                 {(isLoading || isFetching) ? (
                     <div className="h-80 flex items-center justify-center">
-                        <div className="flex flex-col items-center gap-3 text-gray-400">
-                            <div className="w-8 h-8 border-2 border-violet-200 border-t-violet-600 rounded-full animate-spin" />
+                        <div className="flex flex-col items-center gap-3 text-ink-muted">
+                            <div className="w-8 h-8 border-2 border-coral border-t-coral-strong rounded-full animate-spin" />
                             <span className="text-xs font-medium">Loading chart data…</span>
                         </div>
                     </div>
                 ) : !data?.has_data ? (
-                    <div className="h-80 flex items-center justify-center bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="h-80 flex items-center justify-center bg-muted rounded-lg border border-border">
                         <div className="text-center">
-                            <TrendingUp className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                            <p className="text-sm font-semibold text-gray-700">No growth data yet</p>
-                            <p className="text-xs text-gray-500 mt-1">Add a measurement to see the growth chart</p>
+                            <TrendingUp className="h-12 w-12 mx-auto mb-3 text-line-strong" />
+                            <p className="text-sm font-semibold text-ink-muted">No growth data yet</p>
+                            <p className="text-xs text-ink-muted mt-1">Add a measurement to see the growth chart</p>
                         </div>
                     </div>
                 ) : (
@@ -177,48 +177,48 @@ export default function InfantGrowthChart({ infantId }: Props) {
                         >
                             <defs>
                                 <linearGradient id="babyGradient" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.1} />
-                                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0} />
+                                    <stop offset="0%" stopColor="var(--coral-strong)" stopOpacity={0.1} />
+                                    <stop offset="100%" stopColor="var(--coral-strong)" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
                             <CartesianGrid 
                                 strokeDasharray="4 4" 
-                                stroke="#e5e7eb" 
+                                stroke="var(--line)" 
                                 vertical={false}
                                 opacity={0.6}
                             />
                             <XAxis
                                 dataKey="age_months"
-                                label={{ value: "Age (months)", position: "insideBottomRight", offset: -4, fontSize: 12, fill: "#6b7280", fontWeight: 500 }}
-                                tick={{ fontSize: 12, fill: "#6b7280" }}
+                                label={{ value: "Age (months)", position: "insideBottomRight", offset: -4, fontSize: 12, fill: "var(--ink-muted)", fontWeight: 500 }}
+                                tick={{ fontSize: 12, fill: "var(--ink-muted)" }}
                                 height={50}
                                 type="number"
                                 domain={["dataMin - 1", "dataMax + 1"]}
                             />
                             <YAxis
-                                tick={{ fontSize: 12, fill: "#6b7280" }}
-                                label={{ value: currentMeta.unit, angle: -90, position: "insideLeft", offset: 10, fontSize: 12, fill: "#6b7280", fontWeight: 500 }}
+                                tick={{ fontSize: 12, fill: "var(--ink-muted)" }}
+                                label={{ value: currentMeta.unit, angle: -90, position: "insideLeft", offset: 10, fontSize: 12, fill: "var(--ink-muted)", fontWeight: 500 }}
                                 width={45}
                                 domain={["dataMin - 0.5", "dataMax + 0.5"]}
                             />
                             <Tooltip content={<CustomTooltip unit={currentMeta.unit} />} />
                             <Legend
-                                wrapperStyle={{ fontSize: "12px", paddingTop: "16px", color: "#6b7280" }}
+                                wrapperStyle={{ fontSize: "12px", paddingTop: "16px", color: "var(--ink-muted)" }}
                                 iconType="circle"
                                 iconSize={8}
                                 verticalAlign="bottom"
                                 height={32}
                             />
 
-                            <Line dataKey="WHO P97" stroke="#475569" strokeWidth={2} dot={false} isAnimationActive={false} />
-                            <Line dataKey="WHO P50" stroke="#64748b" strokeWidth={2} dot={false} isAnimationActive={false} />
-                            <Line dataKey="WHO P3"  stroke="#94a3b8" strokeWidth={2} dot={false} isAnimationActive={false} />
+                            <Line dataKey="WHO P97" stroke="var(--ink-muted)" strokeWidth={2} dot={false} isAnimationActive={false} />
+                            <Line dataKey="WHO P50" stroke="var(--shield)" strokeWidth={2} dot={false} isAnimationActive={false} />
+                            <Line dataKey="WHO P3"  stroke="var(--line-strong)" strokeWidth={2} dot={false} isAnimationActive={false} />
 
                             <Line
                                 dataKey="Baby"
-                                stroke="#8b5cf6"
+                                stroke="var(--coral-strong)"
                                 strokeWidth={2.5}
-                                dot={{ r: 5, fill: "#8b5cf6", strokeWidth: 2, stroke: "#fff" }}
+                                dot={{ r: 5, fill: "var(--coral-strong)", strokeWidth: 2, stroke: "var(--surface-raised)" }}
                                 activeDot={{ r: 7, strokeWidth: 2 }}
                                 isAnimationActive={true}
                             />

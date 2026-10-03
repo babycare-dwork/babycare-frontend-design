@@ -61,7 +61,7 @@ export const CartSummaryCard = memo(function CartSummaryCard({
                     <dt className="text-muted-foreground">Shipping</dt>
                     <dd className="font-semibold text-foreground tabular-nums">
                         {shipping === 0 ? (
-                            <span className="text-green-600 dark:text-green-500">Free</span>
+                            <span className="text-leaf">Free</span>
                         ) : (
                             formatPrice(shipping)
                         )}
@@ -78,7 +78,7 @@ export const CartSummaryCard = memo(function CartSummaryCard({
                 {summary.discount && summary.discount > 0 && (
                     <div className="flex justify-between items-center gap-4">
                         <dt className="text-muted-foreground">Discount</dt>
-                        <dd className="font-semibold text-green-600 dark:text-green-500 tabular-nums">
+                        <dd className="font-semibold text-leaf tabular-nums">
                             -{formatPrice(summary.discount)}
                         </dd>
                     </div>
@@ -156,11 +156,11 @@ export const CartSummaryCard = memo(function CartSummaryCard({
 
             {shipping === 0 && hasItems && (
                 <div
-                    className="mt-4 p-3 bg-green-50 dark:bg-green-950/30 rounded-lg border border-green-200 dark:border-green-800"
+                    className="mt-4 p-3 bg-sprout-soft rounded-lg border border-sprout"
                     role="status"
                     aria-live="polite"
                 >
-                    <p className="text-xs sm:text-sm text-green-700 dark:text-green-400 font-medium text-center">
+                    <p className="text-xs sm:text-sm text-leaf font-medium text-center">
                         <span aria-hidden="true">🎉 </span>
                         You qualify for free shipping!
                     </p>
@@ -169,11 +169,11 @@ export const CartSummaryCard = memo(function CartSummaryCard({
 
             {summary.subtotal > 0 && !qualifiesForFreeShipping && hasItems && (
                 <div
-                    className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800"
+                    className="mt-4 p-3 bg-sky-soft rounded-lg border border-sky"
                     role="status"
                     aria-live="polite"
                 >
-                    <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-400 font-medium text-center">
+                    <p className="text-xs sm:text-sm text-shield font-medium text-center">
                         Add {formatPrice(amountUntilFreeShipping)} more for free shipping
                     </p>
                 </div>

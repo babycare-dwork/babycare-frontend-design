@@ -41,7 +41,7 @@ function MetricCard({
     metric: MetricResult
     raw?: string
 }) {
-    const color = metric.color_code ?? "#6b7280"
+    const color = metric.color_code ?? "#5b675c"
 
     return (
         <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: color + "40" }}>
@@ -50,7 +50,7 @@ function MetricCard({
                     <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: color + "15" }}>
                         <Icon className="w-4 h-4" style={{ color }} />
                     </div>
-                    <span className="text-sm font-semibold text-gray-700">{label}</span>
+                    <span className="text-sm font-semibold text-ink-muted">{label}</span>
                 </div>
                 {raw && (
                     <span className="text-xs text-muted-foreground font-medium">{raw}</span>

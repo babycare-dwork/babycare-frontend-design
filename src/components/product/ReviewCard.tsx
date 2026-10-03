@@ -53,7 +53,7 @@ interface RatingStarProps {
 const RatingStar = memo(({filled}: RatingStarProps) => (
     <Star
         className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${
-            filled ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+            filled ? 'fill-honey text-honey' : 'text-line-strong'
         }`}
         aria-hidden="true"
     />
@@ -138,7 +138,7 @@ function ReviewCard({
     return (
         <>
             <article
-                className="border border-gray-200 rounded-lg md:rounded-xl p-3 sm:p-4 md:p-6 hover:border-gray-300 hover:shadow-sm transition-all"
+                className="border border-border rounded-lg md:rounded-xl p-3 sm:p-4 md:p-6 hover:border-border hover:shadow-sm transition-all"
                 aria-label={`Review by ${review.user_name}`}
             >
                 <div className="flex gap-2 sm:gap-3 md:gap-4">
@@ -148,7 +148,7 @@ function ReviewCard({
                             alt={`${review.user_name}'s avatar`}
                             loading="lazy"
                         />
-                        <AvatarFallback className="bg-gradient-to-br from-blue-400 to-indigo-500">
+                        <AvatarFallback className="bg-shield">
                             {review.image ? (
                                 <UserCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-white"/>
                             ) : (
@@ -163,26 +163,26 @@ function ReviewCard({
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
                             <div className="min-w-0">
                                 <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap mb-1">
-                                    <h4 className="font-semibold text-gray-900 text-xs sm:text-sm truncate">
+                                    <h4 className="font-semibold text-ink text-xs sm:text-sm truncate">
                                         {review.user_name}
                                     </h4>
                                     {review.user_type && (
                                         <span
-                                            className="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap">
+                                            className="inline-flex items-center gap-1 bg-sprout-soft text-leaf text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap">
                       <CheckCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3" aria-hidden="true"/>
                       <span>{review.user_type.label}</span>
                     </span>
                                     )}
                                     {review.is_review_edited && (
                                         <span
-                                            className="inline-flex items-center gap-1 text-gray-500 text-xs whitespace-nowrap">
+                                            className="inline-flex items-center gap-1 text-ink-muted text-xs whitespace-nowrap">
                       <Edit2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" aria-hidden="true"/>
                       <span>Edited</span>
                     </span>
                                     )}
                                 </div>
                                 <time
-                                    className="text-xs text-gray-500 block"
+                                    className="text-xs text-ink-muted block"
                                     dateTime={review.review_date}
                                 >
                                     {formatReviewDate(review.review_date)}
@@ -217,14 +217,14 @@ function ReviewCard({
                                             disabled={isDeleting}
                                             aria-label={`Delete review by ${review.user_name}`}
                                         >
-                                            <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-600"/>
+                                            <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-danger"/>
                                         </Button>
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        <p className="text-gray-700 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words">
+                        <p className="text-ink-muted text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words">
                             {review.review}
                         </p>
                     </div>

@@ -103,7 +103,7 @@ export default function ReviewForm({
                     <Button>Write a Review</Button>
                 ) : (
                     <Button variant="ghost" size="icon" aria-label="Edit review">
-                        <Edit2 className="w-4 h-4 text-gray-600"/>
+                        <Edit2 className="w-4 h-4 text-ink-muted"/>
                     </Button>
                 )}
             </DialogTrigger>
@@ -135,21 +135,21 @@ export default function ReviewForm({
                                             onClick={() => handleRatingChange(star, field.onChange)}
                                             onKeyDown={(e) => handleKeyDown(e, star, field.onChange)}
                                             disabled={isSubmitting}
-                                            className="transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-shield rounded disabled:opacity-50 disabled:cursor-not-allowed"
                                             aria-label={`Rate ${star} star${star > 1 ? 's' : ''}`}
                                             aria-pressed={star <= field.value}
                                         >
                                             <Star
                                                 className={`w-8 h-8 transition-colors ${
                                                     star <= field.value
-                                                        ? 'fill-yellow-400 text-yellow-400'
-                                                        : 'text-gray-300'
+                                                        ? 'fill-honey text-honey'
+                                                        : 'text-line-strong'
                                                 }`}
                                             />
                                         </button>
                                     ))}
                                     {field.value > 0 && (
-                                        <span className="ml-2 text-sm text-gray-600" aria-live="polite">
+                                        <span className="ml-2 text-sm text-ink-muted" aria-live="polite">
                       {field.value} star{field.value > 1 ? 's' : ''}
                     </span>
                                     )}
@@ -157,7 +157,7 @@ export default function ReviewForm({
                             )}
                         />
                         {errors.rating && (
-                            <p className="text-sm text-red-500" role="alert">
+                            <p className="text-sm text-danger" role="alert">
                                 {(errors.rating as FieldError).message}
                             </p>
                         )}

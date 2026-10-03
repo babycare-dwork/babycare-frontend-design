@@ -82,7 +82,7 @@ export default function ActionModal({
                     </DialogTitle>
                     <DialogDescription
                         id="action-modal-description"
-                        className="text-sm sm:text-base text-gray-600"
+                        className="text-sm sm:text-base text-ink-muted"
                     >
                         {description}
                     </DialogDescription>

@@ -1,24 +1,30 @@
 import type { Metadata } from "next";
-import { Mulish, Open_Sans, Plus_Jakarta_Sans } from "next/font/google";
+import { Montserrat, Nunito, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import React from "react";
 import RootProviders from "@/Provider/Providers";
 
-// const openSans = Open_Sans({
-//     subsets: ["latin"],
-//     variable: "--font-open-sans",
-//     display: "swap",
-// });
-
-// const mulish = Mulish({
-//     subsets: ["latin"],
-//     variable: "--font-mulish",
-//     display: "swap",
-// });
-
-const plusJakartaSans = Plus_Jakarta_Sans({
+// Display — rounded terminals echo the mark; every heading.
+const nunito = Nunito({
   subsets: ["latin"],
-  variable: "--font-plus-jakarta-sans",
+  weight: ["700", "800"],
+  variable: "--font-nunito",
+  display: "swap",
+});
+
+// Text — paragraphs and UI.
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-nunito-sans",
+  display: "swap",
+});
+
+// Brand — the wordmark's face; eyebrows and stat numerals only.
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -68,8 +74,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${plusJakartaSans.variable} antialiased`}>
-        {" "}
+      <body
+        className={`${nunito.variable} ${nunitoSans.variable} ${montserrat.variable} antialiased`}
+      >
         <RootProviders>{children}</RootProviders>
       </body>
     </html>

@@ -72,7 +72,7 @@ const ReviewSkeleton = () => (
     {Array.from({ length: SKELETON_COUNT }, (_, i) => (
       <div
         key={i}
-        className="border border-gray-200 rounded-xl p-4 sm:p-6 space-y-3"
+        className="border border-border rounded-xl p-4 sm:p-6 space-y-3"
       >
         <div className="flex items-center gap-3">
           <Skeleton className="h-12 w-12 rounded-full" />
@@ -170,8 +170,8 @@ export default function ProductReview({
       <div
         className={`w-full max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-8 ${className}`}
       >
-        <div className="text-center py-16 bg-gray-50 rounded-xl" role="alert">
-          <p className="text-gray-500 text-lg">Unable to load reviews</p>
+        <div className="text-center py-16 bg-muted rounded-xl" role="alert">
+          <p className="text-ink-muted text-lg">Unable to load reviews</p>
         </div>
       </div>
     );
@@ -188,24 +188,24 @@ export default function ProductReview({
       <header className="mb-8">
         <h2
           id="reviews-heading"
-          className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1"
+          className="text-2xl sm:text-3xl font-bold text-ink mb-1"
         >
           Customer Reviews
         </h2>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-ink-muted">
           {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
         </p>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 mb-8">
         <div
-          className="lg:col-span-2 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6"
+          className="lg:col-span-2 bg-sky-soft rounded-xl p-6"
           role="region"
           aria-label="Average rating summary"
         >
           <div className="text-center">
             <div
-              className="text-5xl font-bold text-gray-900 mb-2"
+              className="text-5xl font-bold text-ink mb-2"
               aria-label={`Average rating: ${averageRating.toFixed(1)} out of ${TOTAL_STARS}`}
             >
               {averageRating.toFixed(1)}
@@ -220,14 +220,14 @@ export default function ProductReview({
                   key={i}
                   className={`w-5 h-5 ${
                     i < Math.floor(averageRating)
-                      ? "fill-yellow-400 text-yellow-400"
-                      : "text-gray-300"
+                      ? "fill-honey text-honey"
+                      : "text-line-strong"
                   }`}
                   aria-hidden="true"
                 />
               ))}
             </div>
-            <p className="text-gray-600 text-xs">
+            <p className="text-ink-muted text-xs">
               Based on {totalReviews}{" "}
               {totalReviews === 1 ? "review" : "reviews"}
             </p>
@@ -241,12 +241,12 @@ export default function ProductReview({
         >
           {ratingDistribution.map(({ star, count, percentage }) => (
             <div key={star} className="flex items-center gap-3">
-              <span className="text-sm font-medium text-gray-700 w-14 flex-shrink-0">
+              <span className="text-sm font-medium text-ink-muted w-14 flex-shrink-0">
                 {star} {star === 1 ? "star" : "stars"}
               </span>
-              <div className="flex-1 bg-gray-200 rounded-full h-2.5 overflow-hidden">
+              <div className="flex-1 bg-line rounded-full h-2.5 overflow-hidden">
                 <div
-                  className="bg-yellow-400 h-full transition-all duration-500"
+                  className="bg-honey h-full transition-all duration-500"
                   style={{ width: `${percentage}%` }}
                   role="progressbar"
                   aria-valuenow={Math.round(percentage)}
@@ -255,7 +255,7 @@ export default function ProductReview({
                   aria-label={`${Math.round(percentage)}% of reviews are ${star} ${star === 1 ? "star" : "stars"}`}
                 />
               </div>
-              <span className="text-sm text-gray-600 w-10 text-right flex-shrink-0">
+              <span className="text-sm text-ink-muted w-10 text-right flex-shrink-0">
                 {count}
               </span>
             </div>
@@ -264,7 +264,7 @@ export default function ProductReview({
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-ink">
           All Reviews ({reviewData.items.length})
         </h3>
         <div className="flex items-center gap-2">
@@ -283,8 +283,8 @@ export default function ProductReview({
       </div>
 
       {!hasReviews ? (
-        <div className="text-center py-16 bg-gray-50 rounded-xl" role="status">
-          <p className="text-gray-500 text-lg">
+        <div className="text-center py-16 bg-muted rounded-xl" role="status">
+          <p className="text-ink-muted text-lg">
             No reviews yet. Be the first to review!
           </p>
         </div>

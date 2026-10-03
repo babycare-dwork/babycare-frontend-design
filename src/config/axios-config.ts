@@ -27,7 +27,10 @@ axiosInstance.interceptors.response.use(
     (error: AxiosError) => {
 
 
-        console.error("Response Error from axios:", error);
+        // 401 is an expected answer for logged-out users; don't flag it as an error.
+        if (error.response?.status !== 401) {
+            console.error("Response Error from axios:", error);
+        }
         // if (error.status === 401 && typeof window !== "undefined") {
         //     const currentPath = window.location.pathname;
         //     if (currentPath !== "/login") {   // only redirect if not already on login
@@ -38,7 +41,12 @@ axiosInstance.interceptors.response.use(
         // }
 
 
-        return Promise.reject(error?.response?.data);
+        const data = error?.response?.data;
+        return Promise.reject(
+            data && typeof data === "object"
+                ? {...data, status: error.response?.status}
+                : data
+        );
     }
 );
 

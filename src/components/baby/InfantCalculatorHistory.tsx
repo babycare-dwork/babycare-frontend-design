@@ -26,7 +26,7 @@ function formatTime(dateStr: string) {
 }
 
 function MetricPill({ metric, label }: { metric: MetricResult; label: string }) {
-    const color = metric.color_code ?? "#6b7280"
+    const color = metric.color_code ?? "#5b675c"
     const isOk = !metric.action_required
 
     return (
@@ -36,7 +36,7 @@ function MetricPill({ metric, label }: { metric: MetricResult; label: string }) 
         >
             {/* Header row */}
             <div className="flex items-center justify-between gap-1">
-                <span className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
+                <span className="text-[10px] font-medium uppercase tracking-wider text-ink-muted">
                     {label}
                 </span>
                 {isOk ? (
@@ -68,7 +68,7 @@ function MetricPill({ metric, label }: { metric: MetricResult; label: string }) 
 
             {/* Raw value */}
             {metric.raw && (
-                <p className="text-[11px] text-gray-400">{metric.raw}</p>
+                <p className="text-[11px] text-ink-muted">{metric.raw}</p>
             )}
 
             {/* Alert level tag */}
@@ -83,7 +83,7 @@ function MetricPill({ metric, label }: { metric: MetricResult; label: string }) 
 
             {/* App action — only when flagged */}
             {metric.app_action && metric.action_required && (
-                <p className="text-[10px] text-gray-400 leading-snug">
+                <p className="text-[10px] text-ink-muted leading-snug">
                     {metric.app_action}
                 </p>
             )}
@@ -99,12 +99,12 @@ function HistoryRecordCard({ record, index }: { record: HistoryRecord; index: nu
         record.head_circumference_for_age,
     ].filter(m => m.action_required).length
 
-    const statusColor = urgentCount === 0 ? "#10b981" : urgentCount === 1 ? "#f59e0b" : "#ef4444"
+    const statusColor = urgentCount === 0 ? "#3f7a2e" : urgentCount === 1 ? "#8a5a00" : "#b42318"
     const statusLabel = urgentCount === 0 ? "All clear" : urgentCount === 1 ? "1 alert" : `${urgentCount} alerts`
 
     return (
         <div
-            className="rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-sm bg-white"
+            className="rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-sm bg-card"
             style={{ border: `0.5px solid ${statusColor}25` }}
         >
             {/* Status accent bar */}
@@ -113,7 +113,7 @@ function HistoryRecordCard({ record, index }: { record: HistoryRecord; index: nu
             {/* Card header */}
             <button
                 onClick={() => setExpanded(p => !p)}
-                className="w-full text-left px-[18px] py-3.5 flex items-center justify-between gap-3 hover:bg-gray-50/60 transition-colors"
+                className="w-full text-left px-[18px] py-3.5 flex items-center justify-between gap-3 hover:bg-muted/60 transition-colors"
             >
                 <div className="flex items-center gap-3 min-w-0">
                     <div
@@ -122,13 +122,13 @@ function HistoryRecordCard({ record, index }: { record: HistoryRecord; index: nu
                     />
                     <div className="min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-[13px] font-semibold text-gray-900">
+                            <span className="text-[13px] font-semibold text-ink">
                                 {formatDate(record.recorded_at)}
                             </span>
-                            <span className="text-[11px] text-gray-400">
+                            <span className="text-[11px] text-ink-muted">
                                 {formatTime(record.recorded_at)}
                             </span>
-                            <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-violet-50 text-violet-700">
+                            <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-blush-soft text-coral-strong">
                                 {record.age_months}mo old
                             </span>
                         </div>
@@ -139,10 +139,10 @@ function HistoryRecordCard({ record, index }: { record: HistoryRecord; index: nu
                                 { label: "HC", v: record.head_circumference_for_age },
                             ].map(({ label, v }) => (
                                 <span key={label} className="flex items-center gap-1">
-                                    <span className="text-[11px] text-gray-400">{label}</span>
+                                    <span className="text-[11px] text-ink-muted">{label}</span>
                                     <span
                                         className="text-[11px] font-semibold"
-                                        style={{ color: v.color_code ?? "#6b7280" }}
+                                        style={{ color: v.color_code ?? "#5b675c" }}
                                     >
                                         {v.raw ?? `${v.percentile}%`}
                                     </span>
@@ -159,10 +159,10 @@ function HistoryRecordCard({ record, index }: { record: HistoryRecord; index: nu
                     >
                         {statusLabel}
                     </span>
-                    <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                    <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center shrink-0">
                         {expanded
-                            ? <ChevronUp className="w-3 h-3 text-gray-500" />
-                            : <ChevronDown className="w-3 h-3 text-gray-500" />
+                            ? <ChevronUp className="w-3 h-3 text-ink-muted" />
+                            : <ChevronDown className="w-3 h-3 text-ink-muted" />
                         }
                     </div>
                 </div>
@@ -170,7 +170,7 @@ function HistoryRecordCard({ record, index }: { record: HistoryRecord; index: nu
 
             {/* Expanded metrics */}
             {expanded && (
-                <div className="px-[18px] pb-4 pt-0 border-t border-gray-100">
+                <div className="px-[18px] pb-4 pt-0 border-t border-border">
                     <div className="grid grid-cols-3 gap-2.5 mt-3">
                         <MetricPill metric={record.weight_for_age} label="Weight" />
                         <MetricPill metric={record.height_for_age} label="Height" />
@@ -186,7 +186,7 @@ function HistorySkeletons() {
     return (
         <div className="space-y-3">
             {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="rounded-2xl bg-white border border-gray-100 p-5 space-y-3">
+                <div key={i} className="rounded-2xl bg-card border border-border p-5 space-y-3">
                     <div className="flex items-center gap-3">
                         <Skeleton className="w-2.5 h-2.5 rounded-full" />
                         <Skeleton className="h-4 w-36" />
@@ -205,48 +205,48 @@ function HistorySkeletons() {
 
 function InfantBanner({ infant, totalItems }: { infant: InfantInfo; totalItems: number }) {
     const gradient = {
-        MALE: "from-sky-400 to-blue-500",
-        FEMALE: "from-pink-400 to-rose-500",
-        OTHER: "from-violet-400 to-purple-500",
+        MALE: "bg-sky-soft text-shield",
+        FEMALE: "bg-blush-soft text-coral-strong",
+        OTHER: "bg-honey-soft text-honey-ink",
     }[infant.gender]
 
     const genderBg = {
-        MALE: "#0ea5e915",
-        FEMALE: "#f43f5e15",
-        OTHER: "#8b5cf615",
+        MALE: "var(--sky-soft)",
+        FEMALE: "var(--blush-soft)",
+        OTHER: "var(--honey-soft)",
     }[infant.gender]
 
     const genderColor = {
-        MALE: "#0284c7",
-        FEMALE: "#e11d48",
-        OTHER: "#7c3aed",
+        MALE: "var(--shield)",
+        FEMALE: "var(--coral-strong)",
+        OTHER: "var(--honey-ink)",
     }[infant.gender]
 
     return (
-        <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+        <div className="rounded-2xl overflow-hidden border border-border shadow-sm">
             {/* Gradient top strip */}
-            <div className={`h-1.5 bg-gradient-to-r ${gradient}`} />
+            <div className={`h-1.5 ${gradient}`} />
 
-            <div className="px-5 py-4 flex items-center gap-4 bg-white">
+            <div className="px-5 py-4 flex items-center gap-4 bg-card">
                 {/* Avatar */}
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center shrink-0 overflow-hidden shadow-md`}>
+                <div className={`w-14 h-14 rounded-2xl ${gradient} flex items-center justify-center shrink-0 overflow-hidden shadow-md`}>
                     {infant.media
                         ? <Image src={infant.media} alt={infant.name} width={56} height={56} className="w-full h-full object-cover" />
-                        : <User className="w-7 h-7 text-white" />
+                        : <User className="w-7 h-7" />
                     }
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                    <p className="text-base font-bold text-gray-900 truncate">{infant.name}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">Born {infant.dob}</p>
+                    <p className="text-base font-bold text-ink truncate">{infant.name}</p>
+                    <p className="text-xs text-ink-muted mt-0.5">Born {infant.dob}</p>
                 </div>
 
                 {/* Stats */}
                 <div className="flex items-center gap-3 shrink-0">
                     <div className="text-right">
-                        <p className="text-xl font-bold text-gray-900">{totalItems}</p>
-                        <p className="text-[10px] text-gray-400 uppercase tracking-wide">Records</p>
+                        <p className="text-xl font-bold text-ink">{totalItems}</p>
+                        <p className="text-[10px] text-ink-muted uppercase tracking-wide">Records</p>
                     </div>
                     <div
                         className="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -292,19 +292,19 @@ export default function InfantCalculatorHistory({ infantId }: InfantCalculatorHi
             {/* Section heading */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center">
-                        <History className="w-4 h-4 text-indigo-500" />
+                    <div className="w-8 h-8 rounded-xl bg-sky-soft flex items-center justify-center">
+                        <History className="w-4 h-4 text-shield" />
                     </div>
                     <div>
-                        <h2 className="text-base font-bold text-gray-900">Calculation History</h2>
+                        <h2 className="text-base font-bold text-ink">Calculation History</h2>
                         {historyData?.total_items != null && (
-                            <p className="text-xs text-gray-400">{historyData.total_items} total records</p>
+                            <p className="text-xs text-ink-muted">{historyData.total_items} total records</p>
                         )}
                     </div>
                 </div>
 
                 {historyData?.total_items != null && (
-                    <Badge className="bg-indigo-50 text-indigo-600 border-indigo-100 text-xs">
+                    <Badge className="bg-sky-soft text-shield border-sky text-xs">
                         Page {currentPage} of {historyData.total_page}
                     </Badge>
                 )}
@@ -319,26 +319,26 @@ export default function InfantCalculatorHistory({ infantId }: InfantCalculatorHi
             {isLoading ? (
                 <HistorySkeletons />
             ) : isError ? (
-                <div className="rounded-2xl border border-red-100 bg-red-50 p-8 flex flex-col items-center gap-3 text-center">
-                    <div className="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center">
-                        <AlertCircle className="w-6 h-6 text-red-500" />
+                <div className="rounded-2xl border border-danger/30 bg-danger-soft p-8 flex flex-col items-center gap-3 text-center">
+                    <div className="w-12 h-12 rounded-2xl bg-danger-soft flex items-center justify-center">
+                        <AlertCircle className="w-6 h-6 text-danger" />
                     </div>
                     <div>
-                        <p className="text-sm font-semibold text-gray-800">Failed to load history</p>
-                        <p className="text-xs text-gray-500 mt-0.5">Please check your connection and try again.</p>
+                        <p className="text-sm font-semibold text-ink">Failed to load history</p>
+                        <p className="text-xs text-ink-muted mt-0.5">Please check your connection and try again.</p>
                     </div>
                     <Button size="sm" variant="outline" onClick={() => refetch()} className="mt-1">
                         Retry
                     </Button>
                 </div>
             ) : !historyData?.items?.length ? (
-                <div className="rounded-2xl border-2 border-dashed border-gray-200 p-12 flex flex-col items-center gap-3 text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-gray-100 flex items-center justify-center">
-                        <History className="w-7 h-7 text-gray-300" />
+                <div className="rounded-2xl border-2 border-dashed border-border p-12 flex flex-col items-center gap-3 text-center">
+                    <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center">
+                        <History className="w-7 h-7 text-line-strong" />
                     </div>
                     <div>
-                        <p className="text-sm font-semibold text-gray-700">No records yet</p>
-                        <p className="text-xs text-gray-400 mt-1">Use the calculator above to log your first measurement.</p>
+                        <p className="text-sm font-semibold text-ink-muted">No records yet</p>
+                        <p className="text-xs text-ink-muted mt-1">Use the calculator above to log your first measurement.</p>
                     </div>
                 </div>
             ) : (

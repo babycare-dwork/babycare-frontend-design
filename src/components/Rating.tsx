@@ -51,8 +51,8 @@ function RatingDisplay({
                         STAR_SIZES[size],
                         'transition-colors',
                         index < filledStars
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'fill-transparent text-gray-300'
+                            ? 'fill-honey text-honey'
+                            : 'fill-transparent text-line-strong'
                     )}
                     aria-hidden="true"
                 />

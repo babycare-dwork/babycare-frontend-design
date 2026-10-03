@@ -135,7 +135,7 @@ export default function HealthyPage() {
                 </header>
 
                 <div
-                    className="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert max-w-none
+                    className="prose prose-sm sm:prose-base lg:prose-lg max-w-none
                     prose-headings:font-bold prose-headings:text-foreground
                     prose-p:text-muted-foreground prose-p:leading-relaxed
                     prose-a:text-primary prose-a:no-underline hover:prose-a:underline

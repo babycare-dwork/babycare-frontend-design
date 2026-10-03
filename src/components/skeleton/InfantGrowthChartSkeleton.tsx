@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/skeleton"
 
 export default function InfantGrowthChartSkeleton() {
     return (
-        <Card className="shadow-md border border-gray-200 rounded-2xl">
+        <Card className="shadow-md border border-border rounded-2xl">
             <CardHeader className="pb-2">
                 <div className="flex items-start justify-between flex-wrap gap-2">
                     <div className="space-y-2">

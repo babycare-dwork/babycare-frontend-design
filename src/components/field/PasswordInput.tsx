@@ -39,10 +39,10 @@ export default function PasswordInputField({
             {label && (
                 <Label
                     htmlFor={name}
-                    className={cn("text-sm font-medium", error && "text-red-500")}
+                    className={cn("text-sm font-medium", error && "text-danger")}
                 >
                     {label}
-                    {required && <span className="text-red-500">*</span>}
+                    {required && <span className="text-danger">*</span>}
                 </Label>
             )}
 
@@ -51,7 +51,7 @@ export default function PasswordInputField({
                     <div
                         className={cn(
                             "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground",
-                            error && "text-red-500 pb-5"
+                            error && "text-danger pb-5"
                         )}
                     >
                         <Icon size={16} aria-hidden="true" />
@@ -70,7 +70,7 @@ export default function PasswordInputField({
                     className={cn(
                         'focus-visible:ring-0',
                         Icon ? "pl-10" : "pl-3",
-                        error && "border-red-500 focus-visible:ring-0 focus-visible:ring-red-500",
+                        error && "border-danger focus-visible:ring-0 focus-visible:ring-danger",
                         className
                     )}
                     {...props}
@@ -91,7 +91,7 @@ export default function PasswordInputField({
                     )}
                 </Button>
 
-                {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
+                {error && <p className="text-sm text-danger mt-1">{error}</p>}
             </div>
         </div>
     )

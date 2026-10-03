@@ -76,7 +76,7 @@ class HttpServices {
             const axiosConfig = this.buildAxiosConfig(config);
             return await axiosInstance.post(url, data, axiosConfig);
         } catch (error) {
-            console.error(`POST request failed for ${url}:`, error);
+            if ((error as any)?.status !== 401) console.error(`POST request failed for ${url}:`, error);
             throw error;
         }
     }
@@ -90,7 +90,7 @@ class HttpServices {
             const axiosConfig = this.buildAxiosConfig(config);
             return await axiosInstance.get(url, axiosConfig);
         } catch (error) {
-            console.error(`GET request failed for ${url}:`, error);
+            if ((error as any)?.status !== 401) console.error(`GET request failed for ${url}:`, error);
             throw error;
         }
     }
@@ -105,7 +105,7 @@ class HttpServices {
             const axiosConfig = this.buildAxiosConfig(config);
             return await axiosInstance.put(url, data, axiosConfig);
         } catch (error) {
-            console.error(`PUT request failed for ${url}:`, error);
+            if ((error as any)?.status !== 401) console.error(`PUT request failed for ${url}:`, error);
             throw error;
         }
     }
@@ -120,7 +120,7 @@ class HttpServices {
             const axiosConfig = this.buildAxiosConfig(config);
             return await axiosInstance.patch(url, data, axiosConfig);
         } catch (error) {
-            console.error(`PATCH request failed for ${url}:`, error);
+            if ((error as any)?.status !== 401) console.error(`PATCH request failed for ${url}:`, error);
             throw error;
         }
     }

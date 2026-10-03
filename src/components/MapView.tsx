@@ -67,7 +67,7 @@ const userDot = L.divIcon({
 })
 
 function makeHospitalIcon(selected: boolean) {
-    const bg = selected ? "#16a34a" : "#ef4444"
+    const bg = selected ? "#3f7a2e" : "#b42318"
     const size = selected ? 36 : 30
     return L.divIcon({
         className: "",
@@ -119,8 +119,8 @@ export default function MapView({ userLocation, hospitals, selectedHospital, onS
         // Radius circle
         L.circle([userLocation.lat, userLocation.lng], {
             radius: 5000,
-            color: "#3b82f6",
-            fillColor: "#3b82f6",
+            color: "#255590",
+            fillColor: "#255590",
             fillOpacity: 0.04,
             weight: 1.5,
             dashArray: "6 4",
@@ -150,7 +150,7 @@ export default function MapView({ userLocation, hospitals, selectedHospital, onS
                         <p style="font-size:12px;color:#555;margin:0 0 2px">${h.address}</p>
                         ${h.open_hour ? `<p style="font-size:11px;color:#666;margin:0 0 2px">🕐 ${h.open_hour}</p>` : ""}
                         ${h.phone ? `<p style="font-size:11px;color:#666;margin:0 0 6px">📞 ${h.phone}</p>` : ""}
-                        <p style="font-size:12px;font-weight:600;color:${h.distance_km < 1 ? "#16a34a" : "#555"};margin:0">
+                        <p style="font-size:12px;font-weight:600;color:${h.distance_km < 1 ? "#3f7a2e" : "#5b675c"};margin:0">
                             ${h.distance_km < 1 ? `${Math.round(h.distance_km * 1000)} m away` : `${h.distance_km.toFixed(1)} km away`}
                         </p>
                     </div>

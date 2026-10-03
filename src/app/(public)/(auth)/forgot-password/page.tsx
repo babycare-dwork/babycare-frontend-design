@@ -104,7 +104,7 @@ export default function ForgotPasswordPage() {
     }, [])
 
     return (
-        <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
+        <section className="flex min-h-screen bg-muted px-4 py-16 md:py-32">
             <div
                 className="bg-muted m-auto h-fit w-full max-w-sm overflow-hidden rounded-[calc(var(--radius)+.125rem)] border shadow-md shadow-zinc-950/5">
                 <div className="bg-card -m-px rounded-[calc(var(--radius)+.125rem)] border p-8 pb-6">
@@ -137,7 +137,7 @@ export default function ForgotPasswordPage() {
                                     disabled={loading}
                                 />
                             </div>
-                            {error && <p className="text-sm text-red-500">{error}</p>}
+                            {error && <p className="text-sm text-danger">{error}</p>}
                             <Button onClick={handleEmailSubmit} className="w-full" disabled={loading}>
                                 {loading ? 'Sending...' : 'Send OTP'}
                             </Button>
@@ -160,7 +160,7 @@ export default function ForgotPasswordPage() {
                                     disabled={loading}
                                 />
                             </div>
-                            {error && <p className="text-sm text-red-500">{error}</p>}
+                            {error && <p className="text-sm text-danger">{error}</p>}
                             <Button onClick={handleOtpSubmit} className="w-full" disabled={loading}>
                                 {loading ? 'Verifying...' : 'Verify OTP'}
                             </Button>
@@ -194,7 +194,7 @@ export default function ForgotPasswordPage() {
                                     disabled={loading}
                                 />
                             </div>
-                            {error && <p className="text-sm text-red-500">{error}</p>}
+                            {error && <p className="text-sm text-danger">{error}</p>}
                             <Button onClick={handlePasswordSubmit} className="w-full" disabled={loading}>
                                 {loading ? 'Resetting...' : 'Reset Password'}
                             </Button>

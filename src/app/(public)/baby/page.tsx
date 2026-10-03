@@ -40,22 +40,22 @@ export default function BabyPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4 md:p-8">
+        <div className="min-h-screen bg-sky-soft p-4 md:p-8">
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
-                            <BabyIcon className="h-8 w-8 text-blue-600"/>
+                        <h1 className="text-3xl md:text-4xl font-bold text-ink flex items-center gap-3">
+                            <BabyIcon className="h-8 w-8 text-shield"/>
                             Baby Care Dashboard
                         </h1>
-                        <p className="text-gray-600 mt-2">
+                        <p className="text-ink-muted mt-2">
                             Manage your little ones and their vaccination schedules
                         </p>
                     </div>
                     <Button
                         onClick={() => setShowAddModal(true)}
                         size="lg"
-                        className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg"
+                        className="w-full sm:w-auto bg-shield shadow-lg"
                     >
                         <Plus className="h-5 w-5 mr-2"/>
                         Add Baby
@@ -65,11 +65,11 @@ export default function BabyPage() {
                 {babies.length === 0 ? (
                     <Card className="border-2 border-dashed">
                         <CardContent className="flex flex-col items-center justify-center py-16">
-                            <BabyIcon className="h-16 w-16 text-gray-400 mb-4"/>
-                            <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                            <BabyIcon className="h-16 w-16 text-ink-muted mb-4"/>
+                            <h3 className="text-xl font-semibold text-ink-muted mb-2">
                                 No babies added yet
                             </h3>
-                            <p className="text-gray-500 mb-6 text-center max-w-md">
+                            <p className="text-ink-muted mb-6 text-center max-w-md">
                                 Start by adding your first baby to track their growth and vaccination schedule
                             </p>
                             <Button onClick={() => setShowAddModal(true)}>

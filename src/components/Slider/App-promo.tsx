@@ -1,88 +1,96 @@
 import Image from "next/image";
-import { Check, PlayCircle, Smartphone } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { BellRing, Check, PlayCircle, Repeat, Stethoscope, TrendingUp } from "lucide-react";
 import { BABY_CARE_PLAY_STORE_URL } from "@/config/app-constant";
 import Link from "next/link";
+import { toneClasses, toneOrder } from "@/components/Tag";
 
 const features = [
-  "Vaccination Reminders",
-  "Quick Re-orders",
-  "Pediatric Clinic Directory",
-  "Growth Milestones Tracker",
+  { label: "Vaccination reminders", icon: BellRing },
+  { label: "Quick re-orders", icon: Repeat },
+  { label: "Pediatric clinic directory", icon: Stethoscope },
+  { label: "Growth milestones tracker", icon: TrendingUp },
 ];
 
 export function AppPromo() {
   return (
-    <section className="py-10 sm:py-16 bg-[#f7f6f2]">
-      <div className="container mx-auto px-4 sm:px-8">
-        <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 px-6 py-10 sm:px-10 sm:py-12 lg:px-14 lg:py-16">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-12">
-            <div className="w-full lg:w-1/2 text-center lg:text-left">
-              <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-5">
-                <Smartphone size={14} className="shrink-0" />
-                Available on Android
-              </span>
+    <section className="relative overflow-hidden bg-sky-soft">
+      {/* Decorative rings */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-24 top-1/2 size-[560px] -translate-y-1/2 rounded-full border-[48px] border-surface-raised/50"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-16 -top-16 size-48 rounded-full bg-surface-raised/40"
+      />
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary mb-4 md:mb-5 leading-tight">
-                Download our App
-              </h2>
+      <div className="container relative mx-auto grid items-center gap-12 px-4 py-16 sm:px-8 sm:py-24 lg:grid-cols-2">
+        <div className="text-center lg:text-left">
+          <span className="mb-5 inline-flex h-8 items-center gap-2 rounded-full bg-surface-raised px-4 text-sm font-bold text-leaf shadow-sm">
+            <Check className="size-4" strokeWidth={3} aria-hidden="true" />
+            Free on Android
+          </span>
 
-              <p className="text-sm sm:text-base text-gray-500 mb-6 md:mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0">
-                Parenting made easier. Download our app for safe baby products,
-                timely vaccination reminders, healthcare access, and trusted
-                guidance — all in one place.
-              </p>
+          <h2 className="mb-4 font-display text-[34px] leading-[42px] font-extrabold tracking-[-0.01em] text-ink sm:text-[44px] sm:leading-[52px]">
+            Parenting, made easier — in your pocket
+          </h2>
 
-              <div className="flex justify-center lg:justify-start mb-8 md:mb-10">
-                <Link
-                  className="bg-primary hover:bg-primary/90 text-white px-5 py-3 rounded-full flex items-center justify-center gap-3 cursor-pointer transition-colors duration-300 shadow-md"
-                  href={BABY_CARE_PLAY_STORE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download on Google Play"
+          <p className="mx-auto mb-8 max-w-[52ch] text-base leading-[26px] text-ink-muted sm:text-lg sm:leading-[30px] lg:mx-0">
+            Safe baby products, timely vaccination reminders, healthcare access
+            and trusted guidance — all in one app.
+          </p>
+
+          <ul className="mx-auto mb-10 grid max-w-lg grid-cols-1 gap-3 text-left sm:grid-cols-2 lg:mx-0">
+            {features.map(({ label, icon: Icon }, i) => {
+              const tone = toneClasses[toneOrder[i % toneOrder.length]];
+              return (
+                <li
+                  key={label}
+                  className="flex items-center gap-3 rounded-full bg-surface-raised/70 py-1.5 pl-1.5 pr-4"
                 >
-                  <PlayCircle size={24} className="shrink-0" />
-                  <div className="flex flex-col items-start leading-none">
-                    <span className="text-[10px] uppercase tracking-wide">
-                      Get it on
-                    </span>
-                    <span className="text-sm sm:text-base font-bold">
-                      Google Play
-                    </span>
-                  </div>
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 max-w-md mx-auto lg:mx-0">
-                {features.map((feature) => (
-                  <div
-                    key={feature}
-                    className="flex items-center gap-2 text-sm text-gray-700"
+                  <span
+                    className={`flex size-9 shrink-0 items-center justify-center rounded-full ${tone.bg} ${tone.ink}`}
                   >
-                    <span className="flex items-center justify-center w-4.5 h-4.5 rounded-full bg-green-600 shrink-0">
-                      <Check className="w-3 h-3 text-white" strokeWidth={3} />
-                    </span>
-                    <span className="font-medium">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+                    <Icon className="size-4" aria-hidden="true" />
+                  </span>
+                  <span className="text-[15px] font-semibold text-ink">{label}</span>
+                </li>
+              );
+            })}
+          </ul>
 
-            <div className="w-full lg:w-1/2 flex items-center justify-center">
-              <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px]">
-                <div className="rounded-[2rem] border-4 border-green-100 overflow-hidden shadow-lg">
-                  <Image
-                    src="/app-promo.png"
-                    alt="Baby Care App Interface"
-                    width={400}
-                    height={320}
-                    className={cn("w-full h-auto object-contain")}
-                    priority
-                  />
-                </div>
-              </div>
-            </div>
+          <div className="flex justify-center lg:justify-start">
+            <Link
+              className="flex h-14 items-center justify-center gap-3 rounded-full bg-navy px-6 text-on-navy transition-all duration-200 ease-out hover:-translate-y-px hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sky-soft"
+              href={BABY_CARE_PLAY_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Get it on Google Play"
+            >
+              <PlayCircle size={26} className="shrink-0" aria-hidden="true" />
+              <span className="flex flex-col items-start leading-none">
+                <span className="text-[11px] font-semibold uppercase tracking-wide opacity-80">
+                  Get it on
+                </span>
+                <span className="text-base font-bold">Google Play</span>
+              </span>
+            </Link>
           </div>
+        </div>
+
+        <div className="relative mx-auto w-full max-w-[440px]">
+          <div
+            aria-hidden="true"
+            className="absolute inset-[8%] rounded-full bg-surface-raised"
+          />
+          <Image
+            src="/app-promo.png"
+            alt="BabyCare app showing vaccination reminders and featured products"
+            width={1354}
+            height={1436}
+            sizes="(max-width: 1024px) 80vw, 440px"
+            className="relative h-auto w-full object-contain drop-shadow-xl"
+          />
         </div>
       </div>
     </section>

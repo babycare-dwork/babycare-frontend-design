@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 
 const highlights = [
@@ -13,7 +13,7 @@ const highlights = [
 
 export function AboutStory() {
   return (
-    <section className="py-10 sm:py-16 bg-white overflow-hidden">
+    <section className="py-16 sm:py-24 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
           <motion.div
@@ -23,7 +23,16 @@ export function AboutStory() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="w-full lg:w-1/2"
           >
-            <div className="relative aspect-4/3 rounded-[2rem] overflow-hidden shadow-xl">
+            <div className="relative">
+            <div
+              aria-hidden="true"
+              className="absolute -left-4 -top-4 h-full w-full rounded-3xl bg-honey-soft sm:-left-6 sm:-top-6"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute -right-3 bottom-10 size-20 rounded-full border-2 border-dashed border-coral/60"
+            />
+            <div className="relative aspect-4/3 rounded-3xl overflow-hidden shadow-md">
               <Image
                 src="/baby-mom.png"
                 alt="Parent caring for a baby"
@@ -32,17 +41,18 @@ export function AboutStory() {
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
+            </div>
 
             {/* floating stat card */}
-            <div className="hidden sm:flex -mt-10 ml-6 lg:ml-10 items-center gap-3 bg-white rounded-2xl shadow-lg px-5 py-4 border border-gray-100 relative z-10 w-fit">
-              <div className="flex items-center justify-center w-11 h-11 rounded-full bg-primary/10 shrink-0">
-                <CheckCircle2 className="w-5 h-5 text-primary" />
+            <div className="hidden sm:flex -mt-10 ml-6 lg:ml-10 items-center gap-3 bg-card rounded-full shadow-md py-2 pl-2 pr-5 relative z-10 w-fit">
+              <div className="flex items-center justify-center size-11 rounded-full bg-sprout-soft shrink-0">
+                <ShieldCheck className="size-5 text-leaf" />
               </div>
               <div>
-                <p className="text-sm font-bold text-gray-900 leading-none mb-1">
-                  Verified & Safe
+                <p className="font-display text-[15px] font-bold text-ink leading-none mb-1">
+                  Verified & safe
                 </p>
-                <p className="text-xs text-gray-500 leading-none">
+                <p className="text-xs text-ink-muted leading-none">
                   Every product checked for quality
                 </p>
               </div>
@@ -56,13 +66,11 @@ export function AboutStory() {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
             className="w-full lg:w-1/2"
           >
-            <p className="text-xs font-semibold tracking-wide text-primary mb-2">
-              Our Story
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
+            <p className="eyebrow mb-3">Our story</p>
+            <h2 className="text-[34px] leading-[42px] sm:text-[44px] sm:leading-[52px] tracking-[-0.01em] font-extrabold text-ink mb-4">
               Built by parents, for parents
             </h2>
-            <p className="text-sm sm:text-base text-gray-500 leading-relaxed mb-6 max-w-2xl">
+            <p className="text-base sm:text-lg leading-[26px] sm:leading-[30px] text-ink-muted mb-6 max-w-[60ch]">
               BabyCare started with a simple idea: parenting shouldn&apos;t feel
               overwhelming. We bring together safe products, trusted healthcare
               guidance, and timely reminders so you can spend less time worrying
@@ -72,10 +80,10 @@ export function AboutStory() {
             <div className="flex flex-col gap-3 mb-8">
               {highlights.map((item) => (
                 <div key={item} className="flex items-center gap-3">
-                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 shrink-0">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
+                  <span className="flex items-center justify-center size-5 rounded-full bg-leaf shrink-0">
+                    <Check className="size-3 text-surface-raised" strokeWidth={3} />
                   </span>
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-[15px] leading-[22px] text-ink-muted">
                     {item}
                   </span>
                 </div>

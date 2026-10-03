@@ -36,18 +36,18 @@ export const metadata: Metadata = {
 export default function TermsAndConditions() {
     return (
         <div
-            className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+            className="min-h-screen bg-surface-sunken">
             {/* Header Section */}
-            <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+            <div className="bg-card border-b border-border">
                 <div className="max-w-6xl mx-auto px-6 py-16">
                     <div className="text-center">
                         <div className="flex justify-center mb-6">
-                            <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
-                                <FileText className="h-8 w-8 text-emerald-600 dark:text-emerald-400"/>
+                            <div className="p-3 bg-sprout-soft rounded-full">
+                                <FileText className="h-8 w-8 text-leaf"/>
                             </div>
                         </div>
-                        <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Terms and Conditions</h1>
-                        <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+                        <h1 className="text-4xl font-bold text-ink mb-4">Terms and Conditions</h1>
+                        <p className="text-xl text-ink-muted max-w-3xl mx-auto">
                             Please read these terms and conditions carefully before using our Baby Care app. By using
                             our service, you
                             agree to be bound by these terms.
@@ -78,61 +78,61 @@ export default function TermsAndConditions() {
                             <CardContent className="space-y-2">
                                 <a
                                     href="#acceptance"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     Acceptance of Terms
                                 </a>
                                 <a
                                     href="#use-of-service"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     Use of Service
                                 </a>
                                 <a
                                     href="#user-accounts"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     User Accounts
                                 </a>
                                 <a
                                     href="#prohibited-uses"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     Prohibited Uses
                                 </a>
                                 <a
                                     href="#intellectual-property"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     Intellectual Property
                                 </a>
                                 <a
                                     href="#disclaimers"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     Disclaimers
                                 </a>
                                 <a
                                     href="#limitation"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     Limitation of Liability
                                 </a>
                                 <a
                                     href="#termination"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     Termination
                                 </a>
                                 <a
                                     href="#changes"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     Changes to Terms
                                 </a>
                                 <a
                                     href="#contact"
-                                    className="block text-sm text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                    className="block text-sm text-ink-muted hover:text-leaf transition-colors"
                                 >
                                     Contact Us
                                 </a>
@@ -146,11 +146,11 @@ export default function TermsAndConditions() {
                         <Card id="acceptance">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-3">
-                                    <CheckCircle className="h-5 w-5 text-emerald-600"/>
+                                    <CheckCircle className="h-5 w-5 text-leaf"/>
                                     Acceptance of Terms
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent className="prose prose-slate dark:prose-invert max-w-none">
+                            <CardContent className="prose prose-slate max-w-none">
                                 <p>
                                     By downloading, installing, or using the Baby Care app (the &#34;Application&#34;), you
                                     agree to be bound by
@@ -170,12 +170,12 @@ export default function TermsAndConditions() {
                         <Card id="use-of-service">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-3">
-                                    <User className="h-5 w-5 text-blue-600"/>
+                                    <User className="h-5 w-5 text-shield"/>
                                     Use of Service
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                <div className="prose prose-slate dark:prose-invert max-w-none">
+                                <div className="prose prose-slate max-w-none">
                                     <p>
                                         The Baby Care app is designed to help parents and caregivers track and manage
                                         baby care activities.
@@ -185,20 +185,20 @@ export default function TermsAndConditions() {
                                 </div>
 
                                 <div className="grid md:grid-cols-2 gap-4">
-                                    <div className="p-4 bg-emerald-50 dark:bg-emerald-800/20 rounded-lg">
-                                        <h4 className="font-semibold text-emerald-900 dark:text-emerald-100 mb-2">Permitted
+                                    <div className="p-4 bg-sprout-soft rounded-lg">
+                                        <h4 className="font-semibold text-leaf mb-2">Permitted
                                             Uses</h4>
-                                        <ul className="text-sm text-emerald-800 dark:text-emerald-200 space-y-1">
+                                        <ul className="text-sm text-leaf space-y-1">
                                             <li>• Track baby feeding schedules</li>
                                             <li>• Monitor sleep patterns</li>
                                             <li>• Record diaper changes</li>
                                             <li>• Log growth measurements</li>
                                         </ul>
                                     </div>
-                                    <div className="p-4 bg-blue-50 dark:bg-blue-800/20 rounded-lg">
-                                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Service
+                                    <div className="p-4 bg-sky-soft rounded-lg">
+                                        <h4 className="font-semibold text-ink mb-2">Service
                                             Features</h4>
-                                        <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                                        <ul className="text-sm text-shield space-y-1">
                                             <li>• Data synchronization</li>
                                             <li>• Reminder notifications</li>
                                             <li>• Progress tracking</li>
@@ -208,13 +208,13 @@ export default function TermsAndConditions() {
                                 </div>
 
                                 <div
-                                    className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                                    className="bg-honey-soft border border-honey rounded-lg p-4">
                                     <div className="flex items-start gap-3">
-                                        <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5"/>
+                                        <AlertTriangle className="h-5 w-5 text-honey-ink mt-0.5"/>
                                         <div>
-                                            <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-1">Medical
+                                            <h4 className="font-semibold text-honey-ink mb-1">Medical
                                                 Disclaimer</h4>
-                                            <p className="text-sm text-amber-800 dark:text-amber-200">
+                                            <p className="text-sm text-honey-ink">
                                                 This app is not a substitute for professional medical advice, diagnosis,
                                                 or treatment. Always
                                                 consult with qualified healthcare providers regarding your baby&#39;s health
@@ -230,12 +230,12 @@ export default function TermsAndConditions() {
                         <Card id="user-accounts">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-3">
-                                    <User className="h-5 w-5 text-purple-600"/>
+                                    <User className="h-5 w-5 text-coral-strong"/>
                                     User Accounts and Responsibilities
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                <div className="prose prose-slate dark:prose-invert max-w-none">
+                                <div className="prose prose-slate max-w-none">
                                     <p>
                                         To access certain features of the Application, you may be required to create an
                                         account. You are
@@ -244,10 +244,10 @@ export default function TermsAndConditions() {
                                 </div>
 
                                 <div
-                                    className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
-                                    <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3">Your
+                                    className="bg-blush-soft border border-coral rounded-lg p-4">
+                                    <h4 className="font-semibold text-coral-strong mb-3">Your
                                         Responsibilities</h4>
-                                    <ul className="text-sm text-purple-800 dark:text-purple-200 space-y-2">
+                                    <ul className="text-sm text-coral-strong space-y-2">
                                         <li>• Provide accurate and complete information</li>
                                         <li>• Maintain the security of your login credentials</li>
                                         <li>• Notify us immediately of any unauthorized access</li>
@@ -262,12 +262,12 @@ export default function TermsAndConditions() {
                         <Card id="prohibited-uses">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-3">
-                                    <Ban className="h-5 w-5 text-red-600"/>
+                                    <Ban className="h-5 w-5 text-danger"/>
                                     Prohibited Uses
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                <div className="prose prose-slate dark:prose-invert max-w-none">
+                                <div className="prose prose-slate max-w-none">
                                     <p>
                                         You agree not to use the Application for any unlawful purpose or in any way that
                                         could damage,
@@ -277,10 +277,10 @@ export default function TermsAndConditions() {
 
                                 <div className="grid md:grid-cols-2 gap-4">
                                     <div
-                                        className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                                        <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">Strictly
+                                        className="p-4 bg-danger-soft border border-danger/30 rounded-lg">
+                                        <h4 className="font-semibold text-danger mb-2">Strictly
                                             Prohibited</h4>
-                                        <ul className="text-sm text-red-800 dark:text-red-200 space-y-1">
+                                        <ul className="text-sm text-danger space-y-1">
                                             <li>• Reverse engineering the app</li>
                                             <li>• Distributing malware or viruses</li>
                                             <li>• Attempting unauthorized access</li>
@@ -288,10 +288,10 @@ export default function TermsAndConditions() {
                                         </ul>
                                     </div>
                                     <div
-                                        className="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
-                                        <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">Misuse
+                                        className="p-4 bg-blush-soft border border-coral rounded-lg">
+                                        <h4 className="font-semibold text-coral-strong mb-2">Misuse
                                             Examples</h4>
-                                        <ul className="text-sm text-orange-800 dark:text-orange-200 space-y-1">
+                                        <ul className="text-sm text-coral-strong space-y-1">
                                             <li>• Commercial use without permission</li>
                                             <li>• Sharing false or misleading information</li>
                                             <li>• Interfering with other users</li>
@@ -306,12 +306,12 @@ export default function TermsAndConditions() {
                         <Card id="intellectual-property">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-3">
-                                    <Copyright className="h-5 w-5 text-indigo-600"/>
+                                    <Copyright className="h-5 w-5 text-shield"/>
                                     Intellectual Property Rights
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                <div className="prose prose-slate dark:prose-invert max-w-none">
+                                <div className="prose prose-slate max-w-none">
                                     <p>
                                         The Application and its original content, features, and functionality are and
                                         will remain the
@@ -322,13 +322,13 @@ export default function TermsAndConditions() {
                                 </div>
 
                                 <div
-                                    className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">
+                                    className="bg-sky-soft border border-sky rounded-lg p-4">
                                     <div className="flex items-start gap-3">
-                                        <Copyright className="h-5 w-5 text-indigo-600 dark:text-indigo-400 mt-0.5"/>
+                                        <Copyright className="h-5 w-5 text-shield mt-0.5"/>
                                         <div>
-                                            <h4 className="font-semibold text-indigo-900 dark:text-indigo-100 mb-2">Protected
+                                            <h4 className="font-semibold text-ink mb-2">Protected
                                                 Elements</h4>
-                                            <ul className="text-sm text-indigo-800 dark:text-indigo-200 space-y-1">
+                                            <ul className="text-sm text-shield space-y-1">
                                                 <li>• Application design and user interface</li>
                                                 <li>• Software code and algorithms</li>
                                                 <li>• Trademarks, logos, and branding</li>
@@ -346,11 +346,11 @@ export default function TermsAndConditions() {
                             <Card id="disclaimers">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-3">
-                                        <AlertTriangle className="h-5 w-5 text-amber-600"/>
+                                        <AlertTriangle className="h-5 w-5 text-honey-ink"/>
                                         Disclaimers
                                     </CardTitle>
                                 </CardHeader>
-                                <CardContent className="prose prose-slate dark:prose-invert max-w-none">
+                                <CardContent className="prose prose-slate max-w-none">
                                     <p>
                                         The Application is provided on an &#34;AS IS&#34; and &#34;AS
                                         AVAILABLE&#34; basis. We make no
@@ -367,11 +367,11 @@ export default function TermsAndConditions() {
                             <Card id="limitation">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-3">
-                                        <Shield className="h-5 w-5 text-slate-600"/>
+                                        <Shield className="h-5 w-5 text-ink-muted"/>
                                         Limitation of Liability
                                     </CardTitle>
                                 </CardHeader>
-                                <CardContent className="prose prose-slate dark:prose-invert max-w-none">
+                                <CardContent className="prose prose-slate max-w-none">
                                     <p>
                                         In no event shall D.work be liable for any indirect, incidental, special,
                                         consequential, or punitive
@@ -389,12 +389,12 @@ export default function TermsAndConditions() {
                         <Card id="termination">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-3">
-                                    <Gavel className="h-5 w-5 text-red-600"/>
+                                    <Gavel className="h-5 w-5 text-danger"/>
                                     Termination
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                <div className="prose prose-slate dark:prose-invert max-w-none">
+                                <div className="prose prose-slate max-w-none">
                                     <p>
                                         We may terminate or suspend your access to the Application immediately, without
                                         prior notice or
@@ -404,10 +404,10 @@ export default function TermsAndConditions() {
 
                                 <div className="grid md:grid-cols-2 gap-4">
                                     <div
-                                        className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                                        <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">Grounds for
+                                        className="p-4 bg-danger-soft border border-danger/30 rounded-lg">
+                                        <h4 className="font-semibold text-danger mb-2">Grounds for
                                             Termination</h4>
-                                        <ul className="text-sm text-red-800 dark:text-red-200 space-y-1">
+                                        <ul className="text-sm text-danger space-y-1">
                                             <li>• Violation of these Terms</li>
                                             <li>• Fraudulent or illegal activity</li>
                                             <li>• Abuse of the service</li>
@@ -415,10 +415,10 @@ export default function TermsAndConditions() {
                                         </ul>
                                     </div>
                                     <div
-                                        className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Upon
+                                        className="p-4 bg-sky-soft border border-sky rounded-lg">
+                                        <h4 className="font-semibold text-ink mb-2">Upon
                                             Termination</h4>
-                                        <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                                        <ul className="text-sm text-shield space-y-1">
                                             <li>• Access to the app will cease</li>
                                             <li>• Data may be deleted</li>
                                             <li>• License to use is revoked</li>
@@ -433,11 +433,11 @@ export default function TermsAndConditions() {
                         <Card id="changes">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-3">
-                                    <FileText className="h-5 w-5 text-green-600"/>
+                                    <FileText className="h-5 w-5 text-leaf"/>
                                     Changes to Terms
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent className="prose prose-slate dark:prose-invert max-w-none">
+                            <CardContent className="prose prose-slate max-w-none">
                                 <p>
                                     We reserve the right to modify or replace these Terms at any time. If a revision is
                                     material, we will
@@ -454,33 +454,33 @@ export default function TermsAndConditions() {
                         {/* Contact */}
                         <Card
                             id="contact"
-                            className="bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 border-emerald-200 dark:border-emerald-800"
+                            className="bg-sprout-soft border-sprout"
                         >
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-3">
-                                    <Mail className="h-5 w-5 text-emerald-600"/>
+                                    <Mail className="h-5 w-5 text-leaf"/>
                                     Contact Us
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div
-                                    className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-lg border">
-                                    <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
-                                        <Mail className="h-5 w-5 text-emerald-600 dark:text-emerald-400"/>
+                                    className="flex items-center gap-4 p-4 bg-card rounded-lg border">
+                                    <div className="p-2 bg-sprout-soft rounded-full">
+                                        <Mail className="h-5 w-5 text-leaf"/>
                                     </div>
                                     <div>
-                                        <p className="font-medium text-slate-900 dark:text-white">Questions about these
+                                        <p className="font-medium text-ink">Questions about these
                                             terms?</p>
                                         <a
                                             href={`mailto:${process.env.NEXT_PUBLIC_EMAIL_URL}`}
-                                            className="text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium"
+                                            className="text-leaf hover:text-leaf font-medium"
                                         >
                                             {process.env.NEXT_PUBLIC_EMAIL_URL}
                                         </a>
                                     </div>
                                 </div>
-                                <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                                    <p className="text-sm text-slate-600 dark:text-slate-300">
+                                <div className="mt-4 p-4 bg-muted rounded-lg">
+                                    <p className="text-sm text-ink-muted">
                                         <strong>Governing Law:</strong> These Terms shall be governed by and construed
                                         in accordance with
                                         the laws of [Your Jurisdiction], without regard to its conflict of law
@@ -494,7 +494,7 @@ export default function TermsAndConditions() {
 
                         {/* Footer */}
                         <div className="text-center py-6">
-                            <p className="text-sm text-slate-500 dark:text-slate-400">
+                            <p className="text-sm text-ink-muted">
                                 These terms and conditions are effective as of May 28, 2025. Last updated: May 28, 2025.
                             </p>
                         </div>

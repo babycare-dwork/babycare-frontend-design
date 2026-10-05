@@ -69,30 +69,26 @@ export default function VendorRegisterPage() {
   );
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 items-stretch container mx-auto">
-      <div className="hidden lg:flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 xl:p-12 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 right-20 w-64 h-64 bg-blue-400 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-20 w-80 h-80 bg-cyan-400 rounded-full blur-3xl"></div>
-        </div>
+    <div className="min-h-screen grid lg:grid-cols-2 items-stretch container mx-auto px-4 sm:px-8">
+      <div className="hidden lg:flex flex-col items-center justify-center bg-navy text-on-navy p-6 xl:p-12 relative overflow-hidden rounded-3xl my-6">
         <div className="relative z-10 text-center max-w-md">
-          <div className="w-16 h-16 rounded-2xl bg-blue-500/20 backdrop-blur-sm flex items-center justify-center mb-8 mx-auto border border-blue-400/30">
-            <div className="w-8 h-8 rounded-lg bg-blue-500/40"></div>
+          <div className="w-16 h-16 rounded-full bg-sky-soft flex items-center justify-center mb-8 mx-auto">
+            <div className="w-6 h-6 rounded-full bg-shield"></div>
           </div>
-          <h1 className="text-4xl xl:text-5xl font-bold mb-6 text-balance">
+          <h1 className="text-4xl xl:text-5xl font-extrabold mb-6 text-balance">
             Become a BabyCare Vendor
           </h1>
-          <p className="text-lg text-slate-300 leading-relaxed">
+          <p className="text-lg text-on-navy/80 leading-relaxed">
             Join our marketplace and reach thousands of parents looking for quality baby products and services.
           </p>
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-4 sm:p-8 md:p-12 bg-slate-50">
+      <div className="flex items-center justify-center p-4 sm:p-8 md:p-12 bg-muted">
         <div className="w-full max-w-4xl space-y-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-slate-900">Vendor Registration</h2>
-            <p className="text-sm text-slate-600 mt-2">
+            <h2 className="text-3xl font-bold text-ink">Vendor Registration</h2>
+            <p className="text-sm text-ink-muted mt-2">
               Create your vendor account to start selling
             </p>
           </div>
@@ -100,7 +96,7 @@ export default function VendorRegisterPage() {
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {/* Personal Information */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-slate-700 uppercase">Personal Information</h3>
+              <h3 className="text-sm font-semibold text-ink-muted uppercase">Personal Information</h3>
               
               <div className="grid md:grid-cols-2 gap-4">
                 <TextInputField
@@ -143,8 +139,8 @@ export default function VendorRegisterPage() {
             </div>
 
             {/* Store Information */}
-            <div className="space-y-4 pt-4 border-t border-slate-200">
-              <h3 className="text-sm font-semibold text-slate-700 uppercase">Store Information</h3>
+            <div className="space-y-4 pt-4 border-t border-border">
+              <h3 className="text-sm font-semibold text-ink-muted uppercase">Store Information</h3>
               
               <div className="grid md:grid-cols-2 gap-4">
                 <TextInputField
@@ -169,8 +165,8 @@ export default function VendorRegisterPage() {
             </div>
 
             {/* Location Information */}
-            <div className="space-y-4 pt-4 border-t border-slate-200">
-              <h3 className="text-sm font-semibold text-slate-700 uppercase">Location</h3>
+            <div className="space-y-4 pt-4 border-t border-border">
+              <h3 className="text-sm font-semibold text-ink-muted uppercase">Location</h3>
               
               <div className="grid md:grid-cols-2 gap-4">
                 <TextInputField
@@ -208,9 +204,9 @@ export default function VendorRegisterPage() {
             </Button>
           </form>
 
-          {/* <p className="text-center text-sm text-slate-600">
+          {/* <p className="text-center text-sm text-ink-muted">
             Already have an account?{" "}
-            <Link href="/login" className="font-semibold text-blue-600">
+            <Link href="/login" className="font-semibold text-shield">
               Sign in
             </Link>
           </p> */}

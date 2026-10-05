@@ -96,7 +96,7 @@ const DESCRIPTION_COLLAPSED_HEIGHT = 96;
 const LoadingSkeleton = () => (
   <div className="min-h-screen bg-muted/30">
     <div className="max-w-container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 lg:py-10 space-y-6 sm:space-y-8">
-      <div className="bg-white rounded-lg md:rounded-xl border shadow-sm">
+      <div className="bg-card rounded-lg md:rounded-xl border shadow-sm">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-10 p-3 sm:p-4 md:p-6 lg:p-8">
           <div className="space-y-3 sm:space-y-4">
             <Skeleton className="aspect-square w-full rounded-lg md:rounded-xl" />
@@ -119,7 +119,7 @@ const LoadingSkeleton = () => (
 
 const ErrorState = () => (
   <div className="min-h-screen flex items-center justify-center p-4">
-    <div className="text-center space-y-2 bg-white border rounded-lg md:rounded-xl p-6 sm:p-8 max-w-md mx-auto">
+    <div className="text-center space-y-2 bg-card border rounded-lg md:rounded-xl p-6 sm:p-8 max-w-md mx-auto">
       <h2 className="text-lg sm:text-xl font-semibold">Product Not Found</h2>
       <p className="text-sm sm:text-base text-muted-foreground">
         Unable to load product details
@@ -293,7 +293,7 @@ export default function ProductDetail() {
   return (
     <div className="min-h-screen bg-muted/30">
       <div className="max-w-container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 space-y-6 sm:space-y-8">
-        <article className="bg-white rounded-lg md:rounded-xl border shadow-sm">
+        <article className="bg-card rounded-lg md:rounded-xl border shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-10 p-3 sm:p-4 md:p-6 lg:p-8">
             <section
               className="space-y-3 sm:space-y-4"
@@ -309,7 +309,7 @@ export default function ProductDetail() {
                   priority={selectedImage === 0}
                 />
                 {hasDiscount && (
-                  <Badge className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-red-500 hover:bg-red-600 text-xs sm:text-sm">
+                  <Badge className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-danger hover:bg-danger text-xs sm:text-sm">
                     -{product.discount_percent}%
                   </Badge>
                 )}
@@ -318,7 +318,7 @@ export default function ProductDetail() {
                   variant="secondary"
                   className={cn(
                     "absolute top-2 right-2 sm:top-3 sm:right-3 shadow-md h-8 w-8 sm:h-10 sm:w-10 transition-colors",
-                    product.liked && "bg-red-50 hover:bg-red-100",
+                    product.liked && "bg-danger-soft hover:bg-danger-soft",
                   )}
                   onClick={handleFavoriteClick}
                   disabled={isFavoritePending}
@@ -331,8 +331,8 @@ export default function ProductDetail() {
                     className={cn(
                       "h-3.5 w-3.5 sm:h-4 sm:w-4 transition-all",
                       product.liked
-                        ? "fill-red-500 text-red-500"
-                        : "text-gray-600",
+                        ? "fill-danger text-danger"
+                        : "text-ink-muted",
                     )}
                   />
                 </Button>
@@ -389,7 +389,7 @@ export default function ProductDetail() {
                   {product.for_product && (
                     <Badge
                       variant="outline"
-                      className="border-pink-200 bg-pink-50 text-pink-700 text-xs"
+                      className="border-coral bg-blush-soft text-coral-strong text-xs"
                     >
                       {FOR_PRODUCT_LABELS[product.for_product] ??
                         product.for_product}
@@ -423,7 +423,7 @@ export default function ProductDetail() {
                         className={cn(
                           "h-3.5 w-3.5 sm:h-4 sm:w-4",
                           i < Math.floor(product.rating)
-                            ? "fill-yellow-400 text-yellow-400"
+                            ? "fill-honey text-honey"
                             : "text-muted-foreground",
                         )}
                         aria-hidden="true"
@@ -447,7 +447,7 @@ export default function ProductDetail() {
                     </span>
                     <Badge
                       variant="secondary"
-                      className="bg-green-100 text-green-700 text-xs sm:text-sm"
+                      className="bg-sprout-soft text-leaf text-xs sm:text-sm"
                     >
                       Save {formatPrice(discountAmount)}
                     </Badge>
@@ -479,9 +479,9 @@ export default function ProductDetail() {
                       "font-semibold",
                       isInStock
                         ? isLowStock
-                          ? "text-orange-600"
-                          : "text-green-600"
-                        : "text-red-600",
+                          ? "text-coral-strong"
+                          : "text-leaf"
+                        : "text-danger",
                     )}
                   >
                     {isInStock ? `${product.stock} available` : "Out of stock"}
@@ -508,7 +508,7 @@ export default function ProductDetail() {
 
                   {/* Fade overlay when collapsed */}
                   {isDescriptionOverflowing && !isDescriptionExpanded && (
-                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent" />
+                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-card to-transparent" />
                   )}
                 </div>
 

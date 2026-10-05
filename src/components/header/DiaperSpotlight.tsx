@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { CheckCircle2, CloudIcon } from "lucide-react";
+import { ArrowRight, Check, Droplets } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 const features = [
@@ -13,7 +14,7 @@ const features = [
 
 export function DiaperSpotlight() {
   return (
-    <section className="py-10 sm:py-16 bg-white overflow-hidden">
+    <section className="py-16 sm:py-24 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-10">
           {/* Text side */}
@@ -24,10 +25,11 @@ export function DiaperSpotlight() {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
             className="w-full lg:w-1/2"
           >
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-primary mb-4 leading-tight">
-              Diapers Built for Comfort.
+            <p className="eyebrow mb-3">Diaper spotlight</p>
+            <h2 className="text-[34px] leading-[42px] sm:text-[44px] sm:leading-[52px] tracking-[-0.01em] font-extrabold text-ink mb-4">
+              Diapers built for comfort
             </h2>
-            <p className="text-sm sm:text-base text-gray-500 leading-relaxed mb-6 max-w-2xl">
+            <p className="text-base sm:text-lg leading-[26px] sm:leading-[30px] text-ink-muted mb-6 max-w-[60ch]">
               Gentle on delicate skin and made to keep your baby dry and
               comfortable all day and night.
             </p>
@@ -35,22 +37,22 @@ export function DiaperSpotlight() {
             <div className="flex flex-col gap-3 mb-8">
               {features.map((feature) => (
                 <div key={feature} className="flex items-center gap-3">
-                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 shrink-0">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
+                  <span className="flex items-center justify-center size-5 rounded-full bg-leaf shrink-0">
+                    <Check className="size-3 text-surface-raised" strokeWidth={3} />
                   </span>
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-[15px] leading-[22px] text-ink-muted">
                     {feature}
                   </span>
                 </div>
               ))}
             </div>
 
-            <Link
-              href="/products?category=diapers-hygiene"
-              className="inline-flex items-center justify-center rounded-full bg-primary text-white text-sm font-semibold px-6 py-3 shadow-sm hover:bg-primary/90 transition-colors"
-            >
-              Explore Diapers
-            </Link>
+            <Button asChild>
+              <Link href="/products?category=diapers-hygiene">
+                Explore diapers
+                <ArrowRight />
+              </Link>
+            </Button>
           </motion.div>
 
           {/* Media side */}
@@ -61,7 +63,12 @@ export function DiaperSpotlight() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="w-full lg:w-1/2"
           >
-            <div className="relative aspect-4/3 rounded-[2rem] overflow-hidden shadow-xl bg-gray-50">
+            <div className="relative p-4 sm:p-6">
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 rotate-[-4deg] rounded-[46%_54%_42%_58%/55%_45%_55%_45%] bg-sprout-soft"
+            />
+            <div className="relative aspect-4/3 rounded-3xl overflow-hidden shadow-md bg-muted">
               <Image
                 src="/sleep-baby-diaper.jpg"
                 alt="BabyCare diaper product"
@@ -69,6 +76,15 @@ export function DiaperSpotlight() {
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
+            </div>
+            <div className="absolute -bottom-2 right-6 flex items-center gap-3 rounded-full bg-surface-raised py-2 pl-2 pr-5 shadow-md">
+              <span className="flex size-11 items-center justify-center rounded-full bg-sky-soft text-shield">
+                <Droplets className="size-5" aria-hidden="true" />
+              </span>
+              <span className="font-display text-[15px] font-bold text-ink">
+                Dry all night
+              </span>
+            </div>
             </div>
           </motion.div>
         </div>

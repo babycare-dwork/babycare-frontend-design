@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useCallback } from "react";
+import { SectionHeading } from "@/components/SectionHeading";
 
 const testimonials = [
   {
@@ -62,95 +63,112 @@ export function TestimonialSection() {
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <section className="py-10 sm:py-16 bg-[#f7f6f2]">
+    <section className="py-16 sm:py-24 bg-surface-sunken">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            What Parents Say
-          </h2>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-            Trusted by thousands of parents across Nepal
-          </p>
-        </div>
+        <SectionHeading
+          eyebrow="Testimonials"
+          title="What parents say"
+          lead="Trusted by thousands of parents across Nepal."
+          align="center"
+          className="mb-10 sm:mb-12"
+        />
 
-        <div className="max-w-6xl mx-auto">
-          <div className="relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xl">
-            <div className="flex flex-col md:flex-row items-stretch">
-              <div className="md:w-1/2 relative h-64 md:h-auto min-h-[400px]">
-                <Image
-                  src={currentTestimonial.image}
-                  alt={currentTestimonial.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                />
-              </div>
-
-              <div className="md:w-1/2 p-8 md:p-10 lg:p-12 flex flex-col justify-center">
-                <div className="flex justify-center md:justify-start gap-1 mb-6">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={20}
-                      className={
-                        i < currentTestimonial.rating
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "fill-gray-200 text-gray-200"
-                      }
-                    />
-                  ))}
-                </div>
-
-                <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-8 min-h-[120px]">
-                  &#34;{currentTestimonial.message}&#34;
-                </p>
-
-                <div className="flex items-center justify-center md:justify-start gap-3 mb-8">
-                  <div className="w-12 h-0.5 bg-blue-500" />
-                  <span className="font-bold text-gray-900 text-lg">
-                    {currentTestimonial.name}
-                  </span>
-                </div>
-
-                <div className="flex gap-2 justify-center md:justify-start">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentIndex(index)}
-                      className={`h-2 rounded-full transition-all ${
-                        index === currentIndex
-                          ? "w-8 bg-blue-500"
-                          : "w-2 bg-gray-300 hover:bg-gray-400"
-                      }`}
-                      aria-label={`Go to testimonial ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
+        <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          {/* Arch-framed photo */}
+          <div className="relative mx-auto w-full max-w-[420px]">
+            <div
+              aria-hidden="true"
+              className="absolute -inset-3 rounded-t-[999px] rounded-b-[36px] border-2 border-dashed border-coral/50"
+            />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[36px] bg-blush-soft">
+              <Image
+                key={currentTestimonial.id}
+                src={currentTestimonial.image}
+                alt={currentTestimonial.name}
+                fill
+                className="object-cover animate-in fade-in duration-500"
+                sizes="(max-width: 768px) 90vw, 420px"
+              />
             </div>
-
-            <div className="absolute bottom-4 right-4 flex gap-2 z-10">
-              <Button
-                size="icon"
-                variant="outline"
-                className="rounded-full bg-white hover:bg-blue-50 hover:border-blue-300 transition-all shadow-lg"
-                onClick={handlePrev}
-                aria-label="Previous testimonial"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-              <Button
-                size="icon"
-                variant="outline"
-                className="rounded-full bg-white hover:bg-blue-50 hover:border-blue-300 transition-all shadow-lg"
-                onClick={handleNext}
-                aria-label="Next testimonial"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            </div>
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-5 -right-2 flex size-16 items-center justify-center rounded-full bg-coral-strong text-on-coral shadow-md sm:-right-5"
+            >
+              <Quote className="size-7 fill-current" />
+            </span>
           </div>
+
+          {/* Quote */}
+          <figure
+            key={currentTestimonial.id}
+            className="animate-in fade-in slide-in-from-bottom-2 duration-500"
+          >
+            <div
+              className="mb-6 flex gap-1"
+              role="img"
+              aria-label={`Rated ${currentTestimonial.rating} out of 5`}
+            >
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={20}
+                  aria-hidden="true"
+                  className={
+                    i < currentTestimonial.rating
+                      ? "fill-honey text-honey"
+                      : "fill-line text-line"
+                  }
+                />
+              ))}
+            </div>
+
+            <blockquote className="mb-8 font-display text-[22px] leading-[34px] font-bold text-ink sm:text-[26px] sm:leading-[38px]">
+              &ldquo;{currentTestimonial.message}&rdquo;
+            </blockquote>
+
+            <figcaption className="mb-10 flex items-center gap-3">
+              <span className="h-0.5 w-10 rounded-full bg-coral" aria-hidden="true" />
+              <span className="font-display text-lg font-bold text-ink">
+                {currentTestimonial.name}
+              </span>
+              <span className="text-sm text-ink-muted">· Parent</span>
+            </figcaption>
+
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex gap-2">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentIndex(index)}
+                    className={`h-2.5 rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                      index === currentIndex
+                        ? "w-8 bg-coral-strong"
+                        : "w-2.5 bg-line-strong/50 hover:bg-line-strong"
+                    }`}
+                    aria-label={`Go to testimonial ${index + 1}`}
+                    aria-current={index === currentIndex}
+                  />
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={handlePrev}
+                  aria-label="Previous testimonial"
+                >
+                  <ChevronLeft className="size-5" />
+                </Button>
+                <Button
+                  size="icon"
+                  onClick={handleNext}
+                  aria-label="Next testimonial"
+                >
+                  <ChevronRight className="size-5" />
+                </Button>
+              </div>
+            </div>
+          </figure>
         </div>
       </div>
     </section>

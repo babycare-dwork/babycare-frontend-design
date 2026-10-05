@@ -20,14 +20,18 @@ export interface LoggedInUserResponse {
 }
 
 export const useAuth = () => {
-    const {data, isLoading, error ,refetch} = useQuery<LoggedInUserResponse, Error>({
+    const {data, isLoading, error ,refetch} = useQuery<LoggedInUserResponse | null, Error>({
         queryKey: ["auth", "me"],
         queryFn: async () => {
+            // Logged out: no token, so don't ask the API (it would answer 401).
+            if (!localStorage.getItem("_baby")) return null;
             try {
                 return await authService.getLoggedInUser();
             } catch (error: any) {
                 if (error?.status === 401) {
-                    return Promise.reject(new Error("Not authenticated"));
+                    // Expired or revoked token — treat as logged out.
+                    localStorage.removeItem("_baby");
+                    return null;
                 }
                 throw error;
             }

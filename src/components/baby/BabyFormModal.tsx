@@ -164,8 +164,8 @@ const BabyFormModal: React.FC<BabyModalProps> = ({
 
                     {/* Date of Birth — Nepali BS Datepicker */}
                     <div className="space-y-1 w-full">
-                        <Label className={`text-sm font-medium ${errors.dob ? "text-red-500" : ""}`}>
-                            Date of Birth (BS) {!isEditMode && <span className="text-red-500">*</span>}
+                        <Label className={`text-sm font-medium ${errors.dob ? "text-danger" : ""}`}>
+                            Date of Birth (BS) {!isEditMode && <span className="text-danger">*</span>}
                         </Label>
                         <Controller
                             name="dob"
@@ -177,7 +177,7 @@ const BabyFormModal: React.FC<BabyModalProps> = ({
                                 <NepaliDatePicker
                                     inputClassName={`w-full rounded-md border px-3 py-2 text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/60 ${
                                         errors.dob
-                                            ? "border-red-500 focus:ring-red-500"
+                                            ? "border-danger focus:ring-danger"
                                             : "border-input"
                                     } ${isDisabled ? "opacity-50 cursor-not-allowed bg-muted" : "bg-background"}`}
                                     value={field.value}
@@ -190,7 +190,7 @@ const BabyFormModal: React.FC<BabyModalProps> = ({
                             )}
                         />
                         {errors.dob && (
-                            <p className="text-sm text-red-500 mt-1" role="alert">
+                            <p className="text-sm text-danger mt-1" role="alert">
                                 {errors.dob.message}
                             </p>
                         )}
@@ -199,7 +199,7 @@ const BabyFormModal: React.FC<BabyModalProps> = ({
                     {/* Gender */}
                     <div className="space-y-3">
                         <Label className="text-sm font-medium">
-                            Gender {!isEditMode && <span className="text-red-500">*</span>}
+                            Gender {!isEditMode && <span className="text-danger">*</span>}
                         </Label>
                         <Controller
                             name="gender"
@@ -213,7 +213,7 @@ const BabyFormModal: React.FC<BabyModalProps> = ({
                                             checked={field.value === 0}
                                             onChange={() => field.onChange(0)}
                                             disabled={isDisabled}
-                                            className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+                                            className="w-5 h-5 rounded border-border text-primary focus:ring-2 focus:ring-primary cursor-pointer"
                                         />
                                         <span className="text-sm font-medium">Male</span>
                                     </label>
@@ -223,7 +223,7 @@ const BabyFormModal: React.FC<BabyModalProps> = ({
                                             checked={field.value === 1}
                                             onChange={() => field.onChange(1)}
                                             disabled={isDisabled}
-                                            className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+                                            className="w-5 h-5 rounded border-border text-primary focus:ring-2 focus:ring-primary cursor-pointer"
                                         />
                                         <span className="text-sm font-medium">Female</span>
                                     </label>
@@ -231,7 +231,7 @@ const BabyFormModal: React.FC<BabyModalProps> = ({
                             )}
                         />
                         {errors.gender && (
-                            <p className="text-sm text-red-500" role="alert">
+                            <p className="text-sm text-danger" role="alert">
                                 {errors.gender.message}
                             </p>
                         )}

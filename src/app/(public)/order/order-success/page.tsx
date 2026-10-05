@@ -28,9 +28,9 @@ export default function OrderSuccessPage() {
                                 repeat: Infinity,
                                 ease: "easeInOut"
                             }}
-                            className="absolute inset-0 rounded-full bg-green-400"
+                            className="absolute inset-0 rounded-full bg-leaf"
                         />
-                        <CheckCircle2 className="relative h-20 w-20 text-green-500 sm:h-24 sm:w-24" aria-hidden="true" />
+                        <CheckCircle2 className="relative h-20 w-20 text-leaf sm:h-24 sm:w-24" aria-hidden="true" />
                     </div>
                 </motion.div>
 
@@ -56,7 +56,7 @@ export default function OrderSuccessPage() {
                             }}
                             className="absolute -right-8 -top-2 sm:-right-12"
                         >
-                            <Sparkles className="h-6 w-6 text-yellow-500 sm:h-8 sm:w-8" aria-hidden="true" />
+                            <Sparkles className="h-6 w-6 text-honey-ink sm:h-8 sm:w-8" aria-hidden="true" />
                         </motion.div>
                     </div>
                     <p className="mx-auto max-w-lg text-base text-muted-foreground sm:text-lg">

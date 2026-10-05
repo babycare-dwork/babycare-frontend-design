@@ -3,8 +3,53 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * BabyCare design system — https://claude.ai/artifact/CvcUtycaNJ5ZFH6YdNieB2
+ *
+ * Brand tokens (surface, ink, shield, coral, the four soft tints…) are defined
+ * once in :root / .dark and exposed as Tailwind colours (bg-surface, text-ink,
+ * bg-sky-soft, text-coral-strong…). The shadcn variables (primary, muted, …)
+ * are mapped onto them so every ui/ primitive follows the system.
+ *
+ * Radius scale:  rounded-sm 8px · rounded-md 14px · rounded-2xl 24px (cards)
+ *                rounded-3xl 36px (hero, promo bands) · rounded-full (controls)
+ */
+
 @theme inline {
-  --font-sans: var(--font-plus-jakarta-sans);
+  --font-sans: var(--font-nunito-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-nunito), var(--font-nunito-sans), ui-rounded, system-ui, sans-serif;
+  --font-brand: var(--font-montserrat), var(--font-nunito-sans), system-ui, sans-serif;
+
+  /* Brand colours */
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-navy: var(--navy);
+  --color-on-navy: var(--on-navy);
+  --color-shield: var(--shield);
+  --color-on-shield: var(--on-shield);
+  --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
+  --color-coral: var(--coral);
+  --color-coral-strong: var(--coral-strong);
+  --color-on-coral: var(--on-coral);
+  --color-blush-soft: var(--blush-soft);
+  --color-peach: var(--peach);
+  --color-leaf: var(--leaf);
+  --color-sprout: var(--sprout);
+  --color-sprout-soft: var(--sprout-soft);
+  --color-honey: var(--honey);
+  --color-honey-ink: var(--honey-ink);
+  --color-honey-soft: var(--honey-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--leaf);
+
+  /* shadcn semantic colours */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -36,89 +81,171 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Radius — soft and generous, nothing has a sharp corner */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 36px;
+  --radius-4xl: 44px;
+
+  /* Shadows — warm, low, navy-tinted */
+  --shadow-xs: var(--ds-shadow-xs);
+  --shadow-sm: var(--ds-shadow-sm);
+  --shadow-md: var(--ds-shadow-md);
+  --shadow-lg: var(--ds-shadow-lg);
+  --shadow-xl: var(--ds-shadow-lg);
+  --shadow-2xl: var(--ds-shadow-lg);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.4724 0.1083 263.5796);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.4724 0.1083 263.5796);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 14px;
+
+  /* Brand tokens — light */
+  --surface: #fffaf5;
+  --surface-raised: #ffffff;
+  --surface-sunken: #fbf1e7;
+  --line: #efe2d4;
+  --line-strong: #9a8775;
+  --ink: #1b2f57;
+  --ink-muted: #5b675c;
+  --navy: #1b2f57;
+  --on-navy: #fffaf5;
+  --shield: #255590;
+  --on-shield: #ffffff;
+  --sky: #86bfdd;
+  --sky-soft: #e8f3fa;
+  --coral: #dd8059;
+  --coral-strong: #b4502e;
+  --on-coral: #ffffff;
+  --blush-soft: #fdeee8;
+  --peach: #f0c09c;
+  --leaf: #3f7a2e;
+  --sprout: #b8d888;
+  --sprout-soft: #eef6e2;
+  --honey: #e8b23e;
+  --honey-ink: #8a5a00;
+  --honey-soft: #fdf3dc;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+
+  --ds-shadow-xs: 0 1px 2px #1b2f570a;
+  --ds-shadow-sm: 0 1px 2px #1b2f570f, 0 2px 6px #1b2f570a;
+  --ds-shadow-md: 0 6px 20px -4px #1b2f571f;
+  --ds-shadow-lg: 0 18px 40px -8px #1b2f572e;
+
+  /* shadcn mapping */
+  --background: var(--surface);
+  --foreground: var(--ink);
+  --card: var(--surface-raised);
+  --card-foreground: var(--ink);
+  --popover: var(--surface-raised);
+  --popover-foreground: var(--ink);
+  --primary: var(--shield);
+  --primary-foreground: var(--on-shield);
+  --secondary: var(--sky-soft);
+  --secondary-foreground: var(--shield);
+  --muted: var(--surface-sunken);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--sky-soft);
+  --accent-foreground: var(--ink);
+  --destructive: var(--danger);
+  --border: var(--line);
+  --input: var(--line-strong);
+  --ring: var(--shield);
+  --chart-1: var(--shield);
+  --chart-2: var(--coral);
+  --chart-3: var(--leaf);
+  --chart-4: var(--honey);
+  --chart-5: var(--sky);
+  --sidebar: var(--surface-raised);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--shield);
+  --sidebar-primary-foreground: var(--on-shield);
+  --sidebar-accent: var(--sky-soft);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--shield);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.4724 0.1083 263.5796);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Brand tokens — dark (night navy) */
+  --surface: #111a2e;
+  --surface-raised: #18243d;
+  --surface-sunken: #0c1424;
+  --line: #263552;
+  --line-strong: #6d7f9e;
+  --ink: #f4ede4;
+  --ink-muted: #b3bdb4;
+  --navy: #34589a;
+  --on-navy: #ffffff;
+  --shield: #8cc3e6;
+  --on-shield: #0f1a2e;
+  --sky: #5f9cc0;
+  --sky-soft: #16304a;
+  --coral: #f29a74;
+  --coral-strong: #f29a74;
+  --on-coral: #1a0f0a;
+  --blush-soft: #3a2421;
+  --peach: #e8a983;
+  --leaf: #9fd17a;
+  --sprout: #6f9a45;
+  --sprout-soft: #1f3320;
+  --honey: #f0c25a;
+  --honey-ink: #f0c25a;
+  --honey-soft: #3a2e12;
+  --danger: #ff8a7a;
+  --danger-soft: #3d1a1a;
+
+  --ds-shadow-xs: 0 1px 2px #00000066;
+  --ds-shadow-sm: 0 1px 3px #00000080;
+  --ds-shadow-md: 0 8px 24px -4px #000000a6;
+  --ds-shadow-lg: 0 18px 40px -8px #000000cc;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
   body {
     @apply bg-background text-foreground font-sans;
+  }
+  /* Display — Nunito for every heading; always ink, never coloured */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+  }
+  ::selection {
+    background: var(--sky-soft);
+    color: var(--ink);
+  }
+}
+
+/* Eyebrow kicker above a section title: Montserrat 700, uppercase, coral-strong */
+@utility eyebrow {
+  font-family: var(--font-brand);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--coral-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

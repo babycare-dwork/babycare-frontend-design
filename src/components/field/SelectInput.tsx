@@ -71,7 +71,7 @@ export default function SelectInputField({
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                     {label}
-                    {required && <span className="text-red-500 ml-1">*</span>}
+                    {required && <span className="text-danger ml-1">*</span>}
                 </Label>
             )}
             <Select value={selectedValue} onValueChange={handleValueChange} {...props}>
@@ -83,7 +83,7 @@ export default function SelectInputField({
                     aria-describedby={errorId}
                     className={cn(
                         "w-full border border-input focus-visible:ring-0",
-                        error && "border-red-500 focus:ring-red-500 ring-offset-red-500",
+                        error && "border-danger focus:ring-danger ring-offset-danger",
                         className
                     )}
                 >
@@ -100,7 +100,7 @@ export default function SelectInputField({
                 </SelectContent>
             </Select>
             {error && (
-                <p id={errorId} className="text-sm text-red-500 mt-1">
+                <p id={errorId} className="text-sm text-danger mt-1">
                     {error}
                 </p>
             )}

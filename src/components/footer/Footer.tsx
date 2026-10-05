@@ -52,32 +52,32 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-black text-white pt-12 pb-6 sm:pt-16 sm:pb-8">
+    <footer className="bg-navy text-on-navy pt-16 pb-8 sm:pt-24">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-12 sm:mb-16">
           <div className="space-y-4 sm:space-y-6">
-            <Link href="/" className="inline-block">
+            <Link href="/" className="inline-block rounded-2xl bg-surface-raised px-4 py-2">
               <Image
                 src="/logo.png"
                 alt="Babycare Studios Logo"
                 width={100}
                 height={100}
-                className="w-auto h-16 sm:h-20"
+                className="w-auto h-14 sm:h-16"
               />
             </Link>
-            <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
+            <p className="text-sm leading-[22px] text-on-navy/80 max-w-xs">
               A complete baby care platform offering genuine products, smart
               health tools, vaccination tracking, and trusted guidance for
               modern parents.
             </p>
-            <div className="flex gap-4" role="list">
+            <div className="flex gap-3" role="list">
               {socialMediaLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black rounded"
+                  className="flex size-11 items-center justify-center rounded-full bg-on-navy/10 text-on-navy hover:bg-on-navy/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
                   aria-label={`Visit our ${link.label} page`}
                   role="listitem"
                 >
@@ -88,15 +88,15 @@ export function Footer() {
           </div>
 
           <nav aria-label="Services">
-            <h4 className="font-semibold mb-4 sm:mb-6 text-sm sm:text-base uppercase tracking-wider">
+            <h4 className="font-display text-lg leading-[26px] font-bold text-on-navy mb-4 sm:mb-6">
               Services
             </h4>
-            <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
+            <ul className="space-y-3 text-sm leading-[22px] text-on-navy/80">
               {serviceLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="hover:text-white hover:underline transition-colors focus:outline-none focus:text-white"
+                    className="rounded-sm hover:text-on-navy hover:underline underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
                   >
                     {link.label}
                   </Link>
@@ -106,15 +106,15 @@ export function Footer() {
           </nav>
 
           <nav aria-label="Shop Categories">
-            <h4 className="font-semibold mb-4 sm:mb-6 text-sm sm:text-base uppercase tracking-wider">
-              Shop Categories
+            <h4 className="font-display text-lg leading-[26px] font-bold text-on-navy mb-4 sm:mb-6">
+              Shop categories
             </h4>
-            <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
+            <ul className="space-y-3 text-sm leading-[22px] text-on-navy/80">
               {categoryLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="hover:text-white hover:underline transition-colors focus:outline-none focus:text-white"
+                    className="rounded-sm hover:text-on-navy hover:underline underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
                   >
                     {link.label}
                   </Link>
@@ -124,10 +124,10 @@ export function Footer() {
           </nav>
 
           <div>
-            <h4 className="font-semibold mb-4 sm:mb-6 text-sm sm:text-base uppercase tracking-wider">
+            <h4 className="font-display text-lg leading-[26px] font-bold text-on-navy mb-4 sm:mb-6">
               Newsletter
             </h4>
-            <p className="text-sm text-gray-400 mb-4">
+            <p className="text-sm leading-[22px] text-on-navy/80 mb-4">
               Receive 10% off your first order, exclusive updates, inspiration
               and more.
             </p>
@@ -144,14 +144,14 @@ export function Footer() {
                 required
                 aria-required="true"
                 className={cn(
-                  "w-full bg-transparent border-b border-gray-700 py-2 pr-10 text-sm",
-                  "focus:outline-none focus:border-white transition-colors",
-                  "placeholder:text-gray-600",
+                  "h-12 w-full rounded-full border-[1.5px] border-on-navy/40 bg-on-navy/5 pl-5 pr-14 text-base text-on-navy",
+                  "transition-colors focus-visible:outline-none focus-visible:border-sky focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy",
+                  "placeholder:text-on-navy/60",
                 )}
               />
               <button
                 type="submit"
-                className="absolute right-0 bottom-2 text-gray-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded p-1"
+                className="absolute right-1 top-1 flex size-10 items-center justify-center rounded-full bg-coral-strong text-on-coral hover:brightness-94 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
                 aria-label="Subscribe to newsletter"
               >
                 <Send size={16} />
@@ -160,31 +160,31 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-gray-500">
+        <div className="border-t border-on-navy/15 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-on-navy/80">
           <p className="text-center sm:text-left">
             © {new Date().getFullYear()} Babycare Studios. All rights reserved.
           </p>
           <nav
             aria-label="Legal"
-            className="flex flex-wrap justify-center gap-4 sm:gap-6 uppercase tracking-wider"
+            className="flex flex-wrap justify-center gap-4 sm:gap-6"
           >
             <Link
               href="/privacy-policy"
-              className="hover:text-white transition-colors focus:outline-none focus:text-white"
+              className="rounded-sm hover:text-on-navy hover:underline underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
             >
-              Privacy Policy
+              Privacy policy
             </Link>
             <Link
               href="/terms-conditions"
-              className="hover:text-white transition-colors focus:outline-none focus:text-white"
+              className="rounded-sm hover:text-on-navy hover:underline underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
             >
-              Terms & Conditions
+              Terms & conditions
             </Link>
             <Link
               href="#"
-              className="hover:text-white transition-colors focus:outline-none focus:text-white"
+              className="rounded-sm hover:text-on-navy hover:underline underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
             >
-              Orders & Returns
+              Orders & returns
             </Link>
           </nav>
         </div>

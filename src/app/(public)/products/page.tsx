@@ -28,7 +28,7 @@ const FilterSkeleton = ({ count = 4 }: { count?: number }) => (
 );
 
 const ProductSkeleton = () => (
-  <div className="bg-white rounded-xl border overflow-hidden">
+  <div className="bg-card rounded-xl border overflow-hidden">
     <Skeleton className="w-full aspect-square" />
     <div className="p-3 space-y-2">
       <Skeleton className="h-4 w-3/4" />
@@ -120,7 +120,7 @@ function ProductList() {
         <aside
           className={cn(
             "lg:w-64 xl:w-72 fixed lg:sticky lg:top-4 z-40 h-full lg:h-[calc(100vh-2rem)] top-0 left-0 w-80 transition-transform duration-300",
-            "bg-white lg:bg-transparent shadow-xl lg:shadow-none",
+            "bg-card lg:bg-transparent shadow-xl lg:shadow-none",
             isSidebarOpen
               ? "translate-x-0"
               : "-translate-x-full lg:translate-x-0",
@@ -134,8 +134,8 @@ function ProductList() {
               </Button>
             </div>
 
-            <section className="bg-white lg:bg-transparent p-4 lg:p-0 rounded-xl border lg:border-0">
-              <h3 className="font-semibold text-sm uppercase tracking-wide text-gray-500 mb-4">
+            <section className="bg-card lg:bg-transparent p-4 lg:p-0 rounded-xl border lg:border-0">
+              <h3 className="font-semibold text-sm uppercase tracking-wide text-ink-muted mb-4">
                 Categories
               </h3>
               {isLoadingCats ? (
@@ -165,8 +165,8 @@ function ProductList() {
               )}
             </section>
 
-            <section className="bg-white lg:bg-transparent p-4 lg:p-0 rounded-xl border lg:border-0">
-              <h3 className="font-semibold text-sm uppercase tracking-wide text-gray-500 mb-4">
+            <section className="bg-card lg:bg-transparent p-4 lg:p-0 rounded-xl border lg:border-0">
+              <h3 className="font-semibold text-sm uppercase tracking-wide text-ink-muted mb-4">
                 Brands
               </h3>
               {isLoadingBrands ? (
@@ -195,8 +195,8 @@ function ProductList() {
               )}
             </section>
 
-            <section className="bg-white lg:bg-transparent p-4 lg:p-0 rounded-xl border lg:border-0">
-              <h3 className="font-semibold text-sm uppercase tracking-wide text-gray-500 mb-4">
+            <section className="bg-card lg:bg-transparent p-4 lg:p-0 rounded-xl border lg:border-0">
+              <h3 className="font-semibold text-sm uppercase tracking-wide text-ink-muted mb-4">
                 Age Group
               </h3>
               <div className="space-y-3">
@@ -234,7 +234,7 @@ function ProductList() {
             {hasActiveFilters && (
               <Button
                 variant="outline"
-                className="w-full text-red-500 hover:text-red-600 hover:bg-red-50 border-red-200"
+                className="w-full text-danger hover:text-danger hover:bg-danger-soft border-danger/30"
                 onClick={handleReset}
               >
                 Clear All Filters
@@ -244,7 +244,7 @@ function ProductList() {
         </aside>
 
         <div className="flex-1 space-y-6">
-          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-white p-4 rounded-xl border shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-card p-4 rounded-xl border shadow-sm">
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
@@ -297,7 +297,7 @@ function ProductList() {
               )}
             </>
           ) : (
-            <div className="text-center py-20 bg-white rounded-xl border">
+            <div className="text-center py-20 bg-card rounded-xl border">
               <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                 <Search className="h-8 w-8 text-muted-foreground" />
               </div>

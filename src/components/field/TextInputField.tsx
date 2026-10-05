@@ -41,9 +41,9 @@ const TextInputField: React.FC<TextInputFieldProps> = React.memo(({
             {label && (
                 <Label
                     htmlFor={inputId}
-                    className={cn("text-sm font-medium transition-colors", error && "text-red-500")}
+                    className={cn("text-sm font-medium transition-colors", error && "text-danger")}
                 >
-                    {label} {required && <span className="text-red-500">*</span>}
+                    {label} {required && <span className="text-danger">*</span>}
                 </Label>
             )}
 
@@ -52,7 +52,7 @@ const TextInputField: React.FC<TextInputFieldProps> = React.memo(({
                     <div
                         className={cn(
                             "absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground",
-                            error && "text-red-500 pb-5"
+                            error && "text-danger pb-5"
                         )}
                     >
                         <Icon size={16} aria-hidden="true"/>
@@ -71,9 +71,9 @@ const TextInputField: React.FC<TextInputFieldProps> = React.memo(({
                         aria-describedby={error ? `${inputId}-error` : undefined}
                         aria-required={required}
                         className={cn(
-                            "w-full min-h-25 rounded-2xl border px-4 py-3 text-sm shadow-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 dark:bg-background dark:text-white",
+                            "w-full min-h-25 rounded-2xl border px-4 py-3 text-sm shadow-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
                             Icon && "pl-10",
-                            error && "border-red-500 focus-visible:ring-red-500",
+                            error && "border-danger focus-visible:ring-danger",
                             className
                         )}
                         {...props}
@@ -93,7 +93,7 @@ const TextInputField: React.FC<TextInputFieldProps> = React.memo(({
                         className={cn(
                             '',
                             Icon ? "pl-10" : "pl-3",
-                            error && "border-red-500 focus-visible:ring-red-500",
+                            error && "border-danger focus-visible:ring-danger",
                             className
                         )}
                         {...props}
@@ -101,7 +101,7 @@ const TextInputField: React.FC<TextInputFieldProps> = React.memo(({
                 )}
 
                 {error && (
-                    <p id={`${inputId}-error`} className="text-sm text-red-500 mt-1">
+                    <p id={`${inputId}-error`} className="text-sm text-danger mt-1">
                         {error}
                     </p>
                 )}

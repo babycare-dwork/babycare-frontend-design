@@ -55,7 +55,7 @@ const ITEMS_PER_PAGE = 12
 const TOTAL_STARS = 5
 
 const ProductCardSkeleton = () => (
-    <div className="bg-white rounded-lg md:rounded-xl border shadow-sm overflow-hidden">
+    <div className="bg-card rounded-lg md:rounded-xl border shadow-sm overflow-hidden">
         <Skeleton className="aspect-square w-full"/>
         <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
             <Skeleton className="h-4 w-3/4"/>
@@ -75,9 +75,9 @@ const LoadingState = () => (
 
 const EmptyState = () => (
     <div className="text-center py-12 sm:py-16 md:py-20">
-        <div className="bg-white rounded-lg md:rounded-xl border shadow-sm p-8 sm:p-12 max-w-md mx-auto">
-            <Heart className="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-4 text-gray-300"/>
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">No Favorites Yet</h2>
+        <div className="bg-card rounded-lg md:rounded-xl border shadow-sm p-8 sm:p-12 max-w-md mx-auto">
+            <Heart className="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-4 text-line-strong"/>
+            <h2 className="text-lg sm:text-xl font-semibold text-ink mb-2">No Favorites Yet</h2>
             <p className="text-sm sm:text-base text-muted-foreground mb-6">
                 Start adding products to your favorites to see them here
             </p>
@@ -171,7 +171,7 @@ export default function FavoritesPage() {
         return (
             <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
                 <div
-                    className="text-center space-y-2 bg-white border rounded-lg md:rounded-xl p-6 sm:p-8 max-w-md mx-auto">
+                    className="text-center space-y-2 bg-card border rounded-lg md:rounded-xl p-6 sm:p-8 max-w-md mx-auto">
                     <h2 className="text-lg sm:text-xl font-semibold">Unable to Load Favorites</h2>
                     <p className="text-sm sm:text-base text-muted-foreground">Please try again later</p>
                 </div>
@@ -188,7 +188,7 @@ export default function FavoritesPage() {
         <div className="min-h-screen bg-muted/30">
             <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
                 <header className="mb-6 sm:mb-8">
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1 sm:mb-2">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-ink mb-1 sm:mb-2">
                         My Favorites
                     </h1>
                     <p className="text-sm sm:text-base text-muted-foreground">
@@ -212,7 +212,7 @@ export default function FavoritesPage() {
                                 return (
                                     <article
                                         key={product.slug}
-                                        className="bg-white rounded-lg md:rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                                        className="bg-card rounded-lg md:rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-shadow"
                                         role="listitem"
                                     >
                                         <Link
@@ -229,7 +229,7 @@ export default function FavoritesPage() {
                                             />
                                             {hasDiscount && (
                                                 <Badge
-                                                    className="absolute top-2 left-2 bg-red-500 hover:bg-red-600 text-xs">
+                                                    className="absolute top-2 left-2 bg-danger hover:bg-danger text-xs">
                                                     -{product.discount_percent}%
                                                 </Badge>
                                             )}
@@ -264,8 +264,8 @@ export default function FavoritesPage() {
                                                             className={cn(
                                                                 "h-3 w-3 sm:h-3.5 sm:w-3.5",
                                                                 i < Math.floor(product.rating)
-                                                                    ? "fill-yellow-400 text-yellow-400"
-                                                                    : "text-gray-300"
+                                                                    ? "fill-honey text-honey"
+                                                                    : "text-line-strong"
                                                             )}
                                                             aria-hidden="true"
                                                         />
@@ -305,7 +305,7 @@ export default function FavoritesPage() {
                                                     variant="ghost"
                                                     className={cn(
                                                         "h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0",
-                                                        product.liked && "bg-red-50 hover:bg-red-100"
+                                                        product.liked && "bg-danger-soft hover:bg-danger-soft"
                                                     )}
                                                     onClick={() => handleToggleFavorite(product.slug)}
                                                     disabled={isTogglePending}
@@ -315,7 +315,7 @@ export default function FavoritesPage() {
                                                     <Heart
                                                         className={cn(
                                                             "h-4 w-4 transition-all",
-                                                            product.liked ? "fill-red-500 text-red-500" : "text-gray-600"
+                                                            product.liked ? "fill-danger text-danger" : "text-ink-muted"
                                                         )}
                                                     />
                                                 </Button>

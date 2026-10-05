@@ -2,18 +2,24 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function ProductCardSkeleton() {
     return (
-        <div className="rounded-lg border bg-white p-3 space-y-3">
+        <div className="rounded-2xl bg-card p-2.5 shadow-sm sm:p-3 space-y-3">
         {/* Image */}
-        <Skeleton className="h-40 w-full rounded-md" />
+        <Skeleton className="aspect-square w-full rounded-xl" />
 
-        {/* Title */}
-        <Skeleton className="h-4 w-3/4" />
+        <div className="space-y-2 px-1">
+            {/* Title */}
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-3 w-1/2" />
 
-        {/* Price */}
-        <Skeleton className="h-4 w-1/2" />
+            {/* Price */}
+            <Skeleton className="h-5 w-1/3" />
 
-        {/* Button */}
-        <Skeleton className="h-9 w-full rounded-md" />
+            {/* Actions */}
+            <div className="flex gap-2 pt-1">
+                <Skeleton className="h-10 w-24 rounded-full" />
+                <Skeleton className="h-10 flex-1 rounded-full" />
+            </div>
+        </div>
         </div>
     );
 }

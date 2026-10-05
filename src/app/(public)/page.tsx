@@ -13,6 +13,8 @@ import { ArrowRight } from "lucide-react";
 import { AboutStory } from "@/components/header/AboutStory";
 import { DiaperSpotlight } from "@/components/header/DiaperSpotlight";
 import { ShopByAgeSection } from "@/components/header/ShopByAgeSection";
+import { PromoBanner } from "@/components/header/PromoBanner";
+import { SectionHeading } from "@/components/SectionHeading";
 
 export default function Page() {
   const { products, isLoading } = useProducts({
@@ -22,30 +24,24 @@ export default function Page() {
   return (
     <main className="min-h-screen">
       <HeroSection />
+      <FeaturesSection />
       <CategoryList />
+      <PromoBanner />
       <ShopByAgeSection />
-      <DiaperSpotlight />
-      <section className="py-10 sm:py-16 bg-gray-50">
+      <section className="py-16 sm:py-24 bg-surface-sunken">
         <div className="container mx-auto px-4 sm:px-8">
-          <div className="flex items-end justify-between mb-6 sm:mb-10 gap-4">
-            <div>
-              <p className="text-xs font-semibold tracking-wide text-primary mb-1 sm:mb-1.5 uppercase">
-                Authentic &amp; Certified
-              </p>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 mb-1 sm:mb-2 uppercase">
-                Latest <span className="text-primary">In Store</span>
-              </h2>
-              <p className="text-sm sm:text-base text-gray-500 max-w-xl">
-                Discover authentic, pediatrician-approved baby essentials for
-                everyday happiness.
-              </p>
-            </div>
+          <div className="flex items-end justify-between mb-10 sm:mb-12 gap-4">
+            <SectionHeading
+              eyebrow="Authentic & certified"
+              title="Latest in store"
+              lead="Discover authentic, pediatrician-approved baby essentials for everyday happiness."
+            />
 
             <Link
               href="/products"
-              className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 shrink-0"
+              className="hidden sm:flex items-center gap-1.5 rounded-full px-1 text-[15px] font-bold text-shield hover:underline underline-offset-4 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              View All Products
+              View all products
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -63,17 +59,17 @@ export default function Page() {
           <div className="flex justify-center mt-8 sm:hidden">
             <Link
               href="/products"
-              className="flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700"
+              className="flex items-center gap-1.5 text-[15px] font-bold text-shield hover:underline underline-offset-4"
             >
-              View All Products
+              View all products
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
+      <DiaperSpotlight />
       <AboutStory />
       <TestimonialSection />
-      <FeaturesSection />
       <AppPromo />
       <VendorCTASection />
     </main>

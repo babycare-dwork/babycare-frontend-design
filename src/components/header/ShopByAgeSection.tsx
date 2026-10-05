@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { SectionHeading } from "@/components/SectionHeading";
+import { toneClasses, toneOrder } from "@/components/Tag";
 import {
   Baby,
   Footprints,
@@ -17,30 +19,40 @@ export const ageStages = [
     value: "0-6",
     tagline: "Newborn essentials",
     icon: Baby,
+    range: "0–6",
+    unit: "months",
   },
   {
     label: "6 - 12 Months",
     value: "6-12",
     tagline: "Exploring & teething",
     icon: Sparkles,
+    range: "6–12",
+    unit: "months",
   },
   {
     label: "12 - 24 Months",
     value: "12-24",
     tagline: "First steps",
     icon: Footprints,
+    range: "1–2",
+    unit: "years",
   },
   {
     label: "24 - 36 Months",
     value: "24-36",
     tagline: "Active toddler",
     icon: Backpack,
+    range: "2–3",
+    unit: "years",
   },
   {
     label: "36 Months+",
     value: "36+",
     tagline: "Big kid essentials",
     icon: PartyPopper,
+    range: "3+",
+    unit: "years",
   },
 ];
 
@@ -63,62 +75,66 @@ const cardVariants = {
 
 export function ShopByAgeSection() {
   return (
-    <section className="py-10 sm:py-16 bg-white">
+    <section className="py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-8">
-        <div className="flex items-end justify-between mb-6 sm:mb-10 gap-4">
-          <div>
-            <p className="text-xs font-semibold tracking-wide text-primary mb-1 sm:mb-1.5 uppercase">
-              Growth Stages
-            </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 mb-1 sm:mb-2">
-              <span className="text-gray-800">Shop by</span>{" "}
-              <span className="text-primary">Age</span>
-            </h2>
-            <p className="text-sm sm:text-base text-gray-500 max-w-xl">
-              Find products picked for your little one&apos;s exact stage of
-              growth.
-            </p>
-          </div>
-        </div>
+        <SectionHeading
+          eyebrow="Growth stages"
+          title="Shop by age"
+          lead="Find products picked for your little one's exact stage of growth."
+          align="center"
+          className="mb-10 sm:mb-12"
+        />
 
-        <motion.div
+        <motion.ul
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5"
+          className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-5"
         >
-          {ageStages.map((stage) => {
+          {ageStages.map((stage, i) => {
             const Icon = stage.icon;
+            const tone = toneClasses[toneOrder[i % toneOrder.length]];
             return (
-              <motion.div key={stage.value} variants={cardVariants}>
+              <motion.li
+                key={stage.value}
+                variants={cardVariants}
+                className={
+                  i === ageStages.length - 1 ? "col-span-2 sm:col-span-1" : ""
+                }
+              >
                 <Link
-                  href={`/products?stage=${encodeURIComponent(stage.value)}`}
-                  className="group relative flex flex-col items-center text-center h-full rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 transition-all duration-300"
+                  href={`/products?stage=${stage.value}`}
+                  aria-label={`Shop ${stage.label} — ${stage.tagline}`}
+                  className={`group relative flex h-full flex-col items-center overflow-hidden rounded-t-[999px] rounded-b-2xl ${tone.bg} px-4 pb-6 pt-10 text-center transition-transform duration-200 ease-out hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background`}
                 >
-                  <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary/10 mb-4 group-hover:bg-primary group-hover:scale-105 transition-all duration-300">
-                    <Icon
-                      className="w-7 h-7 sm:w-8 sm:h-8 text-primary group-hover:text-white transition-colors duration-300"
-                      strokeWidth={1.75}
-                    />
-                  </div>
+                  <span
+                    className={`mb-4 flex size-14 items-center justify-center rounded-full bg-surface-raised shadow-sm ${tone.ink}`}
+                  >
+                    <Icon className="size-6" aria-hidden="true" />
+                  </span>
 
-                  <p className="text-[11px] sm:text-xs font-medium text-gray-400 mb-1">
+                  <span className="font-brand text-[34px] leading-10 font-bold tracking-[-0.01em] text-ink sm:text-[40px] sm:leading-[44px]">
+                    {stage.range}
+                  </span>
+                  <span className="mb-3 text-sm font-bold text-ink-muted">
+                    {stage.unit}
+                  </span>
+                  <span className="mb-5 text-sm leading-5 text-ink-muted">
                     {stage.tagline}
-                  </p>
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-3">
-                    {stage.label}
-                  </h3>
+                  </span>
 
-                  <span className="mt-auto inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-primary">
-                    Shop
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <span
+                    className={`mt-auto flex size-10 items-center justify-center rounded-full bg-surface-raised ${tone.ink} shadow-sm transition-transform duration-200 ease-out group-hover:translate-x-1`}
+                    aria-hidden="true"
+                  >
+                    <ArrowRight className="size-4" />
                   </span>
                 </Link>
-              </motion.div>
+              </motion.li>
             );
           })}
-        </motion.div>
+        </motion.ul>
       </div>
     </section>
   );

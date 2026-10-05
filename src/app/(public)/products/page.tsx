@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useCallback, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useProducts } from "@/hooks/useProduct";
 import { useCategories } from "@/hooks/useCategories";
 import { useBrands } from "@/hooks/useBrand";
@@ -55,6 +55,15 @@ function ProductList() {
     ageStages.some((s) => s.value === stageFromUrl) ? stageFromUrl : null,
   );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    setSelectedStage(
+      ageStages.some((s) => s.value === stageFromUrl) ? stageFromUrl : null,
+    );
+    setSelectedCategory(categoryFromUrl);
+    setSearch(query);
+    setPage(1);
+  }, [stageFromUrl, categoryFromUrl, query]);
 
   const { products, isLoading, totalPages } = useProducts({
     page,

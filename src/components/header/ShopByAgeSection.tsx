@@ -93,7 +93,7 @@ export function ShopByAgeSection() {
             return (
               <motion.div key={stage.value} variants={cardVariants}>
                 <Link
-                  href={`/products?stage=${stage.value}`}
+                  href={`/products?stage=${encodeURIComponent(stage.value)}`}
                   className="group relative flex flex-col items-center text-center h-full rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 transition-all duration-300"
                 >
                   <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary/10 mb-4 group-hover:bg-primary group-hover:scale-105 transition-all duration-300">

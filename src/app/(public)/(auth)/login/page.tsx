@@ -57,7 +57,7 @@ export default function LoginPage() {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log("Google Response:", tokenResponse);
+      // console.log("Google Response:", tokenResponse);
       try {
         const response = await authService.googleLogin({
           token: tokenResponse.access_token,

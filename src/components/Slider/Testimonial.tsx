@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -127,7 +129,10 @@ export function TestimonialSection() {
             </blockquote>
 
             <figcaption className="mb-10 flex items-center gap-3">
-              <span className="h-0.5 w-10 rounded-full bg-coral" aria-hidden="true" />
+              <span
+                className="h-0.5 w-10 rounded-full bg-coral"
+                aria-hidden="true"
+              />
               <span className="font-display text-lg font-bold text-ink">
                 {currentTestimonial.name}
               </span>

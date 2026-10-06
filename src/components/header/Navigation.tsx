@@ -68,7 +68,9 @@ function CountBadge({
     <span
       className={cn(
         "pointer-events-none absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold leading-none ring-2 ring-background",
-        tone === "orange" ? "bg-coral-strong text-on-coral" : "bg-danger text-surface-raised",
+        tone === "orange"
+          ? "bg-coral-strong text-on-coral"
+          : "bg-danger text-surface-raised",
       )}
     >
       {count > 99 ? "99+" : count}
@@ -282,20 +284,36 @@ export default function NavigationBar({ className }: { className?: string }) {
             >
               <Smartphone className="size-3.5 text-sky" aria-hidden="true" />
               Get the app
-              <ChevronRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
+              <ChevronRight
+                className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
             </a>
             <div className="flex items-center gap-5">
-              <a href={`tel:${BABY_CARE_PHONE1}`} className="flex items-center gap-1.5 rounded-sm transition-colors hover:text-on-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy">
+              <a
+                href={`tel:${BABY_CARE_PHONE1}`}
+                className="flex items-center gap-1.5 rounded-sm transition-colors hover:text-on-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+              >
                 <Phone className="size-3.5 text-sky" aria-hidden="true" />
                 <span className="hidden lg:inline">{BABY_CARE_PHONE1}</span>
-                <span className="sr-only lg:hidden">Call {BABY_CARE_PHONE1}</span>
+                <span className="sr-only lg:hidden">
+                  Call {BABY_CARE_PHONE1}
+                </span>
               </a>
-              <a href={`tel:${BABY_CARE_PHONE2}`} className="flex items-center gap-1.5 rounded-sm transition-colors hover:text-on-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy">
+              <a
+                href={`tel:${BABY_CARE_PHONE2}`}
+                className="flex items-center gap-1.5 rounded-sm transition-colors hover:text-on-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+              >
                 <Phone className="size-3.5 text-sky" aria-hidden="true" />
                 <span className="hidden lg:inline">{BABY_CARE_PHONE2}</span>
-                <span className="sr-only lg:hidden">Call {BABY_CARE_PHONE2}</span>
+                <span className="sr-only lg:hidden">
+                  Call {BABY_CARE_PHONE2}
+                </span>
               </a>
-              <span className="hidden h-3.5 w-px bg-on-navy/25 xl:block" aria-hidden="true" />
+              <span
+                className="hidden h-3.5 w-px bg-on-navy/25 xl:block"
+                aria-hidden="true"
+              />
               <span className="hidden items-center gap-1.5 xl:flex">
                 <MapPin className="size-3.5 text-sky" aria-hidden="true" />
                 {BABY_CARE_ADDRESS}
@@ -396,11 +414,7 @@ export default function NavigationBar({ className }: { className?: string }) {
               ) : isLoading ? (
                 <div className="hidden h-10 w-10 animate-pulse rounded-full bg-muted sm:block" />
               ) : (
-                <Button
-                  asChild
-                  size="sm"
-                  className="ml-1 hidden px-6 sm:flex"
-                >
+                <Button asChild size="sm" className="ml-1 hidden px-6 sm:flex">
                   <Link href="/login">Login</Link>
                 </Button>
               )}
@@ -457,7 +471,7 @@ export default function NavigationBar({ className }: { className?: string }) {
       {/* Mobile drawer (outside header so backdrop-blur does not trap it) */}
       <div
         className={cn(
-          "fixed inset-0 z-60 lg:hidden",
+          "fixed inset-0 z-50 lg:hidden",
           isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
         aria-hidden={!isMobileMenuOpen}
@@ -538,9 +552,7 @@ export default function NavigationBar({ className }: { className?: string }) {
                     <ChevronRight
                       className={cn(
                         "h-4 w-4",
-                        active
-                          ? "text-coral-strong"
-                          : "text-muted-foreground",
+                        active ? "text-coral-strong" : "text-muted-foreground",
                       )}
                     />
                   </Link>
@@ -568,7 +580,9 @@ export default function NavigationBar({ className }: { className?: string }) {
                         <span
                           className={cn(
                             "flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold text-white",
-                            href === "/cart" ? "bg-coral-strong text-on-coral" : "bg-danger text-surface-raised",
+                            href === "/cart"
+                              ? "bg-coral-strong text-on-coral"
+                              : "bg-danger text-surface-raised",
                           )}
                         >
                           {count > 99 ? "99+" : count}

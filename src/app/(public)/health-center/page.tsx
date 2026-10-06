@@ -306,7 +306,7 @@ export default function HealthCenter() {
       {/* Map + Sidebar */}
       <div className="flex flex-1 overflow-hidden">
         {/* ── Map ── */}
-        <div className="flex-1 relative">
+        <div className="flex-1 relative isolate z-10">
           <MapView
             userLocation={userLocation}
             hospitals={filtered}

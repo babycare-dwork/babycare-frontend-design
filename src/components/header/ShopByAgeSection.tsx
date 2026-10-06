@@ -99,10 +99,12 @@ export function ShopByAgeSection() {
               <motion.li
                 key={stage.value}
                 variants={cardVariants}
-                className={i === ageStages.length - 1 ? "col-span-2 sm:col-span-1" : ""}
+                className={
+                  i === ageStages.length - 1 ? "col-span-2 sm:col-span-1" : ""
+                }
               >
                 <Link
-                  href={`/products?stage=${stage.value}`}
+                  href={`/products?stage=${encodeURIComponent(stage.value)}`}
                   aria-label={`Shop ${stage.label} — ${stage.tagline}`}
                   className={`group relative flex h-full flex-col items-center overflow-hidden rounded-t-[999px] rounded-b-2xl ${tone.bg} px-4 pb-6 pt-10 text-center transition-transform duration-200 ease-out hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background`}
                 >
@@ -112,7 +114,7 @@ export function ShopByAgeSection() {
                     <Icon className="size-6" aria-hidden="true" />
                   </span>
 
-                  <span className="font-brand text-[34px] leading-10 font-bold tracking-[-0.01em] text-ink sm:text-[40px] sm:leading-[44px]">
+                  <span className="font-brand text-[34px] leading-10 font-bold tracking-[-0.01em] text-ink sm:text-[40px] sm:leading-11">
                     {stage.range}
                   </span>
                   <span className="mb-3 text-sm font-bold text-ink-muted">

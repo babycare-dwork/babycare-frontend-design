@@ -595,7 +595,7 @@ export default function ProductDetail() {
                   </Button>
                 </div>
 
-                <div className="flex flex-col xs:flex-row gap-2 sm:gap-3">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <Button
                     className={cn(
                       "flex-1 h-9 sm:h-10 lg:h-11 text-sm sm:text-base",

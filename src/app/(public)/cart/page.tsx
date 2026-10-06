@@ -100,7 +100,6 @@ export default function CartPage() {
       itemCount: selectedItemsList.length,
     };
   }, [cartItems, selectedItems]);
-  console.log("selectedItems", selectedItems);
 
   const handleCheckout = useCallback(() => {
     if (selectedItems.size === 0) {

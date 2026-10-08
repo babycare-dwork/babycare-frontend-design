@@ -148,7 +148,7 @@ export default function LoginPage() {
           <Button
             type="button"
             onClick={() => googleLogin()}
-            className="w-full h-11 rounded-lg border border-border bg-card text-ink flex items-center justify-center gap-3 hover:text-white cursor-pointer"
+            className="w-full h-11 rounded-lg border border-border bg-card text-ink flex items-center justify-center gap-3 hover:text-gray-600 cursor-pointer"
           >
             <Image
               src={"/google.svg"}

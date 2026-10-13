@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram, Youtube, Send } from "lucide-react";
+import { Facebook, Instagram, Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -10,6 +10,12 @@ import {
   BABY_CARE_INSTAGRAM_URL,
 } from "@/config/app-constant";
 import { cn } from "@/lib/utils";
+import { useCategories } from "@/hooks/useCategories";
+
+const FOOTER_CATEGORY_LIMIT = 5;
+
+const linkClass =
+  "rounded-sm hover:text-on-navy hover:underline underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy";
 
 export function Footer() {
   const socialMediaLinks = [
@@ -26,18 +32,17 @@ export function Footer() {
   ];
 
   const serviceLinks = [
-    { label: "Vaccination Schedules", href: "#" },
-    { label: "Healthcare Centers", href: "#" },
-    { label: "Baby Care Tips", href: "#" },
-    { label: "Expert Guidance", href: "#" },
+    { label: "Vaccination Schedules", href: "/vaccination-schedule" },
+    { label: "Healthcare Centers", href: "/health-center" },
+    { label: "Baby Care Tips", href: "/healthy-tips" },
+    // { label: "Expert Guidance", href: "#" },
   ];
 
-  const categoryLinks = [
-    { label: "Nutrition", href: "#" },
-    { label: "Baby Care & Bath", href: "#" },
-    { label: "Feeding & Nursing", href: "#" },
-    { label: "Diapers & Changing", href: "#" },
-  ];
+  const { categories, isLoading } = useCategories({
+    per_page: FOOTER_CATEGORY_LIMIT,
+  });
+
+  const footerCategories = categories.slice(0, FOOTER_CATEGORY_LIMIT);
 
   const [email, setEmail] = useState("");
 
@@ -56,7 +61,10 @@ export function Footer() {
       <div className="container mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-12 sm:mb-16">
           <div className="space-y-4 sm:space-y-6">
-            <Link href="/" className="inline-block rounded-2xl bg-surface-raised px-4 py-2">
+            <Link
+              href="/"
+              className="inline-block rounded-2xl bg-surface-raised px-4 py-2"
+            >
               <Image
                 src="/logo.png"
                 alt="Babycare Studios Logo"
@@ -106,20 +114,26 @@ export function Footer() {
           </nav>
 
           <nav aria-label="Shop Categories">
-            <h4 className="font-display text-lg leading-[26px] font-bold text-on-navy mb-4 sm:mb-6">
+            <h4 className="font-display text-lg leading-6.5 font-bold text-on-navy mb-4 sm:mb-6">
               Shop categories
             </h4>
-            <ul className="space-y-3 text-sm leading-[22px] text-on-navy/80">
-              {categoryLinks.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="rounded-sm hover:text-on-navy hover:underline underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-3 text-sm leading-5.5 text-on-navy/80">
+              {isLoading
+                ? Array.from({ length: FOOTER_CATEGORY_LIMIT }).map((_, i) => (
+                    <li key={i} aria-hidden="true">
+                      <div className="h-4 w-32 animate-pulse rounded bg-on-navy/10" />
+                    </li>
+                  ))
+                : footerCategories.map((category) => (
+                    <li key={category.slug}>
+                      <Link
+                        href={`/products?category=${category.slug}`}
+                        className={linkClass}
+                      >
+                        {category.name}
+                      </Link>
+                    </li>
+                  ))}
             </ul>
           </nav>
 

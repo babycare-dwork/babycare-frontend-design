@@ -30,6 +30,10 @@ import PaymentMethodSelector, {
   PaymentMethod,
 } from "@/components/checkout/PaymentMethodSelector";
 import { redirectToEsewa } from "@/lib/esewa";
+import CheckoutSkeleton, {
+  OrderItemsSkeleton,
+  SummarySkeleton,
+} from "@/components/skeleton/CheckoutSkeleton";
 
 interface Address {
   id: string;
@@ -97,24 +101,6 @@ export default function CheckoutPage() {
     setCheckoutItemUuids(paramItems);
   }, [searchParams, router]);
 
-  // const {data, isLoading} = useQuery({
-  //     queryKey: ["checkout-items", checkoutItemUuids],
-  //     queryFn: () => cartService.getCartDetails(checkoutItemUuids),
-  //     enabled: checkoutItemUuids.length > 0,
-  // })
-  // const { data, isLoading } = useQuery({
-  //     queryKey: ["checkout-items", checkoutItemUuids, quantity],
-  //     queryFn: () => {
-  //         const payload = checkoutItemUuids.map((uuid) => ({
-  //             uuid,
-  //             quantity: Number(quantity) ?? 1,
-  //         }));
-
-  //         return cartService.getCartDetails(payload);
-  //     },
-  //     enabled: checkoutItemUuids.length > 0,
-  // });
-
   const { data, isLoading } = useQuery({
     queryKey: ["checkout-items", checkoutItemUuids, quantity],
     queryFn: () => {
@@ -131,6 +117,8 @@ export default function CheckoutPage() {
     },
     enabled: checkoutItemUuids.length > 0,
   });
+
+  const itemsLoading = isLoading || checkoutItemUuids.length === 0;
 
   const { data: addressData, isLoading: addressLoading } = useQuery({
     queryKey: ["address"],
@@ -208,10 +196,6 @@ export default function CheckoutPage() {
     [orderItems, router],
   );
 
-  if (isLoading) {
-    return <CartPageSkeleton />;
-  }
-
   return (
     <main className="min-h-screen bg-background">
       <div className="container mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 lg:py-8">
@@ -228,9 +212,13 @@ export default function CheckoutPage() {
                 </h2>
                 <Separator />
                 <div className="space-y-3">
-                  {orderItems.map((item: CartItem) => (
-                    <CheckOutItemCard key={item.item_uuid} item={item} />
-                  ))}
+                  {itemsLoading ? (
+                    <OrderItemsSkeleton />
+                  ) : (
+                    orderItems.map((item: CartItem) => (
+                      <CheckOutItemCard key={item.item_uuid} item={item} />
+                    ))
+                  )}
                 </div>
               </article>
 
@@ -362,35 +350,20 @@ export default function CheckoutPage() {
                   disabled={isPending}
                 />
               </article>
-
-              {/* <Button
-                type="submit"
-                className="w-full lg:hidden"
-                size="lg"
-                disabled={isPending || orderItems.length === 0}
-                aria-busy={isPending}
-              >
-                {isPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Placing Order...
-                  </>
-                ) : paymentMethod === "Esewa" ? (
-                  "Pay with eSewa"
-                ) : (
-                  "Place Order"
-                )}
-              </Button> */}
             </section>
 
             <aside className="lg:col-span-5">
-              <SummaryCard
-                orderItems={orderItems}
-                shipping={orderSummary.shipping}
-                isPending={isPending}
-                paymentMethod={paymentMethod}
-                onPlaceOrder={handleSubmit(onSubmit)}
-              />
+              {itemsLoading ? (
+                <SummarySkeleton />
+              ) : (
+                <SummaryCard
+                  orderItems={orderItems}
+                  shipping={orderSummary.shipping}
+                  isPending={isPending}
+                  paymentMethod={paymentMethod}
+                  onPlaceOrder={handleSubmit(onSubmit)}
+                />
+              )}
             </aside>
           </div>
         </form>

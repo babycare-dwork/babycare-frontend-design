@@ -1,5 +1,6 @@
 import { PageParams } from "@/config/app-constant";
 import HttpService from "@/Service/httpService";
+import { CalculatorResult, InfantCalculatorPayload } from "@/types/infant.type";
 import { VaccineStatus } from "@/types/vaccine";
 
 class BabyService extends HttpService {
@@ -97,23 +98,12 @@ class BabyService extends HttpService {
     }
   }
 
-  async infantCalculator(payload: {
-    head_circumference: number;
-    weight: number;
-    height: number;
-    infant_id: number;
-  }) {
-    try {
-      return await this.postRequest({
-        url: "/infant-calculator",
-        config: {
-          auth: true,
-          params: payload,
-        },
-      });
-    } catch (error) {
-      throw error;
-    }
+  async infantCalculator(payload: InfantCalculatorPayload) {
+    return this.postRequest<{ data: CalculatorResult }>({
+      url: "/infant-calculator",
+      data: payload,
+      config: { auth: true },
+    });
   }
 
   async getInfantCalculatorHistory(infantId: number, params?: PageParams) {

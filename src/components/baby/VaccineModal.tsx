@@ -46,7 +46,6 @@ const VaccineFormModal: React.FC<VaccineModalProps> = ({
     queryFn: () => babyService.getVaccines(babyId),
     enabled: open,
   });
-  //   console.log("getVaccines", data);
 
   const vaccines: Vaccine[] = useMemo(() => {
     const payload = data?.data?.data;
@@ -57,11 +56,8 @@ const VaccineFormModal: React.FC<VaccineModalProps> = ({
     return [];
   }, [data]);
 
-  //   console.log("vaccines", vaccines);
-
   const updateVaccineStatus = useMutation({
     mutationFn: async (id: number) => {
-      //   console.log("Vaccine Id", id);
       await babyService.updateBabyVaccineDate(babyId, id);
     },
     onSuccess: () => {
@@ -193,7 +189,9 @@ const VaccineItem: React.FC<VaccineItemProps> = ({
           <Label
             htmlFor={`vaccine-${vaccine.id}`}
             className={`text-sm font-medium cursor-pointer ${
-              isCompleted ? "text-ink-muted cursor-not-allowed" : "text-ink-muted"
+              isCompleted
+                ? "text-ink-muted cursor-not-allowed"
+                : "text-ink-muted"
             }`}
           >
             {isCompleted ? "Completed" : "Mark as Complete"}

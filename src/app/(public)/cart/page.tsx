@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Loader2, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useCallback, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,9 +12,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import cartService from "@/Service/cart.service";
 import { formatPrice } from "@/lib/utils";
 import { toast } from "sonner";
-import { QUERY_STALE_TIME } from "@/config/app-constant";
 import { CartSummaryCard } from "@/app/(public)/cart/CartSummaryCard";
-import { useAuth } from "@/hooks/useAuth";
 import { CartPageSkeleton } from "@/components/skeleton/CartPageSkeleton";
 
 export interface CartItem {

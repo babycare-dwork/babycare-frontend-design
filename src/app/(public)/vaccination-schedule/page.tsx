@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { AlertCircle, Calendar, Loader2, Shield, Syringe } from "lucide-react";
+import { AlertCircle, Calendar, Shield, Syringe } from "lucide-react";
 import { QUERY_STALE_TIME } from "@/config/app-constant";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

@@ -27,7 +27,6 @@ export const useCategories = (params?: UseCategoriesOptions) => {
     queryKey: ["categories", params],
     queryFn: async () => {
       return await categoriesService.getAllCategories(params).then((res) => {
-        // console.log('Response', res)
         return res;
       });
     },

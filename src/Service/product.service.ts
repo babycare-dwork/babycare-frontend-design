@@ -10,10 +10,8 @@ class ProductService extends HttpServices {
           auth: true,
         },
       });
-      // console.log('Response from Product', response);
       return response;
     } catch (error) {
-      console.log("Error from Product", error);
       throw error;
     }
   }
@@ -50,10 +48,8 @@ class ProductService extends HttpServices {
           auth: true,
         },
       });
-      //   console.log("Added to favorite", response);
       return response;
     } catch (error) {
-      console.log("Error adding to favorite", error);
       throw error;
     }
   }

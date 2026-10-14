@@ -57,7 +57,6 @@ export default function LoginPage() {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      // console.log("Google Response:", tokenResponse);
       try {
         const response = await authService.googleLogin({
           token: tokenResponse.access_token,
@@ -71,7 +70,8 @@ export default function LoginPage() {
       }
     },
     onError: (errorResponse) => {
-      console.log("Google Login Response", errorResponse);
+      console.error("Google login failed:", errorResponse.error);
+      toast.error("Google login failed");
     },
   });
 

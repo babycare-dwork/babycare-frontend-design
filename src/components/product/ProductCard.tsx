@@ -143,6 +143,7 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
             alt={name}
             width={260}
             height={260}
+            sizes="(min-width: 1280px) 20vw, (min-width: 768px) 33vw, 50vw"
             className="h-full w-full object-contain p-3 mix-blend-multiply transition-transform duration-300 ease-out group-hover:scale-105 sm:p-4"
             loading="lazy"
           />

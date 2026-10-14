@@ -3,7 +3,7 @@ import { Calendar, Clock, Edit2, Syringe, Trash2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ActionModal from "@/components/ActionModal";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import babyService from "@/Service/baby.service";
 import BabyFormModal from "@/components/baby/BabyFormModal";
 import VaccineFormModal from "@/components/baby/VaccineModal";
@@ -36,12 +36,6 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDeleteAction }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isVaccineModalOpen, setIsVaccineModalOpen] = useState(false);
-
-  const { data: vaccines = [] } = useQuery({
-    queryKey: ["baby-vaccines", baby.id],
-    queryFn: () => babyService.getVaccines(baby.id),
-    enabled: isVaccineModalOpen,
-  });
 
   const deleteBabyMutation = useMutation({
     mutationFn: (id: number) => babyService.deleteBaby(id),
@@ -92,29 +86,6 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDeleteAction }) => {
     setIsVaccineModalOpen(true);
   }, []);
 
-  const formatDateDisplay = useCallback((date: string) => {
-    try {
-      const d = new Date(date);
-      const months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-    } catch {
-      return date;
-    }
-  }, []);
-
   const getGenderColor = (gender: string) => {
     switch (gender) {
       case "MALE":
@@ -163,7 +134,8 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDeleteAction }) => {
               src={baby.image}
               alt={baby.name}
               fill
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
+              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
               loading="lazy"
             />
           ) : (
@@ -186,7 +158,7 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDeleteAction }) => {
               {baby.name}
             </h3>
             <div className="flex items-center gap-2 text-ink-muted">
-              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
               <span className="text-xs sm:text-sm font-medium">
                 {calculateAge(baby.dob)} old
               </span>
@@ -195,7 +167,7 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDeleteAction }) => {
 
           <div className="mb-4 sm:mb-6 pt-3 sm:pt-4 border-t border-border">
             <div className="flex items-center gap-2 text-xs sm:text-sm text-ink-muted">
-              <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+              <Clock className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
               <span className="truncate">Born: {baby.dob}</span>
             </div>
           </div>

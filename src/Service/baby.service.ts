@@ -57,6 +57,12 @@ class BabyService extends HttpService {
     });
   }
 
+  async getAllVaccines() {
+    return this.getRequest({
+      url: "/fetch-all-vaccines",
+    });
+  }
+
   async updateBaby(id: number, data: any) {
     try {
       data.append("_method", "PATCH");

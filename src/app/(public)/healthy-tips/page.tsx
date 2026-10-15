@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import babyService from "@/Service/babay.service";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CustomPagination from "@/components/Custom-Pagination";
@@ -13,6 +12,7 @@ import Image from "next/image";
 import { QUERY_STALE_TIME } from "@/config/app-constant";
 import BlogSkeleton from "../vaccination-schedule/loading";
 import { useDebounce } from "@/hooks/useDebounce";
+import tipsService from "@/Service/tips.service";
 
 interface BlogItem {
   title: string;
@@ -43,7 +43,7 @@ export default function HealthyTips() {
   const { data, isLoading, error, refetch } = useQuery<BlogResponse>({
     queryKey: ["healthy-tips", currentPage, debouncedSearch],
     queryFn: async () =>
-      babyService.getHealthyTips({
+      tipsService.getHealthyTips({
         page: currentPage,
         per_page: perPage,
         search: debouncedSearch.trim(),

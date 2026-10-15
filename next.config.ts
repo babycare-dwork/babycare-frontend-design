@@ -19,6 +19,7 @@ const remotePatterns = baseUrl
   : [];
 
 const nextConfig: NextConfig = {
+  reactCompiler: { compilationMode: "annotation" },
   allowedDevOrigins: process.env.ALLOWED_DEV_ORIGINS?.split(",") ?? [],
   compiler: {
     removeConsole: isProd ? { exclude: ["error"] } : false,

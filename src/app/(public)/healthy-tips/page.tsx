@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import CustomPagination from "@/components/Custom-Pagination";
 import { AlertCircle, BookOpen, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -56,10 +56,6 @@ export default function HealthyTips() {
   const totalPages = useMemo(() => data?.data?.total_page || 0, [data]);
   const totalItems = useMemo(() => data?.data?.total_items || 0, [data]);
 
-  useEffect(() => {
-    if (debouncedSearch !== search) setCurrentPage(1);
-  }, [debouncedSearch, search]);
-
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -74,6 +70,15 @@ export default function HealthyTips() {
     (slug: string) => router.push(`/healthy-tips/${slug}`),
     [router],
   );
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(e.target.value);
+      setCurrentPage(1);
+    },
+    [],
+  );
+
   const handleClearSearch = useCallback(() => {
     setSearch("");
     setCurrentPage(1);
@@ -129,7 +134,7 @@ export default function HealthyTips() {
                 type="text"
                 placeholder="Search healthy tips..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={handleSearchChange}
                 onKeyPress={handleSearchKeyPress}
                 className="pl-10 h-11"
                 disabled={isLoading}

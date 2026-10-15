@@ -28,7 +28,7 @@ import { cn, formatPrice } from "@/lib/utils";
 import type { AxiosError } from "axios";
 import cartService from "@/Service/cart.service";
 import { useAuth } from "@/hooks/useAuth";
-
+import DOMPurify from "dompurify";
 export interface Category {
   name: string;
   slug: string;
@@ -135,6 +135,69 @@ const getErrorMessage = (error: unknown): string => {
   return "An unexpected error occurred";
 };
 
+function ProductDescription({ html }: { html: string }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const [el, setEl] = useState<HTMLDivElement | null>(null);
+
+  const safeHtml = useMemo(() => DOMPurify.sanitize(html), [html]);
+
+  useEffect(() => {
+    if (!el) return;
+
+    const check = () =>
+      setIsOverflowing(el.scrollHeight > DESCRIPTION_COLLAPSED_HEIGHT + 1);
+
+    const observer = new ResizeObserver(check);
+    observer.observe(el);
+    Array.from(el.children).forEach((child) => observer.observe(child));
+
+    return () => observer.disconnect();
+  }, [el, html]);
+
+  return (
+    <div>
+      <h2 className="font-semibold mb-2 text-sm sm:text-base">Description</h2>
+
+      <div className="relative">
+        <div
+          ref={setEl}
+          className="prose prose-sm max-w-none text-muted-foreground text-xs sm:text-sm overflow-hidden transition-[max-height] duration-300"
+          style={{
+            maxHeight: isExpanded
+              ? el?.scrollHeight
+              : DESCRIPTION_COLLAPSED_HEIGHT,
+          }}
+          dangerouslySetInnerHTML={{ __html: safeHtml }}
+        />
+        {isOverflowing && !isExpanded && (
+          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-card to-transparent" />
+        )}
+      </div>
+
+      {isOverflowing && (
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => setIsExpanded((prev) => !prev)}
+          className="mt-2 inline-flex items-center gap-1 text-xs sm:text-sm font-medium text-primary hover:underline"
+          aria-expanded={isExpanded}
+        >
+          {isExpanded ? (
+            <>
+              See less <ChevronUp className="h-3.5 w-3.5" />
+            </>
+          ) : (
+            <>
+              See more <ChevronDown className="h-3.5 w-3.5" />
+            </>
+          )}
+        </Button>
+      )}
+    </div>
+  );
+}
+
 export default function ProductDetail() {
   const params = useParams();
   const router = useRouter();
@@ -146,13 +209,6 @@ export default function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(MIN_QUANTITY);
 
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [isDescriptionOverflowing, setIsDescriptionOverflowing] =
-    useState(false);
-  const [descriptionEl, setDescriptionEl] = useState<HTMLDivElement | null>(
-    null,
-  );
-
   const { data, isLoading, error } = useQuery<ProductDetailsResponse>({
     queryKey: ["product", slug],
     queryFn: () => productService.getProduct(slug as string),
@@ -162,30 +218,6 @@ export default function ProductDetail() {
   });
 
   const product = data?.data;
-
-  useEffect(() => {
-    if (!descriptionEl) return;
-
-    const check = () =>
-      setIsDescriptionOverflowing(
-        descriptionEl.scrollHeight > DESCRIPTION_COLLAPSED_HEIGHT + 1,
-      );
-
-    check();
-
-    const observer = new ResizeObserver(check);
-    observer.observe(descriptionEl);
-    // Children resize even while the container is clamped
-    Array.from(descriptionEl.children).forEach((child) =>
-      observer.observe(child),
-    );
-
-    return () => observer.disconnect();
-  }, [descriptionEl, product?.description]);
-
-  useEffect(() => {
-    setIsDescriptionExpanded(false);
-  }, [slug]);
 
   const { mutate: addToCart, isPending: isCartPending } = useMutation({
     mutationFn: (payload: { slug: string; quantity: number }) =>
@@ -488,49 +520,7 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              <div>
-                <h2 className="font-semibold mb-2 text-sm sm:text-base">
-                  Description
-                </h2>
-
-                <div className="relative">
-                  <div
-                    ref={setDescriptionEl}
-                    className="prose prose-sm max-w-none text-muted-foreground text-xs sm:text-sm overflow-hidden transition-[max-height] duration-300"
-                    style={{
-                      maxHeight: isDescriptionExpanded
-                        ? descriptionEl?.scrollHeight
-                        : DESCRIPTION_COLLAPSED_HEIGHT,
-                    }}
-                    dangerouslySetInnerHTML={{ __html: product.description }}
-                  />
-
-                  {/* Fade overlay when collapsed */}
-                  {isDescriptionOverflowing && !isDescriptionExpanded && (
-                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-card to-transparent" />
-                  )}
-                </div>
-
-                {isDescriptionOverflowing && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    onClick={() => setIsDescriptionExpanded((prev) => !prev)}
-                    className="mt-2 inline-flex items-center gap-1 text-xs sm:text-sm font-medium text-primary hover:underline"
-                    aria-expanded={isDescriptionExpanded}
-                  >
-                    {isDescriptionExpanded ? (
-                      <>
-                        See less <ChevronUp className="h-3.5 w-3.5" />
-                      </>
-                    ) : (
-                      <>
-                        See more <ChevronDown className="h-3.5 w-3.5" />
-                      </>
-                    )}
-                  </Button>
-                )}
-              </div>
+              <ProductDescription key={slug} html={product.description} />
 
               {product.tags.length > 0 && (
                 <div
@@ -572,7 +562,7 @@ export default function ProductDetail() {
                     <span className="text-lg font-medium">−</span>
                   </Button>
                   <span
-                    className="px-4 sm:px-6 font-semibold border-x text-sm sm:text-base min-w-[3rem] sm:min-w-[4rem] text-center"
+                    className="px-4 sm:px-6 font-semibold border-x text-sm sm:text-base min-w-12 sm:min-w-16 text-center"
                     aria-live="polite"
                     aria-label={`Quantity: ${quantity}`}
                   >

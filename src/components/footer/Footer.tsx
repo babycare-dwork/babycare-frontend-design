@@ -176,7 +176,8 @@ export function Footer() {
 
         <div className="border-t border-on-navy/15 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-on-navy/80">
           <p className="text-center sm:text-left">
-            © {new Date().getFullYear()} Babycare Studios. All rights reserved.
+            © <span suppressHydrationWarning>{new Date().getFullYear()}</span>{" "}
+            Babycare Studios. All rights reserved.
           </p>
           <nav
             aria-label="Legal"

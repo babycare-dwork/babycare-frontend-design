@@ -30,9 +30,26 @@ interface BabyCardProps {
   onDeleteAction?: () => void;
 }
 
+function calculateAge(dob: string, now: number) {
+  const [bsYear, bsMonth, bsDay] = dob.split("-").map(Number);
+  const adDate = new NepaliDate(bsYear, bsMonth - 1, bsDay).toJsDate();
+
+  const totalDays = Math.floor(
+    (now - adDate.getTime()) / (1000 * 60 * 60 * 24),
+  );
+  const years = Math.floor(totalDays / 365);
+  const months = Math.floor((totalDays % 365) / 30);
+  const days = (totalDays % 365) % 30;
+
+  if (years > 0) return `${years}y ${months}m`;
+  if (months > 0) return `${months}m ${days}d`;
+  return `${days}d`;
+}
+
 const BabyCard: React.FC<BabyCardProps> = ({ baby, onDeleteAction }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const [now] = useState(() => Date.now());
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isVaccineModalOpen, setIsVaccineModalOpen] = useState(false);
@@ -45,24 +62,6 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDeleteAction }) => {
       if (onDeleteAction) onDeleteAction();
     },
   });
-
-  const calculateAge = useCallback((dob: string) => {
-    const [bsYear, bsMonth, bsDay] = dob.split("-").map(Number);
-
-    // Accurately convert BS to AD
-    const nepaliDate = new NepaliDate(bsYear, bsMonth - 1, bsDay);
-    const adDate = nepaliDate.toJsDate(); // returns JS Date in AD
-
-    const diff = Date.now() - adDate.getTime();
-    const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const years = Math.floor(totalDays / 365);
-    const months = Math.floor((totalDays % 365) / 30);
-    const days = Math.floor((totalDays % 365) % 30);
-
-    if (years > 0) return `${years}y ${months}m`;
-    if (months > 0) return `${months}m ${days}d`;
-    return `${days}d`;
-  }, []);
 
   const handleDelete = useCallback(() => {
     setIsDeleteModalOpen(true);
@@ -160,7 +159,7 @@ const BabyCard: React.FC<BabyCardProps> = ({ baby, onDeleteAction }) => {
             <div className="flex items-center gap-2 text-ink-muted">
               <Calendar className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
               <span className="text-xs sm:text-sm font-medium">
-                {calculateAge(baby.dob)} old
+                {calculateAge(baby.dob, now)} old
               </span>
             </div>
           </div>

@@ -17,10 +17,16 @@ interface HeaderConfigProps {
 class HttpServices {
   private headers: Record<string, string> = {};
 
-  constructor() {
-    // if (typeof window !== "undefined" && !localStorage.getItem("_baby")) {
-    //     localStorage.setItem("_baby", "");
-    // }
+  private buildHeaders(config?: HeaderConfigProps) {
+    const headers: Record<string, string | undefined> = {};
+
+    if (config?.file) {
+      // undefined removes the instance default (application/json),
+      // so the browser sets multipart/form-data with the boundary
+      headers["Content-Type"] = undefined;
+    }
+
+    return { ...headers, ...config?.customHeaders };
   }
 
   private setHeaders(config?: HeaderConfigProps) {
@@ -39,7 +45,8 @@ class HttpServices {
     // }
 
     if (config?.file) {
-      delete this.headers["Content-Type"]; // let the browser set the multipart boundary
+      // @ts-expect-error: undefined removes the instance default so the browser sets the boundary
+      this.headers["Content-Type"] = undefined;
     }
 
     if (config?.customHeaders) {
@@ -62,7 +69,7 @@ class HttpServices {
 
   private buildAxiosConfig(config?: HeaderConfigProps): AxiosRequestConfig {
     const axiosConfig: AxiosRequestConfig = {
-      headers: this.headers,
+      headers: this.buildHeaders(config),
     };
     if (config?.params) {
       axiosConfig.params = config.params;

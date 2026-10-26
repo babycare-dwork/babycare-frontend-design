@@ -44,7 +44,7 @@ export default function LoginPage() {
     async (data: LoginFormData) => {
       try {
         const response = await authService.login(data);
-        localStorage.setItem("_baby", response.data.token);
+        // localStorage.setItem("_baby", response.data.token);
         toast.success(response.message || "Login successful");
         await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
         router.push("/products");
@@ -58,10 +58,10 @@ export default function LoginPage() {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const response = await authService.googleLogin({
+        await authService.googleLogin({
           token: tokenResponse.access_token,
         });
-        localStorage.setItem("_baby", response.data.token);
+        // localStorage.setItem("_baby", response.data.token);
         toast.success("Google login successful");
         await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
         router.push("/products");

@@ -121,7 +121,7 @@ export default function RegisterPage() {
         const response = await authService.googleLogin({
           token: tokenResponse.access_token,
         });
-        localStorage.setItem("_baby", response.data.token);
+        // localStorage.setItem("_baby", response.data.token);
         toast.success("Google login successful");
         await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
         router.push("/products");

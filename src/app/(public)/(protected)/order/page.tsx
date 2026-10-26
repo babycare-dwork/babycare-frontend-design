@@ -6,7 +6,7 @@ import orderService from "@/Service/order.service";
 import CustomPagination from "@/components/Custom-Pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, Package } from "lucide-react";
-import OrderItemCard from "@/app/(public)/order/OrderItemCard";
+import OrderItemCard from "./OrderItemCard";
 
 export interface OrderItem {
   uuid: string;

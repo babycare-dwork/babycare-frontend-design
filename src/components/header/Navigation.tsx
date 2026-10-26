@@ -131,13 +131,18 @@ export default function NavigationBar({ className }: { className?: string }) {
     const toastId = toast.loading("Logging out...");
     try {
       await authService.logout();
-      localStorage.removeItem("_baby");
-      queryClient.removeQueries({ queryKey: ["auth", "me"] });
-      toast.success("Logout successful", { id: toastId });
-      router.push("/");
+      // localStorage.removeItem("_baby");
+      // queryClient.removeQueries({ queryKey: ["auth", "me"] });
+      // toast.success("Logout successful", { id: toastId });
+      // router.push("/");
     } catch (error: any) {
-      toast.error(error?.message || "Logout failed", { id: toastId });
+      // toast.error(error?.message || "Logout failed", { id: toastId });
+      console.error("Logout request failed:", error);
     }
+    queryClient.setQueryData(["auth", "me"], null);
+    toast.success("Logout successful", { id: toastId });
+    router.push("/");
+    router.refresh();
   }, [router, queryClient, closePanels]);
 
   const isActiveLink = useCallback(

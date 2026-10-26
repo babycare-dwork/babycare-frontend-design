@@ -1,40 +1,33 @@
 import type { NextConfig } from "next";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+const isProd = process.env.NODE_ENV === "production";
+
+const remotePatterns = baseUrl
+  ? [
+      (() => {
+        const url = new URL(baseUrl);
+        return {
+          protocol: url.protocol.replace(":", "") as "http" | "https",
+          hostname: url.hostname,
+          port: url.port,
+          pathname: "/storage/**",
+        };
+      })(),
+    ]
+  : [];
+
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["192.168.1.71", "192.168.1.69", "192.168.1.76"],
+  reactCompiler: { compilationMode: "annotation" },
+  allowedDevOrigins: process.env.ALLOWED_DEV_ORIGINS?.split(",") ?? [],
+  compiler: {
+    removeConsole: isProd ? { exclude: ["error"] } : false,
+  },
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "192.168.100.23",
-        port: "8008",
-        pathname: "/storage/**",
-      },
-      {
-        protocol: "http",
-        hostname: "192.168.1.71",
-        port: "8000",
-        pathname: "/storage/**",
-      },
-      {
-        protocol: "http",
-        hostname: "192.168.1.68",
-        port: "8000",
-        pathname: "/storage/**",
-      },
-      {
-        protocol: "http",
-        hostname: "192.168.1.69",
-        port: "8000",
-        pathname: "/storage/**",
-      },
-      {
-        protocol: "https",
-        hostname: "marketplace.thebabycareapp.com",
-        pathname: "/storage/**",
-      },
-    ],
+    qualities: [75, 85],
+    remotePatterns,
   },
 };
 

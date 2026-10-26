@@ -28,7 +28,6 @@ export const useBrands = (params?: UseBrandsOptions) => {
     queryKey: ["brands", params],
     queryFn: async () => {
       const response = await brandService.getAllBrands(params);
-      // console.log('Response from Brand', response);
       return response;
     },
     staleTime: QUERY_STALE_TIME,

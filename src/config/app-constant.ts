@@ -31,10 +31,12 @@ const GOOGLE_CLIENT_ID =
 export {
   QUERY_STALE_TIME,
   PAGE_SIZE,
+  MAX_PAGES_TO_SHOW,
   GC_TIME,
   BABY_CARE_PHONE1,
   BABY_CARE_PHONE2,
   BABY_CARE_ADDRESS,
+  BABY_CARE_ADDRESS_URL,
   BABY_CARE_APP_NAME,
   BABY_CARE_APP_URL,
   BABY_CARE_PLAY_STORE_URL,
@@ -49,8 +51,8 @@ export {
 };
 
 export interface PageParams {
-    page?: number;
-    per_page?: number;
-    search?: string;
-    [key: string]: string | number | boolean | undefined; 
+  page?: number;
+  per_page?: number;
+  search?: string;
+  [key: string]: string | number | boolean | undefined;
 }

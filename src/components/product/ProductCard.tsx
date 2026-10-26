@@ -143,6 +143,7 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
             alt={name}
             width={260}
             height={260}
+            sizes="(min-width: 1280px) 20vw, (min-width: 768px) 33vw, 50vw"
             className="h-full w-full object-contain p-3 mix-blend-multiply transition-transform duration-300 ease-out group-hover:scale-105 sm:p-4"
             loading="lazy"
           />
@@ -165,7 +166,9 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
             <Heart
               className={cn(
                 "size-4 transition-colors",
-                isLiked ? "fill-coral-strong text-coral-strong" : "text-ink-muted",
+                isLiked
+                  ? "fill-coral-strong text-coral-strong"
+                  : "text-ink-muted",
               )}
             />
           </Button>
@@ -205,7 +208,7 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
               )}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <div
                 className="flex h-10 shrink-0 items-center rounded-full bg-surface-sunken"
                 onClick={(e) => e.stopPropagation()}
@@ -245,7 +248,9 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
                 className="h-10 flex-1 px-3 has-[>svg]:px-3"
                 onClick={handleAddToCart}
                 disabled={isOutOfStock || isPending}
-                aria-label={isOutOfStock ? "Out of stock" : `Add ${name} to cart`}
+                aria-label={
+                  isOutOfStock ? "Out of stock" : `Add ${name} to cart`
+                }
               >
                 <ShoppingCart />
                 <span className="hidden sm:inline">

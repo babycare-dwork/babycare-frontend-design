@@ -14,7 +14,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { authService } from "@/Service/auth.service";
 import { toast } from "sonner";
-import { Chrome } from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -118,12 +117,11 @@ export default function RegisterPage() {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      // console.log("Google Response:", tokenResponse);
       try {
         const response = await authService.googleLogin({
           token: tokenResponse.access_token,
         });
-        localStorage.setItem("_baby", response.data.token);
+        // localStorage.setItem("_baby", response.data.token);
         toast.success("Google login successful");
         await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
         router.push("/products");
@@ -132,7 +130,8 @@ export default function RegisterPage() {
       }
     },
     onError: (errorResponse) => {
-      console.log("Google Login Response", errorResponse);
+      console.error("Google login failed:", errorResponse.error);
+      toast.error("Google login failed");
     },
   });
 

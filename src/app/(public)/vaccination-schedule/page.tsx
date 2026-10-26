@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { AlertCircle, Calendar, Loader2, Shield, Syringe } from "lucide-react";
+import { AlertCircle, Calendar, Shield, Syringe } from "lucide-react";
 import { QUERY_STALE_TIME } from "@/config/app-constant";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import babyService from "@/Service/babay.service";
 import { VaccinePageSkeleton } from "@/components/skeleton/VaccinePageSkeleton";
+import babyService from "@/Service/baby.service";
 
 interface Vaccine {
   id: number;
@@ -107,7 +107,7 @@ export default function VaccinePage() {
 
         <div className="mt-8 sm:mt-10 p-4 sm:p-6 bg-sky-soft rounded-lg border border-sky my-6">
           <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-shield flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-shield shrink-0 mt-0.5" />
             <div className="space-y-1">
               <p className="text-sm sm:text-base font-semibold text-ink">
                 Important Information

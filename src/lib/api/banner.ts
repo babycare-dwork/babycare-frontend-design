@@ -9,13 +9,10 @@ interface BannerResponse {
 
 export async function getBanners(): Promise<Banner[]> {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/market/banner`,
-      {
-        next: { revalidate: 100, tags: ["banners"] },
-        signal: AbortSignal.timeout(8000),
-      },
-    );
+    const res = await fetch(`${process.env.API_URL}/market/banner`, {
+      next: { revalidate: 100, tags: ["banners"] },
+      signal: AbortSignal.timeout(8000),
+    });
 
     if (!res.ok) {
       console.error(`[getBanners] ${res.status} ${res.statusText}`, res.url);

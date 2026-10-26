@@ -98,6 +98,11 @@ export default function NavigationBar({ className }: { className?: string }) {
 
   const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
 
+  const closePanels = useCallback(() => {
+    setIsMobileMenuOpen(false);
+    setIsSearchOpen(false);
+  }, []);
+
   const toggleSearch = useCallback(() => {
     setIsSearchOpen((prev) => !prev);
     setIsMobileMenuOpen(false);
@@ -122,17 +127,23 @@ export default function NavigationBar({ className }: { className?: string }) {
   );
 
   const handleLogout = useCallback(async () => {
+    closePanels();
     const toastId = toast.loading("Logging out...");
     try {
       await authService.logout();
-      localStorage.removeItem("_baby");
-      queryClient.removeQueries({ queryKey: ["auth", "me"] });
-      toast.success("Logout successful", { id: toastId });
-      router.push("/");
+      // localStorage.removeItem("_baby");
+      // queryClient.removeQueries({ queryKey: ["auth", "me"] });
+      // toast.success("Logout successful", { id: toastId });
+      // router.push("/");
     } catch (error: any) {
-      toast.error(error?.message || "Logout failed", { id: toastId });
+      // toast.error(error?.message || "Logout failed", { id: toastId });
+      console.error("Logout request failed:", error);
     }
-  }, [router, queryClient]);
+    queryClient.setQueryData(["auth", "me"], null);
+    toast.success("Logout successful", { id: toastId });
+    router.push("/");
+    router.refresh();
+  }, [router, queryClient, closePanels]);
 
   const isActiveLink = useCallback(
     (href: string) => pathname === href || pathname?.startsWith(`${href}/`),
@@ -154,12 +165,6 @@ export default function NavigationBar({ className }: { className?: string }) {
     ],
     [cartCount, favoritesCount],
   );
-
-  // Close panels after navigating
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-    setIsSearchOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     if (isSearchOpen) searchInputRef.current?.focus();
@@ -236,6 +241,7 @@ export default function NavigationBar({ className }: { className?: string }) {
               <DropdownMenuItem key={href} asChild>
                 <Link
                   href={href}
+                  onClick={closePanels}
                   className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                 >
                   <Icon className="h-4 w-4 text-muted-foreground" />
@@ -327,6 +333,7 @@ export default function NavigationBar({ className }: { className?: string }) {
           <div className="container mx-auto flex items-center justify-between gap-4 px-4 sm:px-8 py-2">
             <Link
               href="/"
+              onClick={closePanels}
               className="flex shrink-0 items-center transition-opacity hover:opacity-90"
             >
               <Image
@@ -346,11 +353,12 @@ export default function NavigationBar({ className }: { className?: string }) {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={closePanels}
                     aria-current={active ? "page" : undefined}
                     className={cn(
                       "relative whitespace-nowrap rounded-full px-3.5 py-2 text-[15px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                       active
-                        ? "text-coral-strong after:absolute after:inset-x-3.5 after:-bottom-0.5 after:h-[3px] after:rounded-full after:bg-coral-strong"
+                        ? "text-coral-strong after:absolute after:inset-x-3.5 after:-bottom-0.5 after:h-0.75 after:rounded-full after:bg-coral-strong"
                         : "text-ink hover:text-shield",
                     )}
                   >
@@ -388,7 +396,11 @@ export default function NavigationBar({ className }: { className?: string }) {
                       size="icon"
                       className="size-11 rounded-full"
                     >
-                      <Link href="/cart" aria-label="Shopping cart">
+                      <Link
+                        href="/cart"
+                        onClick={closePanels}
+                        aria-label="Shopping cart"
+                      >
                         <ShoppingCart className="h-5 w-5" />
                       </Link>
                     </Button>
@@ -401,7 +413,11 @@ export default function NavigationBar({ className }: { className?: string }) {
                       size="icon"
                       className="size-11 rounded-full"
                     >
-                      <Link href="/favorites" aria-label="Favorites">
+                      <Link
+                        href="/favorites"
+                        onClick={closePanels}
+                        aria-label="Favorites"
+                      >
                         <Heart className="h-5 w-5" />
                       </Link>
                     </Button>
@@ -415,7 +431,9 @@ export default function NavigationBar({ className }: { className?: string }) {
                 <div className="hidden h-10 w-10 animate-pulse rounded-full bg-muted sm:block" />
               ) : (
                 <Button asChild size="sm" className="ml-1 hidden px-6 sm:flex">
-                  <Link href="/login">Login</Link>
+                  <Link href="/login" onClick={closePanels}>
+                    Login
+                  </Link>
                 </Button>
               )}
 

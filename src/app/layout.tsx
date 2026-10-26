@@ -3,6 +3,7 @@ import { Montserrat, Nunito, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import React from "react";
 import RootProviders from "@/Provider/Providers";
+import { LegacySessionMigrator } from "@/components/LegacySessionMigrator";
 
 // Display — rounded terminals echo the mark; every heading.
 const nunito = Nunito({
@@ -77,6 +78,7 @@ export default function RootLayout({
       <body
         className={`${nunito.variable} ${nunitoSans.variable} ${montserrat.variable} antialiased`}
       >
+        <LegacySessionMigrator />
         <RootProviders>{children}</RootProviders>
       </body>
     </html>

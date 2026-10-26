@@ -1,13 +1,16 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { Star } from "lucide-react";
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useState } from "react";
 import productService from "@/Service/product.service";
 import { Skeleton } from "@/components/ui/skeleton";
 import CustomPagination from "@/components/Custom-Pagination";
 import SelectInputField from "@/components/field/SelectInput";
-import { toast } from "sonner";
 import ReviewCard from "@/components/product/ReviewCard";
 import ReviewForm from "@/components/product/ReviewForm";
 
@@ -114,6 +117,7 @@ export default function ProductReview({
   const {
     data: productReviews,
     isLoading,
+    isFetching,
     error,
   } = useQuery<ReviewResponse>({
     queryKey: ["product-reviews", slug, currentPage, sortBy],
@@ -124,20 +128,18 @@ export default function ProductReview({
       }),
     enabled: !!slug,
     staleTime: 30000,
+    placeholderData: keepPreviousData,
   });
 
   const reviewData = productReviews?.data;
 
-  const averageRating = useMemo(
-    () => (reviewData?.items ? calculateAverageRating(reviewData.items) : 0),
-    [reviewData?.items],
-  );
+  const averageRating = reviewData?.items
+    ? calculateAverageRating(reviewData.items)
+    : 0;
 
-  const ratingDistribution = useMemo(
-    () =>
-      reviewData?.items ? calculateRatingDistribution(reviewData.items) : [],
-    [reviewData?.items],
-  );
+  const ratingDistribution = reviewData?.items
+    ? calculateRatingDistribution(reviewData.items)
+    : [];
 
   const handleSortChange = useCallback((value: string | number) => {
     setSortBy(String(value));
@@ -241,7 +243,7 @@ export default function ProductReview({
         >
           {ratingDistribution.map(({ star, count, percentage }) => (
             <div key={star} className="flex items-center gap-3">
-              <span className="text-sm font-medium text-ink-muted w-14 flex-shrink-0">
+              <span className="text-sm font-medium text-ink-muted w-14 shrink-0">
                 {star} {star === 1 ? "star" : "stars"}
               </span>
               <div className="flex-1 bg-line rounded-full h-2.5 overflow-hidden">
@@ -255,7 +257,7 @@ export default function ProductReview({
                   aria-label={`${Math.round(percentage)}% of reviews are ${star} ${star === 1 ? "star" : "stars"}`}
                 />
               </div>
-              <span className="text-sm text-ink-muted w-10 text-right flex-shrink-0">
+              <span className="text-sm text-ink-muted w-10 text-right shrink-0">
                 {count}
               </span>
             </div>
@@ -276,6 +278,7 @@ export default function ProductReview({
           <SelectInputField
             placeholder="Sort by"
             options={REVIEW_SELECT_OPTIONS}
+            value={sortBy}
             onChangeAction={handleSortChange}
             aria-label="Sort reviews by"
           />
@@ -289,7 +292,11 @@ export default function ProductReview({
           </p>
         </div>
       ) : (
-        <div className="space-y-4" role="list" aria-label="Customer reviews">
+        <div
+          className={`space-y-4 transition-opacity ${isFetching ? "opacity-50" : ""}`}
+          role="list"
+          aria-label="Customer reviews"
+        >
           {reviewData.items.map((review) => (
             <ReviewCard
               key={review.comment_uuid}

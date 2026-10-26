@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { Check, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -24,23 +23,23 @@ export function AboutStory() {
             className="w-full lg:w-1/2"
           >
             <div className="relative">
-            <div
-              aria-hidden="true"
-              className="absolute -left-4 -top-4 h-full w-full rounded-3xl bg-honey-soft sm:-left-6 sm:-top-6"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute -right-3 bottom-10 size-20 rounded-full border-2 border-dashed border-coral/60"
-            />
-            <div className="relative aspect-4/3 rounded-3xl overflow-hidden shadow-md">
-              <Image
-                src="/baby-mom.png"
-                alt="Parent caring for a baby"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+              <div
+                aria-hidden="true"
+                className="absolute -left-4 -top-4 h-full w-full rounded-3xl bg-honey-soft sm:-left-6 sm:-top-6"
               />
-            </div>
+              <div
+                aria-hidden="true"
+                className="absolute -right-3 bottom-10 size-20 rounded-full border-2 border-dashed border-coral/60"
+              />
+              <div className="relative aspect-4/3 rounded-3xl overflow-hidden shadow-md">
+                <Image
+                  src="/baby-mom.png"
+                  alt="Parent caring for a baby"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
             </div>
 
             {/* floating stat card */}
@@ -81,7 +80,10 @@ export function AboutStory() {
               {highlights.map((item) => (
                 <div key={item} className="flex items-center gap-3">
                   <span className="flex items-center justify-center size-5 rounded-full bg-leaf shrink-0">
-                    <Check className="size-3 text-surface-raised" strokeWidth={3} />
+                    <Check
+                      className="size-3 text-surface-raised"
+                      strokeWidth={3}
+                    />
                   </span>
                   <span className="text-[15px] leading-[22px] text-ink-muted">
                     {item}

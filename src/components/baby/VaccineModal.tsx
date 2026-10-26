@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import babyService from "@/Service/baby.service";
 import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
+import {
+  VACCINE_STATUS_LABELS,
+  VACCINE_STATUS_OPTIONS,
+  VaccineStatus,
+} from "@/types/vaccine";
+import SelectInputField from "../field/SelectInput";
 
 interface Vaccine {
   id: number;
@@ -40,13 +46,13 @@ const VaccineFormModal: React.FC<VaccineModalProps> = ({
   babyId,
 }) => {
   const queryClient = useQueryClient();
+  const [status, setStatus] = useState<VaccineStatus>("A");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["baby-vaccines", babyId],
-    queryFn: () => babyService.getVaccines(babyId),
+    queryKey: ["baby-vaccines", babyId, status],
+    queryFn: () => babyService.getVaccines(babyId, status),
     enabled: open,
   });
-  //   console.log("getVaccines", data);
 
   const vaccines: Vaccine[] = useMemo(() => {
     const payload = data?.data?.data;
@@ -57,11 +63,8 @@ const VaccineFormModal: React.FC<VaccineModalProps> = ({
     return [];
   }, [data]);
 
-  //   console.log("vaccines", vaccines);
-
   const updateVaccineStatus = useMutation({
     mutationFn: async (id: number) => {
-      //   console.log("Vaccine Id", id);
       await babyService.updateBabyVaccineDate(babyId, id);
     },
     onSuccess: () => {
@@ -83,7 +86,7 @@ const VaccineFormModal: React.FC<VaccineModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-175 max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl flex items-center gap-2">
             <Syringe className="h-6 w-6 text-shield" />
@@ -97,6 +100,15 @@ const VaccineFormModal: React.FC<VaccineModalProps> = ({
         </DialogHeader>
 
         <div className="mt-6 space-y-3">
+          <SelectInputField
+            label="Filter"
+            name="vaccine-status"
+            placeholder="Select status"
+            options={VACCINE_STATUS_OPTIONS}
+            value={status}
+            onChangeAction={(value) => setStatus(value as VaccineStatus)}
+          />
+
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
               <Loader2 className="h-6 w-6 animate-spin text-shield" />
@@ -105,7 +117,9 @@ const VaccineFormModal: React.FC<VaccineModalProps> = ({
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                No vaccination records found for this baby.
+                {status === "A"
+                  ? "No vaccination records found for this baby."
+                  : `No ${VACCINE_STATUS_LABELS[status].toLowerCase()} vaccines found.`}
               </AlertDescription>
             </Alert>
           ) : (
@@ -164,7 +178,7 @@ const VaccineItem: React.FC<VaccineItemProps> = ({
               )}
               {vaccine.diseases_covered.length > 0 && (
                 <div className="flex items-start gap-2 text-ink-muted mt-2">
-                  <Shield className="h-3.5 w-3.5 mt-0.5 flex-shrink-0" />
+                  <Shield className="h-3.5 w-3.5 mt-0.5 shrink-0" />
                   <div className="flex flex-wrap gap-1">
                     {vaccine.diseases_covered.map((disease, index) => (
                       <span
@@ -193,7 +207,9 @@ const VaccineItem: React.FC<VaccineItemProps> = ({
           <Label
             htmlFor={`vaccine-${vaccine.id}`}
             className={`text-sm font-medium cursor-pointer ${
-              isCompleted ? "text-ink-muted cursor-not-allowed" : "text-ink-muted"
+              isCompleted
+                ? "text-ink-muted cursor-not-allowed"
+                : "text-ink-muted"
             }`}
           >
             {isCompleted ? "Completed" : "Mark as Complete"}

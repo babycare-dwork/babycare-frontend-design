@@ -1,9 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import babyService from "@/Service/babay.service";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import CustomPagination from "@/components/Custom-Pagination";
 import { AlertCircle, BookOpen, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -13,6 +12,7 @@ import Image from "next/image";
 import { QUERY_STALE_TIME } from "@/config/app-constant";
 import BlogSkeleton from "../vaccination-schedule/loading";
 import { useDebounce } from "@/hooks/useDebounce";
+import tipsService from "@/Service/tips.service";
 
 interface BlogItem {
   title: string;
@@ -43,7 +43,7 @@ export default function HealthyTips() {
   const { data, isLoading, error, refetch } = useQuery<BlogResponse>({
     queryKey: ["healthy-tips", currentPage, debouncedSearch],
     queryFn: async () =>
-      babyService.getHealthyTips({
+      tipsService.getHealthyTips({
         page: currentPage,
         per_page: perPage,
         search: debouncedSearch.trim(),
@@ -55,10 +55,6 @@ export default function HealthyTips() {
   const healthyTips = useMemo(() => data?.data?.items || [], [data]);
   const totalPages = useMemo(() => data?.data?.total_page || 0, [data]);
   const totalItems = useMemo(() => data?.data?.total_items || 0, [data]);
-
-  useEffect(() => {
-    if (debouncedSearch !== search) setCurrentPage(1);
-  }, [debouncedSearch, search]);
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
@@ -74,6 +70,15 @@ export default function HealthyTips() {
     (slug: string) => router.push(`/healthy-tips/${slug}`),
     [router],
   );
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(e.target.value);
+      setCurrentPage(1);
+    },
+    [],
+  );
+
   const handleClearSearch = useCallback(() => {
     setSearch("");
     setCurrentPage(1);
@@ -129,7 +134,7 @@ export default function HealthyTips() {
                 type="text"
                 placeholder="Search healthy tips..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={handleSearchChange}
                 onKeyPress={handleSearchKeyPress}
                 className="pl-10 h-11"
                 disabled={isLoading}

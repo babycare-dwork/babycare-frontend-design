@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -25,12 +25,11 @@ import AddressFormModal from "@/app/(public)/checkout/AddressFormPage";
 import TextInputField from "@/components/field/TextInputField";
 import SummaryCard from "@/components/checkout/SummaryCard";
 import { AddressCard } from "@/components/address/AddressCard";
-import { CartPageSkeleton } from "@/components/skeleton/CartPageSkeleton";
 import PaymentMethodSelector, {
   PaymentMethod,
 } from "@/components/checkout/PaymentMethodSelector";
 import { redirectToEsewa } from "@/lib/esewa";
-import CheckoutSkeleton, {
+import {
   OrderItemsSkeleton,
   SummarySkeleton,
 } from "@/components/skeleton/CheckoutSkeleton";
@@ -63,17 +62,21 @@ export default function CheckoutPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const [checkoutItemUuids, setCheckoutItemUuids] = useState<string[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const quantity = searchParams.get("quantity");
   const isBuyNow = Boolean(quantity);
 
+  const checkoutItemUuids = useMemo(
+    () => searchParams.getAll("items"),
+    [searchParams],
+  );
+
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     formState: { errors },
   } = useForm<BillingFormValues>({
     resolver: zodResolver(billingSchema),
@@ -89,17 +92,14 @@ export default function CheckoutPage() {
     },
   });
 
-  const paymentMethod = watch("payment_method");
+  const paymentMethod = useWatch({ control, name: "payment_method" });
 
   useEffect(() => {
-    const paramItems = searchParams.getAll("items");
-    if (paramItems.length === 0) {
+    if (checkoutItemUuids.length === 0) {
       toast.error("No items selected for checkout");
       router.back();
-      return;
     }
-    setCheckoutItemUuids(paramItems);
-  }, [searchParams, router]);
+  }, [checkoutItemUuids, router]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["checkout-items", checkoutItemUuids, quantity],

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useCategories } from "@/hooks/useCategories";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { SectionHeading } from "@/components/SectionHeading";
 
 export function CategoryList() {
@@ -40,8 +40,6 @@ export function CategoryList() {
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container || isLoadingCats || categories.length === 0) return;
-
-    let isScrolling = false;
 
     const startAutoScroll = () => {
       let lastTime = performance.now();
@@ -83,7 +81,6 @@ export function CategoryList() {
 
     // Start scroll after initial animation completes
     const timeout = setTimeout(() => {
-      isScrolling = true;
       startAutoScroll();
     }, 1500);
 
@@ -108,7 +105,7 @@ export function CategoryList() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20, scale: 0.85 },
     visible: {
       opacity: 1,
@@ -123,10 +120,7 @@ export function CategoryList() {
   };
 
   return (
-    <section
-      className="py-16 sm:py-24"
-      aria-labelledby="category-heading"
-    >
+    <section className="py-16 sm:py-24" aria-labelledby="category-heading">
       <div className="w-full px-4 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

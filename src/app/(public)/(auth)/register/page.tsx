@@ -118,15 +118,16 @@ export default function RegisterPage() {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const response = await authService.googleLogin({
+        await authService.googleLogin({
           token: tokenResponse.access_token,
         });
-        // localStorage.setItem("_baby", response.data.token);
         toast.success("Google login successful");
         await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
         router.push("/products");
-      } catch (error: any) {
-        toast.error(error?.message || "Google login failed");
+      } catch (error: unknown) {
+        const message =
+          error instanceof Error ? error.message : "Google login failed";
+        toast.error(message);
       }
     },
     onError: (errorResponse) => {
@@ -248,10 +249,12 @@ export default function RegisterPage() {
               )}
               {previewImage && (
                 <div className="mt-3">
-                  <img
-                    src={previewImage || "/placeholder.svg"}
+                  <Image
+                    src={previewImage}
                     alt="Profile preview"
-                    className="w-20 h-20 rounded-lg object-cover border-2 border-sky"
+                    width={80}
+                    height={80}
+                    className="w-20 h-20 rounded-lg object-contain border-2 border-sky"
                   />
                 </div>
               )}

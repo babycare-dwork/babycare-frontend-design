@@ -33,9 +33,11 @@ export default function HealthyPage() {
     enabled: !!slug,
   });
 
+  const description = data?.description;
+
   const sanitizedDescription = useMemo(() => {
-    if (!data?.description) return "";
-    return DOMPurify.sanitize(data.description, {
+    if (!description) return "";
+    return DOMPurify.sanitize(description, {
       ALLOWED_TAGS: [
         "p",
         "br",
@@ -56,7 +58,7 @@ export default function HealthyPage() {
       ],
       ALLOWED_ATTR: ["href", "target", "rel"],
     });
-  }, [data?.description]);
+  }, [description]);
 
   if (isLoading) {
     return (

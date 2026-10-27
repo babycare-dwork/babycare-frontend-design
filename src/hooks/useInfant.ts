@@ -3,13 +3,6 @@ import babyService from "@/Service/baby.service";
 import { InfantCalculatorPayload } from "@/types/infant.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-interface InfantCalculatorParams {
-  head_circumference: number;
-  weight: number;
-  height: number;
-  infant_id: number;
-}
-
 export function useGetInfantCalculatorHistory(
   infantId: number,
   params?: PageParams,

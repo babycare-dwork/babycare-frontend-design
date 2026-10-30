@@ -2,7 +2,10 @@ export const SESSION_COOKIE = "_baby";
 
 export const sessionCookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
+  secure:
+    process.env.COOKIE_SECURE !== undefined
+      ? process.env.COOKIE_SECURE === "true"
+      : process.env.NODE_ENV === "production",
   sameSite: "lax" as const,
   path: "/",
   maxAge: 60 * 60 * 24 * 30,

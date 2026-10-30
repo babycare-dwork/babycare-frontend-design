@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { useProducts } from "@/hooks/useProduct";
 import { useCategories } from "@/hooks/useCategories";
 import { useBrands } from "@/hooks/useBrand";
@@ -56,14 +56,18 @@ function ProductList() {
   );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  useEffect(() => {
+  const paramsKey = JSON.stringify([stageFromUrl, categoryFromUrl, query]);
+  const [prevParamsKey, setPrevParamsKey] = useState(paramsKey);
+
+  if (paramsKey !== prevParamsKey) {
+    setPrevParamsKey(paramsKey);
     setSelectedStage(
       ageStages.some((s) => s.value === stageFromUrl) ? stageFromUrl : null,
     );
     setSelectedCategory(categoryFromUrl);
     setSearch(query);
     setPage(1);
-  }, [stageFromUrl, categoryFromUrl, query]);
+  }
 
   const { products, isLoading, totalPages } = useProducts({
     page,

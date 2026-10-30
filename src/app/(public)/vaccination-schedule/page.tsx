@@ -121,7 +121,7 @@ export default function VaccinePage() {
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {data.map((vaccine, index) => (
+          {data.map((vaccine) => (
             <Card
               key={vaccine.id}
               className="hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/50"

@@ -1,45 +1,41 @@
-'use client'
+"use client";
 
-// MapView.tsx
-// Imported via dynamic() in HealthCenter.tsx — never rendered on the server.
+import { useEffect, useRef } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
-import { useEffect, useRef } from "react"
-import L from "leaflet"
-import "leaflet/dist/leaflet.css"
-
-// Fix broken default icon paths in Next.js / Webpack
-delete (L.Icon.Default.prototype as any)._getIconUrl
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })
+  ._getIconUrl;
 L.Icon.Default.mergeOptions({
-    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-    iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-})
-
-// ─── Types ────────────────────────────────────────────────────────────────────
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
 
 interface Hospital {
-    id: number
-    name: string
-    address: string
-    phone: string
-    open_hour: string
-    latitude: number
-    longitude: number
-    distance_km: number
+  id: number;
+  name: string;
+  address: string;
+  phone: string;
+  open_hour: string;
+  latitude: number;
+  longitude: number;
+  distance_km: number;
 }
 
 interface MapViewProps {
-    userLocation: { lat: number; lng: number }
-    hospitals: Hospital[]
-    selectedHospital: Hospital | null
-    onSelectHospital: (h: Hospital) => void
+  userLocation: { lat: number; lng: number };
+  hospitals: Hospital[];
+  selectedHospital: Hospital | null;
+  onSelectHospital: (h: Hospital) => void;
 }
 
-// ─── Custom marker icons ──────────────────────────────────────────────────────
+//─ Custom marker icons
 
 const userDot = L.divIcon({
-    className: "",
-    html: `
+  className: "",
+  html: `
         <div style="position:relative;width:20px;height:20px">
             <div style="
                 position:absolute;inset:0;
@@ -62,16 +58,16 @@ const userDot = L.divIcon({
             }
         </style>
     `,
-    iconSize: [20, 20],
-    iconAnchor: [10, 10],
-})
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+});
 
 function makeHospitalIcon(selected: boolean) {
-    const bg = selected ? "#3f7a2e" : "#b42318"
-    const size = selected ? 36 : 30
-    return L.divIcon({
-        className: "",
-        html: `
+  const bg = selected ? "#3f7a2e" : "#b42318";
+  const size = selected ? 36 : 30;
+  return L.divIcon({
+    className: "",
+    html: `
             <div style="
                 width:${size}px;height:${size}px;
                 background:${bg};
@@ -82,69 +78,87 @@ function makeHospitalIcon(selected: boolean) {
                 transition:all .2s;
             "></div>
         `,
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size],
-        popupAnchor: [0, -size],
-    })
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size],
+    popupAnchor: [0, -size],
+  });
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+export default function MapView({
+  userLocation,
+  hospitals,
+  selectedHospital,
+  onSelectHospital,
+}: MapViewProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const markersRef = useRef<Map<number, L.Marker>>(new Map());
+  const userMarkerRef = useRef<L.Marker | null>(null);
+  const radiusRef = useRef<L.Circle | null>(null);
+  const initialLocationRef = useRef(userLocation);
 
-export default function MapView({ userLocation, hospitals, selectedHospital, onSelectHospital }: MapViewProps) {
-    const containerRef = useRef<HTMLDivElement>(null)
-    const mapRef = useRef<L.Map | null>(null)
-    const markersRef = useRef<Map<number, L.Marker>>(new Map())
+  useEffect(() => {
+    if (!containerRef.current || mapRef.current) return;
 
-    // ── Init map once ─────────────────────────────────────────────────────────
-    useEffect(() => {
-        if (!containerRef.current || mapRef.current) return
+    const { lat, lng } = initialLocationRef.current;
 
-        const map = L.map(containerRef.current, {
-            center: [userLocation.lat, userLocation.lng],
-            zoom: 14,
-            zoomControl: true,
-        })
+    const map = L.map(containerRef.current, {
+      center: [lat, lng],
+      zoom: 14,
+      zoomControl: true,
+    });
 
-        // Clean, light tile layer
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
-            maxZoom: 19,
-        }).addTo(map)
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+      maxZoom: 19,
+    }).addTo(map);
 
-        // User location
-        L.marker([userLocation.lat, userLocation.lng], { icon: userDot, zIndexOffset: 1000 })
-            .addTo(map)
-            .bindPopup("<b>📍 Your Location</b>")
+    userMarkerRef.current = L.marker([lat, lng], {
+      icon: userDot,
+      zIndexOffset: 1000,
+    })
+      .addTo(map)
+      .bindPopup("<b>📍 Your Location</b>");
 
-        // Radius circle
-        L.circle([userLocation.lat, userLocation.lng], {
-            radius: 5000,
-            color: "#255590",
-            fillColor: "#255590",
-            fillOpacity: 0.04,
-            weight: 1.5,
-            dashArray: "6 4",
-        }).addTo(map)
+    radiusRef.current = L.circle([lat, lng], {
+      radius: 5000,
+      color: "#255590",
+      fillColor: "#255590",
+      fillOpacity: 0.04,
+      weight: 1.5,
+      dashArray: "6 4",
+    }).addTo(map);
 
-        mapRef.current = map
-        return () => { map.remove(); mapRef.current = null }
-    }, []) // intentionally empty — runs once
+    mapRef.current = map;
+    return () => {
+      map.remove();
+      mapRef.current = null;
+      userMarkerRef.current = null;
+      radiusRef.current = null;
+    };
+  }, []);
 
-    // ── Re-draw hospital markers when list changes ────────────────────────────
-    useEffect(() => {
-        const map = mapRef.current
-        if (!map) return
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const latlng: L.LatLngTuple = [userLocation.lat, userLocation.lng];
+    userMarkerRef.current?.setLatLng(latlng);
+    radiusRef.current?.setLatLng(latlng);
+    map.setView(latlng);
+  }, [userLocation.lat, userLocation.lng]);
 
-        markersRef.current.forEach((m) => m.remove())
-        markersRef.current.clear()
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
 
-        hospitals.forEach((h) => {
-            const isSelected = selectedHospital?.id === h.id
-            const marker = L.marker([h.latitude, h.longitude], {
-                icon: makeHospitalIcon(isSelected),
-            })
-                .addTo(map)
-                .bindPopup(`
+    markersRef.current.forEach((m) => m.remove());
+    markersRef.current.clear();
+
+    hospitals.forEach((h) => {
+      const isSelected = selectedHospital?.id === h.id;
+      const marker = L.marker([h.latitude, h.longitude], {
+        icon: makeHospitalIcon(isSelected),
+      }).addTo(map).bindPopup(`
                     <div style="min-width:180px;font-family:system-ui,sans-serif">
                         <p style="font-weight:700;margin:0 0 4px">${h.name}</p>
                         <p style="font-size:12px;color:#555;margin:0 0 2px">${h.address}</p>
@@ -154,25 +168,27 @@ export default function MapView({ userLocation, hospitals, selectedHospital, onS
                             ${h.distance_km < 1 ? `${Math.round(h.distance_km * 1000)} m away` : `${h.distance_km.toFixed(1)} km away`}
                         </p>
                     </div>
-                `)
+                `);
 
-            marker.on("click", () => onSelectHospital(h))
-            markersRef.current.set(h.id, marker)
-        })
-    }, [hospitals, selectedHospital, onSelectHospital])
+      marker.on("click", () => onSelectHospital(h));
+      markersRef.current.set(h.id, marker);
+    });
+  }, [hospitals, selectedHospital, onSelectHospital]);
 
-    // ── Pan + highlight when selection changes ────────────────────────────────
-    useEffect(() => {
-        const map = mapRef.current
-        if (!map || !selectedHospital) return
+  // Pan + highlight when selection changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !selectedHospital) return;
 
-        map.flyTo([selectedHospital.latitude, selectedHospital.longitude], 16, { duration: 0.7 })
+    map.flyTo([selectedHospital.latitude, selectedHospital.longitude], 16, {
+      duration: 0.7,
+    });
 
-        markersRef.current.forEach((marker, id) => {
-            marker.setIcon(makeHospitalIcon(id === selectedHospital.id))
-            if (id === selectedHospital.id) marker.openPopup()
-        })
-    }, [selectedHospital])
+    markersRef.current.forEach((marker, id) => {
+      marker.setIcon(makeHospitalIcon(id === selectedHospital.id));
+      if (id === selectedHospital.id) marker.openPopup();
+    });
+  }, [selectedHospital]);
 
-    return <div ref={containerRef} className="w-full h-full" />
+  return <div ref={containerRef} className="w-full h-full" />;
 }

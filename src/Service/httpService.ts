@@ -85,7 +85,11 @@ class HttpServices {
     try {
       this.setHeaders(config);
       const axiosConfig = this.buildAxiosConfig(config);
-      return await axiosInstance.post(url, data, axiosConfig);
+      return (await axiosInstance.post(
+        url,
+        data,
+        axiosConfig,
+      )) as unknown as TResponse;
     } catch (error) {
       if ((error as any)?.status !== 401)
         console.error(`POST request failed for ${url}:`, error);
@@ -100,7 +104,10 @@ class HttpServices {
     try {
       this.setHeaders(config);
       const axiosConfig = this.buildAxiosConfig(config);
-      return await axiosInstance.get(url, axiosConfig);
+      return (await axiosInstance.get(
+        url,
+        axiosConfig,
+      )) as unknown as TResponse;
     } catch (error) {
       if ((error as any)?.status !== 401)
         console.error(`GET request failed for ${url}:`, error);
@@ -116,7 +123,11 @@ class HttpServices {
     try {
       this.setHeaders(config);
       const axiosConfig = this.buildAxiosConfig(config);
-      return await axiosInstance.put(url, data, axiosConfig);
+      return (await axiosInstance.put(
+        url,
+        data,
+        axiosConfig,
+      )) as unknown as TResponse;
     } catch (error) {
       if ((error as any)?.status !== 401)
         console.error(`PUT request failed for ${url}:`, error);
@@ -132,7 +143,11 @@ class HttpServices {
     try {
       this.setHeaders(config);
       const axiosConfig = this.buildAxiosConfig(config);
-      return await axiosInstance.patch(url, data, axiosConfig);
+      return (await axiosInstance.patch(
+        url,
+        data,
+        axiosConfig,
+      )) as unknown as TResponse;
     } catch (error) {
       if ((error as any)?.status !== 401)
         console.error(`PATCH request failed for ${url}:`, error);
@@ -147,7 +162,10 @@ class HttpServices {
   }: RequestProps<TBody>): Promise<TResponse> {
     this.setHeaders(config);
     const axiosConfig = { ...this.buildAxiosConfig(config), data };
-    return axiosInstance.delete(url, axiosConfig);
+    return (await axiosInstance.delete(
+      url,
+      axiosConfig,
+    )) as unknown as TResponse;
   }
 }
 

@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
     removeConsole: isProd ? { exclude: ["error"] } : false,
   },
   images: {
-    unoptimized: true,
+    unoptimized: true, // Backend converts uploads to WebP; Vercel optimization quota reached
     qualities: [75, 85],
     remotePatterns,
   },

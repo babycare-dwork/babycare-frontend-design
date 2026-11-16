@@ -15,14 +15,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { TrustBadge } from "@/components/Tag";
 
-// Hero photo — any regular photo works: it is cropped to a circle (object-cover),
-// so keep the child's face near the centre. Swap the file in /public to change it.
 const HERO_IMAGE = {
   src: "/baby.png",
   alt: "Smiling baby playing with colourful stacking toys",
 };
 
-// Organic, slightly lopsided outline for the photo backdrop — soft like the mark.
 const BLOB = "rounded-[46%_54%_42%_58%/55%_45%_55%_45%]";
 
 export function HeroSection() {
@@ -126,7 +123,7 @@ export function HeroSection() {
 
         {/* Visual */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
+          initial={false}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
           className="relative mx-auto aspect-square w-full max-w-[540px]"
@@ -145,7 +142,8 @@ export function HeroSection() {
               src={HERO_IMAGE.src}
               alt={HERO_IMAGE.alt}
               fill
-              priority
+              preload
+              fetchPriority="high"
               sizes="(max-width: 1024px) 80vw, 420px"
               className="object-cover"
             />

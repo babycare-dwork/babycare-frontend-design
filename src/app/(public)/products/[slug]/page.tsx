@@ -338,6 +338,7 @@ export default function ProductDetail() {
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
                   className="object-cover"
                   priority={selectedImage === 0}
+                  fetchPriority="high"
                 />
                 {hasDiscount && (
                   <Badge className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-danger hover:bg-danger text-xs sm:text-sm">

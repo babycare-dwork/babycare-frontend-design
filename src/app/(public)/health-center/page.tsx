@@ -55,29 +55,48 @@ function haversine(
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+const OVERPASS_URLS = [
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.kumi.systems/api/interpreter",
+];
+
+async function overpassRequest(query: string) {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const url = OVERPASS_URLS[attempt % OVERPASS_URLS.length];
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        body: `data=${encodeURIComponent(query)}`,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        signal: AbortSignal.timeout(25000),
+      });
+      if (res.ok) return await res.json();
+      lastError = new Error(`Overpass ${res.status}`);
+    } catch (e) {
+      lastError = e;
+    }
+    // wait 1s, then 2s, then 4s before the next try
+    await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt));
+  }
+  throw lastError;
+}
 //  Overpass API – fetch real hospitals near coordinates
 
 async function fetchNearbyHospitals(
   lat: number,
   lng: number,
-  radiusMeters = 5000,
+  radiusMeters = 3000,
 ): Promise<Hospital[]> {
   const query = `
-        [out:json][timeout:25];
-        (
-            node["amenity"~"hospital|clinic|doctors|health_centre|pharmacy"](around:${radiusMeters},${lat},${lng});
-            way["amenity"~"hospital|clinic|doctors|health_centre|pharmacy"](around:${radiusMeters},${lat},${lng});
-        );
-        out center tags;
-    `;
-  const res = await fetch("https://overpass-api.de/api/interpreter", {
-    method: "POST",
-    body: `data=${encodeURIComponent(query)}`,
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-  });
-  if (!res.ok) throw new Error("Overpass API error");
-
-  const json = await res.json();
+    [out:json][timeout:25];
+    (
+        node["amenity"~"hospital|clinic|doctors|health_centre"](around:${radiusMeters},${lat},${lng});
+        way["amenity"~"hospital|clinic|doctors|health_centre"](around:${radiusMeters},${lat},${lng});
+    );
+    out center tags 60;
+`;
+  const json = await overpassRequest(query);
 
   return (json.elements as any[])
     .map((el): Hospital | null => {
@@ -171,10 +190,29 @@ export default function HealthCenter() {
   const loadHospitals = useCallback(async (loc: UserLocation) => {
     setIsFetching(true);
     setFetchError(null);
+    const key = `hospitals:${loc.lat.toFixed(3)},${loc.lng.toFixed(3)}`;
     try {
-      const results = await fetchNearbyHospitals(loc.lat, loc.lng, 5000);
+      try {
+        const cached = sessionStorage.getItem(key);
+        if (cached) {
+          const { time, data } = JSON.parse(cached);
+          if (Date.now() - time < 10 * 60 * 1000) {
+            setHospitals(data);
+            setFiltered(data);
+            return;
+          }
+        }
+      } catch {}
+
+      const results = await fetchNearbyHospitals(loc.lat, loc.lng, 3000);
       setHospitals(results);
       setFiltered(results);
+      try {
+        sessionStorage.setItem(
+          key,
+          JSON.stringify({ time: Date.now(), data: results }),
+        );
+      } catch {}
     } catch {
       setFetchError(
         "Could not load nearby health centers. Please check your connection and try again.",
@@ -287,7 +325,7 @@ export default function HealthCenter() {
             <p className="font-semibold text-sm">Nearby Health Centers</p>
             {!isFetching && (
               <p className="text-xs text-muted-foreground">
-                {filtered.length} found within 5 km
+                {filtered.length} found within 3 km
               </p>
             )}
           </div>

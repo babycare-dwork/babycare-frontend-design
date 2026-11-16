@@ -342,7 +342,8 @@ export default function NavigationBar({ className }: { className?: string }) {
                 className="h-11 w-auto md:h-12 lg:h-14"
                 width={100}
                 height={100}
-                priority
+                preload
+                fetchPriority="high"
               />
             </Link>
 

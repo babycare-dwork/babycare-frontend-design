@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -51,6 +52,9 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  turbopack: {
+    root: path.resolve(process.cwd()),
+  },
   reactCompiler: { compilationMode: "annotation" },
   allowedDevOrigins: process.env.ALLOWED_DEV_ORIGINS?.split(",") ?? [],
   compiler: {

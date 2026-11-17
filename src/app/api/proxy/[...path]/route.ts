@@ -7,47 +7,96 @@ import {
 } from "@/lib/session";
 
 const API_URL = process.env.API_URL!;
+const UPSTREAM_TIMEOUT_MS = 15_000;
+// add "login/apple" here only if the web app has Apple login
 const TOKEN_ROUTES = new Set(["login", "login/google"]);
+
+function jsonError(status: number, message: string) {
+  return Response.json({ success: false, message }, { status });
+}
 
 async function handler(
   req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> },
 ) {
   const { path } = await params;
+
+  // Reject path traversal (also catches encoded variants after decoding)
+  const segments = path.map((s) => {
+    try {
+      return decodeURIComponent(s);
+    } catch {
+      return s;
+    }
+  });
+  if (
+    segments.some(
+      (s) =>
+        s === ".." ||
+        s === "." ||
+        s.includes("..") ||
+        s.includes("/") ||
+        s.includes("\\"),
+    )
+  ) {
+    return jsonError(400, "Invalid path");
+  }
+
   const subPath = path.join("/");
   const jar = await cookies();
   const token = jar.get(SESSION_COOKIE)?.value;
+
+  const isLogout = subPath === "logout";
+  if (isLogout) jar.delete(SESSION_COOKIE);
 
   const headers = new Headers({ Accept: "application/json" });
   const ct = req.headers.get("content-type");
   if (ct) headers.set("content-type", ct); // keeps the multipart boundary
   if (token) headers.set("Authorization", `Bearer ${token}`);
-  const xff = req.headers.get("x-forwarded-for");
-  if (xff) headers.set("x-forwarded-for", xff);
+
+  // Do NOT copy the client's x-forwarded-for (it can be faked).
+  // Use the IP the platform saw: on Vercel, x-real-ip / the LAST entry of XFF.
+  const realIp =
+    req.headers.get("x-real-ip") ??
+    req.headers.get("x-forwarded-for")?.split(",").pop()?.trim();
+  if (realIp) headers.set("x-forwarded-for", realIp);
 
   const hasBody = !["GET", "HEAD"].includes(req.method);
-  const upstream = await fetch(`${API_URL}/${subPath}${req.nextUrl.search}`, {
-    method: req.method,
-    headers,
-    body: hasBody ? req.body : undefined, // streamed, so file uploads work
-    cache: "no-store",
-    // @ts-expect-error required by Node when streaming a body
-    duplex: "half",
-  });
+
+  let upstream: Response;
+  try {
+    upstream = await fetch(`${API_URL}/${subPath}${req.nextUrl.search}`, {
+      method: req.method,
+      headers,
+      body: hasBody ? req.body : undefined,
+      cache: "no-store",
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+      // @ts-expect-error required by Node when streaming a body
+      duplex: "half",
+    });
+  } catch (err) {
+    const timedOut =
+      err instanceof Error &&
+      (err.name === "TimeoutError" || err.name === "AbortError");
+    return timedOut
+      ? jsonError(504, "The server took too long to respond")
+      : jsonError(502, "Could not reach the server");
+  }
 
   // Login: move the token into the HttpOnly cookie, never send it to the browser
   if (TOKEN_ROUTES.has(subPath) && upstream.ok) {
-    const json = await upstream.json();
-    const newToken = json?.data?.token;
-    if (newToken) {
-      delete json.data.token;
-      jar.set(SESSION_COOKIE, cleanToken(newToken), sessionCookieOptions);
+    try {
+      const json = await upstream.json();
+      const newToken = json?.data?.token;
+      if (newToken) {
+        delete json.data.token;
+        jar.set(SESSION_COOKIE, cleanToken(newToken), sessionCookieOptions);
+      }
+      return Response.json(json, { status: upstream.status });
+    } catch {
+      return jsonError(502, "Invalid response from server");
     }
-    return Response.json(json, { status: upstream.status });
   }
-
-  // Logout: always clear the cookie, even if Laravel errors
-  if (subPath === "logout") jar.delete(SESSION_COOKIE);
 
   return new Response(upstream.body, {
     status: upstream.status,

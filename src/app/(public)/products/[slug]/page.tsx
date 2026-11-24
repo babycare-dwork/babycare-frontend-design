@@ -162,7 +162,12 @@ function ProductDescription({ html }: { html: string }) {
       <div className="relative">
         <div
           ref={setEl}
-          className="prose prose-sm max-w-none text-muted-foreground text-xs sm:text-sm overflow-hidden transition-[max-height] duration-300"
+          className="max-w-none text-muted-foreground text-xs sm:text-sm overflow-hidden transition-[max-height] duration-300
+    [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-2
+    [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-2
+    [&_li>p]:m-0 [&_p]:my-1 [&_p:empty]:hidden
+    [&_strong]:font-semibold [&_strong]:text-foreground
+    [&_a]:text-primary [&_a]:underline"
           style={{
             maxHeight: isExpanded
               ? el?.scrollHeight

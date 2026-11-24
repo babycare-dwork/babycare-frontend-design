@@ -18,6 +18,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { getAuthErrorMessage } from "@/lib/authErrors";
 
 const registerSchema = z
   .object({
@@ -60,6 +61,7 @@ const registerSchema = z
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
+  const [sentTo, setSentTo] = useState<string | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -96,8 +98,9 @@ export default function RegisterPage() {
 
       const response = await authService.register(formData);
       toast.success(response.message || "Registration successful");
+      setSentTo(data.email);
     } catch (error: any) {
-      toast.error(error.message || "Registration failed");
+      toast.error(getAuthErrorMessage(error, "Registration failed"));
     }
   }, []);
 
@@ -125,9 +128,7 @@ export default function RegisterPage() {
         await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
         router.push("/products");
       } catch (error: unknown) {
-        const message =
-          error instanceof Error ? error.message : "Google login failed";
-        toast.error(message);
+        toast.error(getAuthErrorMessage(error, "Google login failed"));
       }
     },
     onError: (errorResponse) => {
@@ -135,6 +136,21 @@ export default function RegisterPage() {
       toast.error("Google login failed");
     },
   });
+
+  if (sentTo) {
+    return (
+      <div className="container mx-auto px-4 my-24 max-w-md text-center space-y-4">
+        <h1 className="text-3xl font-bold text-ink">Check your email</h1>
+        <p className="text-ink-muted">
+          We sent a verification link to <strong>{sentTo}</strong>. Open it to
+          activate your account, then sign in.
+        </p>
+        <Link href="/login" className="font-semibold text-shield">
+          Go to sign in
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="h-fit grid lg:grid-cols-2 items-stretch container mx-auto px-4 sm:px-8 my-12">

@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGoogleLogin } from "@react-oauth/google";
 import Image from "next/image";
+import { getAuthErrorMessage } from "@/lib/authErrors";
 
 const loginSchema = z.object({
   email: z.email({ message: "Please enter a valid email address" }),
@@ -49,7 +50,7 @@ export default function LoginPage() {
         await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
         router.push("/products");
       } catch (error: any) {
-        toast.error(error?.message || "Login failed");
+        toast.error(getAuthErrorMessage(error, "Login failed"));
       }
     },
     [router, queryClient],

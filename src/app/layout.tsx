@@ -30,6 +30,9 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.thebabycareapp.com",
+  ),
   title: "BabyCare MarketPlace",
   description:
     "Your trusted marketplace for baby products and parenting essentials.",
